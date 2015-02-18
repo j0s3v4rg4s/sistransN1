@@ -1,6 +1,7 @@
 package mundo;
 
-public class prueba {
+public class prueba 
+{
 	int Hola;
 	String ff;
 	int p33;
