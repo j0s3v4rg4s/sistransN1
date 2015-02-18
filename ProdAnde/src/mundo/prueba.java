@@ -9,5 +9,7 @@ public class prueba
 	String ff;
 	int p33;
 	
+	int otro;
+	
 
 }
