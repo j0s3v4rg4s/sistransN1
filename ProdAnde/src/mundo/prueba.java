@@ -7,7 +7,8 @@ public class prueba
 	String f3;
 	int jp;
 	int uha;
-	
-int jeje;
-int ootroooo;
+
+	int jeje;
+	int ootroooo;
+	int ffffffff;
 }
