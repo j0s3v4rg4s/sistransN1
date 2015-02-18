@@ -10,4 +10,5 @@ public class prueba
 	
 int jeje;
 int ootroooo;
+String aaaa;
 }
