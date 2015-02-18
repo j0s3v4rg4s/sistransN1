@@ -12,4 +12,5 @@ public class prueba
 	int otro;
 	
 int jeje;
+int ootroooo;
 }
