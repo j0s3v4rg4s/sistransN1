@@ -6,7 +6,10 @@ public class prueba
 	String f2;
 	String f3;
 	int jp;
-
+	String ff;
+	int p33;
+	
+	int otro;
 	
 int jeje;
 }
