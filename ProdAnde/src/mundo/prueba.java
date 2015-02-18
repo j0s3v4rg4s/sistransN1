@@ -2,6 +2,6 @@ package mundo;
 
 public class prueba {
 	int Hola;
-	String ff;
+	String f2;
 	
 }
