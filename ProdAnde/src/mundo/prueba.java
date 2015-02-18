@@ -6,7 +6,7 @@ public class prueba
 	String f2;
 	String f3;
 	int jp;
-
+	int aaa;
 	
 
 }
