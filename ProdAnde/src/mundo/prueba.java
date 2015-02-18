@@ -7,7 +7,6 @@ public class prueba {
 	
 	String ff;
 	int p33;
-	String ff;
-	int p33;
+	
 
 }
