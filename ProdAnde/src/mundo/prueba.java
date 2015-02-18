@@ -9,4 +9,5 @@ public class prueba
 	int uha;
 	
 int jeje;
+int ootroooo;
 }
