@@ -5,4 +5,9 @@ public class prueba {
 	String f2;
 	String f3;
 	
+	String ff;
+	int p33;
+	String ff;
+	int p33;
+
 }
