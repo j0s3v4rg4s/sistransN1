@@ -10,8 +10,8 @@ public class ProcesoDeFabricacion {
 
 	private int Id;
 	private String nombre;
-	public Producto Productos;
-	public Proveedor Materiasprimas;
+	private Producto Productos;
+	private Proveedor Materiasprimas;
 
 	public ProcesoDeFabricacion(){
 

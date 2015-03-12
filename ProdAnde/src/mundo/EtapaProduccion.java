@@ -1,33 +1,34 @@
 package mundo;
 
-import java.util.ArrayList;
 
 public class EtapaProduccion {
 
 	//-----------------------------------------------------------------
 	// Atributos
 	//-----------------------------------------------------------------
-	
-	private int numSecuencia;
-	
-	private String nombre;
-	
-	private ArrayList<EstacionProduccion> estaciones;
 
-	
-	
+	private int numSecuencia;
+	private String nombre;
+	private int t_inicio;
+	private int t_final;
+
+
+
 	//-----------------------------------------------------------------
 	// Constructor
 	//-----------------------------------------------------------------
-	
-	public EtapaProduccion(int numSecuencia, String nombre,
-			ArrayList<EstacionProduccion> estaciones) {
+	public EtapaProduccion(int numSecuencia, String nombre, int t_inicio,
+			int t_final) {
 		super();
 		this.numSecuencia = numSecuencia;
 		this.nombre = nombre;
-		this.estaciones = estaciones;
+		this.t_inicio = t_inicio;
+		this.t_final = t_final;
 	}
 
+	//-----------------------------------------------------------------
+	// metodos
+	//-----------------------------------------------------------------
 
 
 	public int getNumSecuencia() {
@@ -42,8 +43,14 @@ public class EtapaProduccion {
 
 
 
-	public ArrayList<EstacionProduccion> getEstaciones() {
-		return estaciones;
+	public int getT_inicio() {
+		return t_inicio;
+	}
+
+
+
+	public int getT_final() {
+		return t_final;
 	}
 
 
@@ -60,10 +67,19 @@ public class EtapaProduccion {
 
 
 
-	public void setEstaciones(ArrayList<EstacionProduccion> estaciones) {
-		this.estaciones = estaciones;
+	public void setT_inicio(int t_inicio) {
+		this.t_inicio = t_inicio;
 	}
-	
-	
-	
+
+
+
+	public void setT_final(int t_final) {
+		this.t_final = t_final;
+	}
+
+
+
+
+
+
 }
