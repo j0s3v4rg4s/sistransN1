@@ -1,5 +1,4 @@
 package consulta;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
@@ -8,17 +7,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
-
+import escenario2.EstacionProduccion;
 import escenario2.EtapaProduccion;
 import escenario2.Producto;
-
-
 /**
  * @author jose
  *Clase que representa las consultas echas a la base de datos
  */
 public class ConsultaDAO {
-
 	//----------------------------------------------------
 	//Constantes
 	//----------------------------------------------------
@@ -26,9 +22,6 @@ public class ConsultaDAO {
 	 * ruta donde se encuentra el archivo de conexión.
 	 */
 	public static final String ARCHIVO_CONEXION = "data/conexion.properties";
-
-
-
 	//----------------------------------------------------
 	//Atributos
 	//----------------------------------------------------
@@ -36,53 +29,41 @@ public class ConsultaDAO {
 	 * conexion con la base de datos
 	 */
 	public Connection conexion;
-
 	/**
 	 * nombre del usuario para conectarse a la base de datos.
 	 */
 	private String usuario;
-
 	/**
 	 * clave de conexión a la base de datos.
 	 */
 	private String clave;
-
 	/**
 	 * URL al cual se debe conectar para acceder a la base de datos.
 	 */
 	private String cadenaConexion;
-
-
-
 	//----------------------------------------------------
 	//Constructor
 	//----------------------------------------------------
-
 	public ConsultaDAO() {
 		try
 		{
 			File arch= new File(ARCHIVO_CONEXION);
 			Properties prop = new Properties();
 			FileInputStream in = new FileInputStream( arch );
-
 			prop.load( in );
 			in.close( );
-
-			cadenaConexion = prop.getProperty("url");	// El url, el usuario y passwd deben estar en un archivo de propiedades.
+			cadenaConexion = prop.getProperty("url"); // El url, el usuario y passwd deben estar en un archivo de propiedades.
 			// url: "jdbc:oracle:thin:@chie.uniandes.edu.co:1521:chie10";
-			usuario = prop.getProperty("usuario");	// "s2501aXX";
-			clave = prop.getProperty("clave");	// "c2501XX";
+			usuario = prop.getProperty("usuario"); // "s2501aXX";
+			clave = prop.getProperty("clave"); // "c2501XX";
 			final String driver = prop.getProperty("driver");
 			Class.forName(driver);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-		}	
-
+		}
 	}
-
-
 	//----------------------------------------------------
 	//Metodos
 	//----------------------------------------------------
@@ -105,27 +86,22 @@ public class ConsultaDAO {
 			throw new SQLException( "ERROR: ConsultaDAO obteniendo una conexion." );
 		}
 	}
-
 	/**
 	 *Cierra la conexión activa a la base de datos. Además, con=null.
 	 * @param con objeto de conexión a la base de datos
 	 * @throws SistemaCinesException Si se presentan errores de conexión
 	 */
-	private void closeConnection(Connection connection) throws Exception {        
+	private void closeConnection(Connection connection) throws Exception {
 		try {
 			connection.close();
 			connection = null;
 		} catch (SQLException exception) {
 			throw new Exception("ERROR: ConsultaDAO: closeConnection() = cerrando una conexión.");
 		}
-	} 
-
-
+	}
 	//----------------------------------------------------
 	//Query
 	//----------------------------------------------------
-
-
 	/**Metodo que busca un producto con el id que entra por parametro
 	 * @param id. identificador del producto
 	 */
@@ -193,11 +169,29 @@ public class ConsultaDAO {
 
 	}
 
-
-
+	
 	public EtapaProduccion buscarEtapa(String id) {
 		// TODO Auto-generated method stub
-		return null;
+		String[] id2 = id.split("-");
+		PreparedStatement prepStmt = null;
+		EtapaProduccion p = null;
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT * FROM ETAPA_PRODUCCION WHERE NUMERO = "+id2[1]+" AND ID_PRODUCTO = '"+id2[0]+"'";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				p = new EtapaProduccion(id2[0], rs.getInt("NUMERO"),rs.getString("ESTADO"),rs.getString("NOMBRE"));
+			}
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return p;
 	}
 
 
@@ -207,7 +201,9 @@ public class ConsultaDAO {
 
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
-
+		c.buscarProducto("pc");
+		EtapaProduccion p = c.buscarEtapa("pc-1");
+		System.out.println(p.getNombre());
 	}
 
 
