@@ -23,6 +23,8 @@ public class proAndes {
 	// Variables
 	//-----------------------------------------------------------------
 	public Bodega m_Bodega;
+	
+	public int test;
 
 
 	/**
