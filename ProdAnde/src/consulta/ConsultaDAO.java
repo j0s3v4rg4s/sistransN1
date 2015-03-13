@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -122,40 +124,87 @@ public class ConsultaDAO {
 	//----------------------------------------------------
 	//Query
 	//----------------------------------------------------
-	
-	
+
+
 	/**Metodo que busca un producto con el id que entra por parametro
 	 * @param id. identificador del producto
 	 */
 	public Producto buscarProducto(String id) {
-			// TODO
-		return null;
+		
+		PreparedStatement prepStmt = null;
+				Producto p = null;
+				try {
+					establecerConexion(cadenaConexion, usuario, clave);
+					String pre = "SELECT * FROM PRODUCTO WHERE id = '"+id+"'";
+					prepStmt = conexion.prepareStatement(pre);
+					ResultSet rs = prepStmt.executeQuery();
+					while(rs.next())
+					{
+						p = new Producto(rs.getString("ID"), rs.getString("NOMBRE"), rs.getInt("COSTO"),rs.getString("ESTADO"));
+					}
+		
+					prepStmt.close();
+					closeConnection(conexion);
+		
+		
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+		
+				return p;
 	}
 	public int buscarCantidadProductoEnBodega(String idProd)
 	{
-		return 0;
-	}
+		PreparedStatement prepStm = null;
+		int ans = 0;
+		try 
+		{
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT CANTIDAD FROM BODEGA WHERE ID = "+idProd;
+			prepStm = conexion.prepareStatement(pre);
+			ResultSet rs = prepStm.executeQuery();
+			while(rs.next())
+			{
+				ans = rs.getInt("CANTIDAD");
+			}
+			prepStm.close();
+			closeConnection(conexion);
+
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		} 
+		
+		return ans;
 	
+	}
 
 
 	public void cambiarEstadoEtapa(String idEtapa, String idConsumo,
 			int cantidadConsumo, String idProduce, int cantudadProduce) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
-	
+
 	public EtapaProduccion buscarEtapa(String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
 
@@ -164,7 +213,7 @@ public class ConsultaDAO {
 
 	public void disminuirCantidadEnBodega(String idProducto, int cantidad) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 

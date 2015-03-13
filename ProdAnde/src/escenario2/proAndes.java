@@ -188,7 +188,6 @@ public class proAndes {
 		
 		if (cant < cantidad)
 		{
-			
 			return ans;			
 		}
 		else 
