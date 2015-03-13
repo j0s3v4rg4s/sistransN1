@@ -3,12 +3,12 @@ package escenario2;
 /**
  * @author jose
  * @version 1.0
- * @created 12-Mar-2015 02:52:01 p.m.
+ * @created 13-Mar-2015 09:57:21 a.m.
  */
 public class Cliente {
 
 	public proAndes m_proAndes;
-	public Producto m_Producto;
+	public Solicitud m_Solicitud;
 
 	public Cliente(){
 

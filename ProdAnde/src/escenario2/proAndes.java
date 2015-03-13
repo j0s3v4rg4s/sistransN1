@@ -192,11 +192,16 @@ public class proAndes {
 	 * @param tInicio
 	 * @param tFin
 	 */
-	public void registrarEjecucionEtapaProduccion(String idEtapa, int tInicio, int tFin)
+	public boolean registrarEjecucionEtapaProduccion(String idEtapa, int tInicio, int tFin)
 	{
 		// TODO implementar
 		String[] id = idEtapa.split("-");
 		Producto p = conexion.buscarProducto(id[0]);
+		String g = p.getEstado();
+		
+			return false;
+		
+		
 
 	}
 
