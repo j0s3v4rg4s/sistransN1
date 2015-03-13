@@ -216,6 +216,7 @@ public class proAndes {
 				conexion.cambiarEstadoEtapa(idEtapa, idConsumo, cantidadConsumo, idProduce, cantudadProduce);
 				return true;
 			}
+			int a;
 			return false;
 		}
 
