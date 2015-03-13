@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import escenario2.EtapaProduccion;
 import escenario2.Producto;
 
 
@@ -131,12 +132,31 @@ public class ConsultaDAO {
 		return null;
 	}
 
+	
+
+
+	public void cambiarEstadoEtapa(String idEtapa, String idConsumo,
+			int cantidadConsumo, String idProduce, int cantudadProduce) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	
+	public EtapaProduccion buscarEtapa(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	
+	
+	
+	
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
 
 	}
 
 
-	
-	
 }

@@ -132,7 +132,7 @@ public class proAndes {
 	 */
 	public void registrarProveedor(Proveedor prov)
 	{
-		
+
 	}
 	/**
 	 * metodo que registra un operario dado 
@@ -192,19 +192,33 @@ public class proAndes {
 	 * @param tInicio
 	 * @param tFin
 	 */
-	public boolean registrarEjecucionEtapaProduccion(String idEtapa, int tInicio, int tFin)
+	public boolean registrarEjecucionEtapaProduccion(String idEtapa, int tInicio, int tFin,int cantidadConsumo, String idConsumo, int cantudadProduce, String idProduce)
 	{
 		// TODO implementar
 		String[] id = idEtapa.split("-");
 		Producto p = conexion.buscarProducto(id[0]);
-		String g = p.getEstado();
+		int etapa = Integer.parseInt(id[1]);
 		if (!p.getEstado().equals(Producto.PRODUCIOENDO))
 		{
 			return false;
 		}
+
+		if(etapa==0)
+		{
+			conexion.cambiarEstadoEtapa(idEtapa,idConsumo,cantidadConsumo,idProduce,cantudadProduce);
+			return true;
+		}
+		else
+		{
+			EtapaProduccion e = conexion.buscarEtapa(id[0]+"-"+(etapa-1));
+			if (e.getEstado().equals(EtapaProduccion.TERMINADO))
+			{
+				conexion.cambiarEstadoEtapa(idEtapa, idConsumo, cantidadConsumo, idProduce, cantudadProduce);
+				return true;
+			}
 			return false;
-		
-		
+		}
+
 
 	}
 
