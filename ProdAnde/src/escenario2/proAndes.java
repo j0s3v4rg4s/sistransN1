@@ -132,7 +132,7 @@ public class proAndes {
 	 */
 	public void registrarProveedor(Proveedor prov)
 	{
-
+		int A = 0;
 	}
 	/**
 	 * metodo que registra un operario dado 
