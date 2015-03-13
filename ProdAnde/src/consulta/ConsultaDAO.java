@@ -106,31 +106,32 @@ public class ConsultaDAO {
 	 * @param id. identificador del producto
 	 */
 	public Producto buscarProducto(String id) {
-		
 		PreparedStatement prepStmt = null;
-				Producto p = null;
-				try {
-					establecerConexion(cadenaConexion, usuario, clave);
-					String pre = "SELECT * FROM PRODUCTO WHERE id = '"+id+"'";
-					prepStmt = conexion.prepareStatement(pre);
-					ResultSet rs = prepStmt.executeQuery();
-					while(rs.next())
-					{
-						p = new Producto(rs.getString("ID"), rs.getString("NOMBRE"), rs.getInt("COSTO"),rs.getString("ESTADO"));
-					}
-		
-					prepStmt.close();
-					closeConnection(conexion);
-		
-		
-				} catch (SQLException e) {
-					e.printStackTrace();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-		
-				return p;
+		Producto p = null;
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT * FROM PRODUCTO WHERE id = '"+id+"'";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				p = new Producto(rs.getString("ID"), rs.getString("NOMBRE"), rs.getInt("COSTO"),rs.getString("ESTADO"));
+			}
+
+			prepStmt.close();
+			closeConnection(conexion);
+
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return p;
 	}
+	
+	
 	public int buscarCantidadProductoEnBodega(String idProd)
 	{
 		PreparedStatement prepStm = null;
@@ -157,9 +158,9 @@ public class ConsultaDAO {
 		{
 			e.printStackTrace();
 		} 
-		
+
 		return ans;
-	
+
 	}
 
 
@@ -169,7 +170,7 @@ public class ConsultaDAO {
 
 	}
 
-	
+
 	public EtapaProduccion buscarEtapa(String id) {
 		// TODO Auto-generated method stub
 		String[] id2 = id.split("-");
