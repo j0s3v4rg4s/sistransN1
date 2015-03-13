@@ -232,8 +232,6 @@ public class proAndes {
 			}
 			return false;
 		}
-
-
 	}
 
 	/**
