@@ -3,26 +3,32 @@ package escenario2;
 import java.sql.Date;
 import java.util.ArrayList;
 
-import mundo.Cliente;
-import mundo.Componente;
-import mundo.EstacionProduccion;
-import mundo.EtapaProduccion;
 import mundo.MateriaPrima;
-import mundo.Material;
-import mundo.Operario;
 import mundo.Pedido;
-import mundo.Producto;
-import mundo.Proveedor;
-import mundo.Usuario;
+import consulta.ConsultaDAO;
+
 
 /**
  * @author jose
  * @version 1.0
  * @created 12-Mar-2015 02:52:01 p.m.
  */
+/**
+ * @author jose
+ *
+ */
 public class proAndes {
 
+	//-----------------------------------------------------------------
+	// Variables
+	//-----------------------------------------------------------------
 	public Bodega m_Bodega;
+
+
+	/**
+	 * Variable que respresenta la conexion a la base de datos 
+	 */
+	public ConsultaDAO conexion;
 
 	//-----------------------------------------------------------------
 	// Constructor
@@ -30,7 +36,7 @@ public class proAndes {
 
 
 	public proAndes(){
-
+		conexion = new ConsultaDAO();
 
 
 	}
@@ -189,6 +195,9 @@ public class proAndes {
 	public void registrarEjecucionEtapaProduccion(String idEtapa, int tInicio, int tFin)
 	{
 		// TODO implementar
+		String[] id = idEtapa.split("-");
+		Producto p = conexion.buscarProducto(id[0]);
+
 	}
 
 	/**

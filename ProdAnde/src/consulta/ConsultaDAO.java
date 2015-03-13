@@ -7,6 +7,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import escenario2.Producto;
+
 
 /**
  * @author jose
@@ -97,7 +99,7 @@ public class ConsultaDAO {
 		}
 		catch( SQLException exception )
 		{
-			throw new SQLException( "ERROR: ConsultaDAO obteniendo una conexin." );
+			throw new SQLException( "ERROR: ConsultaDAO obteniendo una conexion." );
 		}
 	}
 
@@ -121,9 +123,20 @@ public class ConsultaDAO {
 	//----------------------------------------------------
 	
 	
+	/**Metodo que busca un producto con el id que entra por parametro
+	 * @param id. identificador del producto
+	 */
+	public Producto buscarProducto(String id) {
+			// TODO
+		return null;
+	}
 
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
 
 	}
+
+
+	
+	
 }
