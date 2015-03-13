@@ -197,7 +197,10 @@ public class proAndes {
 		// TODO implementar
 		String[] id = idEtapa.split("-");
 		Producto p = conexion.buscarProducto(id[0]);
-		String g = p.getEstado();
+		if(!p.getEstado().equals(Producto.PRODUCIOENDO))
+		{
+			return false;
+		}
 		
 			return false;
 		
