@@ -123,7 +123,7 @@ public class proAndes {
 	/**
 	 * metodo que registra un cliente dado 
 	 */
-	public void registrarCliente(Cliente client)
+	public void registrarClientetest(Cliente client)
 	{
 
 	}
