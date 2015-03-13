@@ -131,7 +131,10 @@ public class ConsultaDAO {
 			// TODO
 		return null;
 	}
-
+	public int buscarCantidadProductoEnBodega(String idProd)
+	{
+		return 0;
+	}
 	
 
 
@@ -156,6 +159,12 @@ public class ConsultaDAO {
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
 
+	}
+
+
+	public void disminuirCantidadEnBodega(String idProducto, int cantidad) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

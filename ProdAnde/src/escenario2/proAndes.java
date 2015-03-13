@@ -116,7 +116,7 @@ public class proAndes {
 	/**
 	 * metodo que registra un pedido 
 	 */
-	public void registrarEntregaPedidoProductos()
+	public void registrarProducto()
 	{
 
 	}
@@ -179,9 +179,24 @@ public class proAndes {
 	/**
 	 * metodo que registra un producto dado 
 	 */
-	public void registrarProducto(Producto prod)
+	public boolean registrarPedidoProducto(Date fecha, String idProducto, int cantidad)
 	{
-
+		Producto prod = conexion.buscarProducto(idProducto);
+		boolean ans = false; 
+		int cant = conexion.buscarCantidadProductoEnBodega(idProducto);
+		generarPedido();
+		
+		if (cant < cantidad)
+		{
+			
+			return ans;			
+		}
+		else 
+		{
+			conexion.disminuirCantidadEnBodega(idProducto, cantidad);
+			
+		}
+		return ans;
 	}
 
 	/**
