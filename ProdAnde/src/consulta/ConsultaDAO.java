@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import escenario2.EstacionProduccion;
 import escenario2.EtapaProduccion;
 import escenario2.Producto;
 
@@ -122,39 +125,86 @@ public class ConsultaDAO {
 	//----------------------------------------------------
 	//Query
 	//----------------------------------------------------
-	
-	
+
+
 	/**Metodo que busca un producto con el id que entra por parametro
 	 * @param id. identificador del producto
 	 */
 	public Producto buscarProducto(String id) {
-			// TODO
-		return null;
+		PreparedStatement prepStmt = null;
+		Producto p = null;
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT * FROM PRODUCTO WHERE id = '"+id+"'";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				p = new Producto(rs.getString("ID"), rs.getString("NOMBRE"), rs.getInt("COSTO"),rs.getString("ESTADO"));
+			}
+
+			prepStmt.close();
+			closeConnection(conexion);
+
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return p;
 	}
 
-	
+
 
 
 	public void cambiarEstadoEtapa(String idEtapa, String idConsumo,
 			int cantidadConsumo, String idProduce, int cantudadProduce) {
-		// TODO Auto-generated method stub
+		EtapaProduccion e = buscarEtapa(idEtapa);
+		e.setEstado(EtapaProduccion.TERMINADO);
 		
+
 	}
 
 
-	
+
 	public EtapaProduccion buscarEtapa(String id) {
+
 		// TODO Auto-generated method stub
-		return null;
+
+		String[] id2 = id.split("-");
+
+		PreparedStatement prepStmt = null;
+		EtapaProduccion p = null;
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT * FROM ETAPA_PRODUCCION WHERE NUMERO = "+id2[1]+" AND ID_PRODUCTO = '"+id2[0]+"'";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				p = new EtapaProduccion(id2[0], rs.getInt("NUMERO"),rs.getString("ESTADO"),rs.getString("NOMBRE"));
+			}
+
+			prepStmt.close();
+			closeConnection(conexion);
+
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return p;
 	}
-	
-	
-	
-	
-	
-	
+
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
+		c.buscarProducto("pc");
+		EtapaProduccion p = c.buscarEtapa("pc-1");
+		System.out.println(p.getNombre());
 
 	}
 

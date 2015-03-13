@@ -24,6 +24,7 @@ public class EtapaProduccion {
 	private String id_producto;
 	private int numeroSecuencia;
 	private String estado;
+	private String nombre;
 	private int tInicio;
 	private int tFin;
 
@@ -31,11 +32,13 @@ public class EtapaProduccion {
 	//Constructor
 	//----------------------------------------------------
 
-	public EtapaProduccion(String id_producto, int numeroSecuencia) {
+	public EtapaProduccion(String id_producto, int numeroSecuencia,
+			String estado, String nombre) {
 		super();
 		this.id_producto = id_producto;
 		this.numeroSecuencia = numeroSecuencia;
-		estado = ESPERA;
+		this.estado = estado;
+		this.nombre = nombre;
 	}
 
 	//----------------------------------------------------
@@ -45,6 +48,8 @@ public class EtapaProduccion {
 	public String getId_producto() {
 		return id_producto;
 	}
+
+	
 
 	public int getNumeroSecuencia() {
 		return numeroSecuencia;
@@ -80,6 +85,14 @@ public class EtapaProduccion {
 
 	public void settFin(int tFin) {
 		this.tFin = tFin;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 

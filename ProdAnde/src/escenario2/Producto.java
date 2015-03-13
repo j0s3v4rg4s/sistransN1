@@ -38,12 +38,12 @@ public class Producto {
 	//-----------------------------------------------------------------
 	// Constructor
 	//-----------------------------------------------------------------
-	public Producto(String id, String nombre, int costo) {
+	public Producto(String id, String nombre, int costo, String estado) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.costo = costo;
-		estado = SIN_EMPEZAR;
+		this.estado = estado;
 	}
 
 	//-----------------------------------------------------------------
