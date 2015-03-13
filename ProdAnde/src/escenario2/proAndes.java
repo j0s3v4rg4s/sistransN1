@@ -24,8 +24,6 @@ public class proAndes {
 	//-----------------------------------------------------------------
 	public Bodega m_Bodega;
 	
-	public int test;
-
 
 	/**
 	 * Variable que respresenta la conexion a la base de datos 
@@ -218,7 +216,6 @@ public class proAndes {
 				conexion.cambiarEstadoEtapa(idEtapa, idConsumo, cantidadConsumo, idProduce, cantudadProduce);
 				return true;
 			}
-			int a;
 			return false;
 		}
 
