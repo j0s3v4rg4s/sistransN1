@@ -219,7 +219,7 @@ public class proAndes {
 
 		if(etapa==0)
 		{
-			conexion.cambiarEstadoEtapa(idEtapa,idConsumo,cantidadConsumo,idProduce,cantudadProduce);
+			//conexion.cambiarEstadxoEtapa(idEtapa,idConsumo,cantidadConsumo,idProduce,cantudadProduce);
 			return true;
 		}
 		else
