@@ -6,10 +6,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
+
+import escenario2.Bodega;
 import escenario2.EstacionProduccion;
 import escenario2.EtapaProduccion;
 import escenario2.Producto;
+import escenario2.insumos;
 /**
  * @author jose
  *Clase que representa las consultas echas a la base de datos
@@ -130,8 +134,34 @@ public class ConsultaDAO {
 
 		return p;
 	}
-	
-	
+
+	public insumos buscarInsumo(String id) {
+		PreparedStatement prepStmt = null;
+		insumos in = null;
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT * FROM INSUMO WHERE ID = '"+id+"'";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				in = new insumos(rs.getString("ID"), rs.getString("NOMBRE"),rs.getInt("CANTIDAD"),rs.getString("UNIDAD_MEDIDA"), rs.getString("TIPO"));
+			}
+
+			prepStmt.close();
+			closeConnection(conexion);
+
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return in;
+	}
+
+
 	public int buscarCantidadProductoEnBodega(String idProd)
 	{
 		PreparedStatement prepStm = null;
@@ -139,7 +169,7 @@ public class ConsultaDAO {
 		try 
 		{
 			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "SELECT CANTIDAD FROM BODEGA WHERE ID = "+idProd;
+			String pre = "SELECT CANTIDAD FROM BODEGA WHERE ID = "+"'"+idProd+"'";
 			prepStm = conexion.prepareStatement(pre);
 			ResultSet rs = prepStm.executeQuery();
 			while(rs.next())
@@ -195,9 +225,180 @@ public class ConsultaDAO {
 		return p;
 	}
 
+	public int buscarCantidadInsumo(String id)
+	{
+		PreparedStatement prepStm = null;
+		int ans = 0;
+		try 
+		{
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT CANTIDAD FROM BODEGA INNER JOIN INSUMO ON BODEGA.ID= INSUMO.ID_BODEGA WHERE ID = "+"'"+id+"'";
+			prepStm = conexion.prepareStatement(pre);
+			ResultSet rs = prepStm.executeQuery();
+			while(rs.next())
+			{
+				ans = rs.getInt("CANTIDAD");
+			}
+			prepStm.close();
+			closeConnection(conexion);
 
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		} 
 
+		return ans;
 
+	}
+
+	public boolean buscarEtapaProduccion(String idProducto)
+	{
+		boolean a = false;
+		PreparedStatement prepStmt = null;
+
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT ID_INSUMO, CANTIDAD FROM MATERIALES_PRODUCCION WHERE ID_PRODUCTO = " +"'" +idProducto+"'";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				insumos in = buscarInsumo(rs.getString("ID_INSUMO"));
+			}
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return a;
+	}
+	public Bodega buscarElementoArray(String id, ArrayList<Bodega> bodeg)
+	{	
+		Bodega bod = null;
+		for (int i=0; i<bodeg.size(); i++)
+		{
+			Bodega temp = bodeg.get(i);
+			if (temp.getId().equals(id))
+				bod= temp;
+		}
+		return bod;
+	}
+	public String darIdBodegaPorIdInsumoP(String idInsumoP)
+	{
+		boolean a = false;
+		PreparedStatement prepStmt = null;
+		String ans = "";
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT BODEGA.ID FROM((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_INSUMO_G = INSUMOS.ID)WHERE ETAPA_PRODUCCION.ID_INSUMO_G='"+idInsumoP+"'";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				ans = rs.getString("BODEGA.ID");
+			}
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ans;
+	}
+	public String darIdBodegaPorIdInsumoG(String idInsumoG)
+	{
+		PreparedStatement prepStmt = null;
+		String ans = "";
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT BODEGA.ID FROM((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_INSUMO_G = INSUMOS.ID)WHERE ETAPA_PRODUCCION.ID_INSUMO_G='"+idInsumoG+"'";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				ans = rs.getString("BODEGA.ID");
+			}
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ans;
+	}
+	public Boolean CantidadEnBodegaVSCantidad()
+	{
+		boolean ans = false;
+		String cant = "";
+		PreparedStatement prepStmt = null;
+		ArrayList<Bodega> bodeg = cargarBodegaEnLista();
+
+		try 
+		{	
+			boolean sale = false;
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT ETAPA_PRODUCCION.ID_INSUMO_P,BODEGA.CANTIDAD AS CANTIDAD_EN_BODEGA,  ETAPA_PRODUCCION.CANTIDAD_P AS CANTIDAD_PRODUCIDA FROM((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_INSUMO_G = INSUMOS.ID)";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery(); 
+			String pre1 = "SELECT ETAPA_PRODUCCION.ID_INSUMO_G,BODEGA.CANTIDAD AS CANTIDAD_EN_BODEGA,  ETAPA_PRODUCCION.CANTIDAD_G AS CANTIDAD_GASTADA FROM((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_INSUMO_G = INSUMOS.ID)";
+			prepStmt = conexion.prepareStatement(pre1);
+			ResultSet rs1 = prepStmt.executeQuery(); 
+			while(rs.next()&&rs1.next()&&!sale)
+			{ 
+				Bodega bP = buscarElementoArray(darIdBodegaPorIdInsumoP(rs.getString("ETAPA_PRODUCCION.ID_INSUMO_P")), bodeg);
+				Bodega bG = buscarElementoArray(darIdBodegaPorIdInsumoG(rs1.getString("ETAPA_PRODUCCION.ID_INSUMO_G")), bodeg);
+				bG.setCantidad(bG.getCantidad()-rs1.getInt("CANTIDAD_GASTADA"));
+				if (bG.getCantidad() < 0)
+					sale = true;
+				else
+				bP.setCantidad(bP.getCantidad() + rs.getInt("CANTIDAD_PRODUCIDA"));
+			}
+			if (sale == false)
+			ans = true;
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ans;
+	}
+
+	public ArrayList<Bodega> cargarBodegaEnLista()
+	{
+		boolean a = false;
+		PreparedStatement prepStmt = null;
+		ArrayList<Bodega> bodeg = null;
+
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT * FROM BODEGA";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				Bodega bod = new Bodega(rs.getString("ID"), rs.getInt("CANTIDAD"));
+				bodeg.add(bod);
+			}
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bodeg;
+	}
 
 
 	public static void main(String[] args) {
@@ -208,9 +409,32 @@ public class ConsultaDAO {
 	}
 
 
-	public void disminuirCantidadEnBodega(String idProducto, int cantidad) {
-		// TODO Auto-generated method stub
+	public void disminuirCantidadEnBodega(String idProducto, int cantidad) 
+	{
 
+	}
+	public boolean revisarCantidadesConBodega(String idProducto)
+	{
+		boolean a = false;
+		PreparedStatement prepStmt = null;
+
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT ID_INSUMO, CANTIDAD FROM MATERIALES_PRODUCCION WHERE ID_PRODUCTO = " +"'" +idProducto+"'";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				insumos in = buscarInsumo(rs.getString("ID_INSUMO"));
+			}
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return a;
 	}
 
 
