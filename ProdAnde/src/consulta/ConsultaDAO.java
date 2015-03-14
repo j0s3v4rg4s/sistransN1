@@ -197,12 +197,36 @@ public class ConsultaDAO {
 	public void cambiarEstadoEtapa(String idEtapa, String idConsumo,
 			int cantidadConsumo, String idProduce, int cantudadProduce) {
 		// TODO Auto-generated method stub
+		String[] id = idEtapa.split("-");
+		String query = "UPDATE ETAPA_PRODUCCION SET estado = 'terminado' WHERE NUMERO = "+id[1]+" AND ID_PRODUCTO = '"+id[0]+"'";
+		PreparedStatement prepStmt = null;
 
+		try 
+		{
+			establecerConexion(cadenaConexion, usuario, clave);
+			prepStmt = conexion.prepareStatement(query);
+			ResultSet rs = prepStmt.executeQuery();
+			prepStmt.close();
+			
+			
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try {
+				closeConnection(conexion);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 
 	public EtapaProduccion buscarEtapa(String id) {
-		// TODO Auto-generated method stub
 		String[] id2 = id.split("-");
 		PreparedStatement prepStmt = null;
 		EtapaProduccion p = null;
@@ -403,9 +427,7 @@ public class ConsultaDAO {
 
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
-		c.buscarProducto("pc");
-		EtapaProduccion p = c.buscarEtapa("pc-1");
-		System.out.println(p.getNombre());
+		c.cambiarEstadoEtapa("idprod1-3", "", 0,"", 0);
 	}
 
 

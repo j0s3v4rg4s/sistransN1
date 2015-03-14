@@ -17,9 +17,6 @@ public class EtapaProduccion {
 	//----------------------------------------------------
 	//Variables
 	//----------------------------------------------------
-	private insumos Gasta;
-	private insumos Produce;
-	public EstacionProduccion m_EstacionProduccion;
 
 	private String id_producto;
 	private int numeroSecuencia;
@@ -27,6 +24,11 @@ public class EtapaProduccion {
 	private String nombre;
 	private int tInicio;
 	private int tFin;
+	
+	private String idInsumo1;
+	private String idInsumo2;
+	private int produce;
+	private int gasta;
 
 	//----------------------------------------------------
 	//Constructor
@@ -95,6 +97,42 @@ public class EtapaProduccion {
 		this.nombre = nombre;
 	}
 
+	public String getIdInsumo1() {
+		return idInsumo1;
+	}
+
+	public void setIdInsumo1(String idInsumo1) {
+		this.idInsumo1 = idInsumo1;
+	}
+
+	public String getIdInsumo2() {
+		return idInsumo2;
+	}
+
+	public void setIdInsumo2(String idInsumo2) {
+		this.idInsumo2 = idInsumo2;
+	}
+
+	public int getProduce() {
+		return produce;
+	}
+
+	public void setProduce(int produce) {
+		this.produce = produce;
+	}
+
+	public int getGasta() {
+		return gasta;
+	}
+
+	public void setGasta(int gasta) {
+		this.gasta = gasta;
+	}
+
+	@Override
+	public String toString() {
+		return "";
+	}
 
 
 

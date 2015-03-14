@@ -7,8 +7,14 @@ package escenario2;
  */
 public class Material extends insumos {
 
-	public Material(){
+//	public Material(){
+//
+//	}
 
+	public Material(String id, String nombre, int cantidad,
+			String unidadMedida, String tipo) {
+		super(id, nombre, cantidad, unidadMedida, tipo);
+		// TODO Auto-generated constructor stub
 	}
 
 	public void finalize() throws Throwable {
