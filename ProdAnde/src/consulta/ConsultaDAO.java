@@ -147,6 +147,7 @@ public class ConsultaDAO {
 			while(rs.next())
 			{
 				in = new insumos(rs.getString("ID"), rs.getString("NOMBRE"),rs.getString("UNIDAD_MEDIDA"),rs.getInt("CANTIDAD"), rs.getString("TIPO"));
+				in.setId_bodega(rs.getString("ID_BODEGA"));
 			}
 
 			prepStmt.close();
@@ -206,16 +207,20 @@ public class ConsultaDAO {
 			establecerConexion(cadenaConexion, usuario, clave);
 			prepStmt = conexion.prepareStatement(query);
 			ResultSet rs = prepStmt.executeQuery();
-			prepStmt.close();
+			
+			
 			EtapaProduccion e = buscarEtapa(idEtapa);
-			Producto p1 = buscarProducto(e.getIdInsumo1());
-			query = "select * FROM BODEGA WHERE BODEGA.ID = '"+p1.getId_bodega()+"'";
+			insumos i = buscarInsumo(e.getIdInsumo1());
+			query = "UPDATE BODEGA SET RESERVA=RESERVA-"+e.getGasta()+" WHERE ID='"+i.getId_bodega()+"'";
 			prepStmt = conexion.prepareStatement(query);
 			rs = prepStmt.executeQuery();
-			while(rs.next())
-			{
-				
-			}
+			
+			i = buscarInsumo(e.getIdInsumo2());
+			query = "UPDATE BODEGA SET RESERVA=RESERVA+"+e.getProduce()+" WHERE ID='"+i.getId_bodega()+"'";
+			prepStmt = conexion.prepareStatement(query);
+			rs = prepStmt.executeQuery();
+			
+			rs.close();
 		} 
 		catch (SQLException e) 
 		{
