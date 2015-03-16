@@ -146,7 +146,7 @@ public class ConsultaDAO {
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
-				in = new insumos(rs.getString("ID"), rs.getString("NOMBRE"),rs.getInt("CANTIDAD"),rs.getString("UNIDAD_MEDIDA"), rs.getString("TIPO"));
+				in = new insumos(rs.getString("ID"), rs.getString("NOMBRE"),rs.getString("UNIDAD_MEDIDA"),rs.getInt("CANTIDAD"), rs.getString("TIPO"));
 			}
 
 			prepStmt.close();
@@ -593,7 +593,7 @@ public class ConsultaDAO {
 
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
-		c.cambiarEstadoEtapa("idprod1-3", "", 0,"", 0);
+		c.cambiarEstadoEtapa("idprod1-3");
 	}
 	public String darInfoMateriaPrima(String id) {
 		
@@ -644,7 +644,10 @@ public class ConsultaDAO {
 		}
 		return ans;
 	}
-	public String darInfoEtapaDeProducci�n(int num) {
+	
+	
+	
+	public String darInfoEtapaDeProduccion(int num) {
 		
 		PreparedStatement prepStmt = null;
 		String ans = "";

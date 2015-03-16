@@ -7,24 +7,6 @@ package escenario2;
  */
 public class insumos {
 
-	/**
-	 * @param id
-	 * @param nombre
-	 * @param cantidad
-	 * @param unidadMedida
-	 * @param tipo
-	 */
-	public insumos(String id, String nombre, int cantidad, String unidadMedida,
-			String tipo) 
-	{
-		super();
-		this.id = id;
-		Nombre = nombre;
-		this.cantidad = cantidad;
-		this.unidadMedida = unidadMedida;
-		this.tipo = tipo;
-	}
-
 
 	//-----------------------------------------------------------------
 	// Atributos

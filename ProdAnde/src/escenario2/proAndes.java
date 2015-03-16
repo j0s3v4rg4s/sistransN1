@@ -229,16 +229,16 @@ public class proAndes {
 		return ans;
 	}
 	//	RFC2. CONSULTAR UN MATERIAL Responde toda la 
-	//	información de un material (materia prima, componente, etapa de producto,
+	//	informaciï¿½n de un material (materia prima, componente, etapa de producto,
 	//	producto), incluyendo su tipo, su nombre, los materiales que lo 
-	//	componen, los materiales que compone, las etapas de producción en las 
-	//	que participa, las unidades producidas, las unidades en producción, 
-	//	los pedidos de cliente en los que está involucrado (para los productos), 
-	//	los pedidos de compra en los que está involucrado (para materias primas y 
+	//	componen, los materiales que compone, las etapas de producciï¿½n en las 
+	//	que participa, las unidades producidas, las unidades en producciï¿½n, 
+	//	los pedidos de cliente en los que estï¿½ involucrado (para los productos), 
+	//	los pedidos de compra en los que estï¿½ involucrado (para materias primas y 
 	//	componentes). Los resultados deben poder ser filtrados por tipo de material, 
 	//	volumen, rango de fechas y costo3. Se debe mostrar la fecha, los productos 
 	//	y cantidades solicitadas y el costo. Debe ofrecerse la posibilidad de 
-	//	agrupamiento y ordenamiento de las respuestas según los intereses del 
+	//	agrupamiento y ordenamiento de las respuestas segï¿½n los intereses del 
 	//	usuario que consulta.
 	public String informacionMaterial(String tipo,String id)
 	{
@@ -249,7 +249,7 @@ public class proAndes {
 		if (tipo.equals("Componente"))
 			ans =conexion.darInfoComponente(id);
 		if (tipo.equals("Etapa de producto"))
-			ans =conexion.darInfoEtapaDeProducción(num);
+			ans =conexion.darInfoEtapaDeProduccion(num);
 		if (tipo.equals("Producto"))
 			ans =conexion.darInfoProducto(id);
 		return ans;
