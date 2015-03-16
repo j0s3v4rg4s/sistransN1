@@ -51,7 +51,7 @@ public class proAndes {
 	 * @param material
 	 * @return
 	 */
-	public Material darInformacionMaterial(Material material)
+	public insumos darInformacionMaterial(insumos material)
 	{
 		return material;
 
@@ -158,7 +158,7 @@ public class proAndes {
 	/**
 	 * metodo que registra un componente dado 
 	 */
-	public void registrarComponente (Componente comp)
+	public void registrarComponente (insumos comp)
 	{
 
 	}
@@ -219,7 +219,7 @@ public class proAndes {
 
 		if(etapa==0)
 		{
-			//conexion.cambiarEstadxoEtapa(idEtapa,idConsumo,cantidadConsumo,idProduce,cantudadProduce);
+			conexion.cambiarEstadoEtapa(idEtapa);
 			return true;
 		}
 		else
@@ -227,7 +227,7 @@ public class proAndes {
 			EtapaProduccion e = conexion.buscarEtapa(id[0]+"-"+(etapa-1));
 			if (e.getEstado().equals(EtapaProduccion.TERMINADO))
 			{
-				conexion.cambiarEstadoEtapa(idEtapa, idConsumo, cantidadConsumo, idProduce, cantudadProduce);
+				conexion.cambiarEstadoEtapa(idEtapa);
 				return true;
 			}
 			return false;
@@ -245,7 +245,7 @@ public class proAndes {
 	/**
 	 * metodo que registra la llegada de un componente dado
 	 */
-	public void registrarLlegadaComponente(Componente compo)
+	public void registrarLlegadaComponente(insumos compo)
 	{
 
 	}

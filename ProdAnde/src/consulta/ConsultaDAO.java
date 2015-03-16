@@ -165,8 +165,7 @@ public class ConsultaDAO {
 	}
 
 
-	public void cambiarEstadoEtapa(String idEtapa, String idConsumo,
-			int cantidadConsumo, String idProduce, int cantudadProduce) {
+	public void cambiarEstadoEtapa(String idEtapa) {
 		// TODO Auto-generated method stub
 		String[] id = idEtapa.split("-");
 		String query = "UPDATE ETAPA_PRODUCCION SET estado = 'terminado' WHERE NUMERO = "+id[1]+" AND ID_PRODUCTO = '"+id[0]+"'";
@@ -178,8 +177,15 @@ public class ConsultaDAO {
 			prepStmt = conexion.prepareStatement(query);
 			ResultSet rs = prepStmt.executeQuery();
 			prepStmt.close();
-			
-			
+			EtapaProduccion e = buscarEtapa(idEtapa);
+			Producto p1 = buscarProducto(e.getIdInsumo1());
+			query = "select * FROM BODEGA WHERE BODEGA.ID = '"+p1.getId_bodega()+"'";
+			prepStmt = conexion.prepareStatement(query);
+			rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				
+			}
 		} 
 		catch (SQLException e) 
 		{
@@ -190,7 +196,6 @@ public class ConsultaDAO {
 			try {
 				closeConnection(conexion);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -208,7 +213,7 @@ public class ConsultaDAO {
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
-				p = new EtapaProduccion(id2[0], rs.getInt("NUMERO"),rs.getString("ESTADO"),rs.getString("NOMBRE"));
+				p = new EtapaProduccion(rs.getString("ID_PRODUCTO"), rs.getInt("NUMERO"), rs.getString("ESTADO"), rs.getString("NOMBRE"), rs.getString("ID_INSUMO_P"), rs.getString("ID_INSUMO_G"), rs.getInt("CANTIDAD_P"),rs.getInt("CANTIDAD_G"));
 			}
 			prepStmt.close();
 			closeConnection(conexion);
@@ -230,7 +235,7 @@ public class ConsultaDAO {
 
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
-		c.cambiarEstadoEtapa("idprod1-3", "", 0,"", 0);
+		c.cambiarEstadoEtapa("idprod1-3");
 	}
 
 
