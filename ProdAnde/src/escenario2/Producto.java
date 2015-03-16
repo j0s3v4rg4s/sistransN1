@@ -98,8 +98,8 @@ public class Producto {
 	public void setId_bodega(String id_bodega) {
 		this.id_bodega = id_bodega;
 	}
-
-
+	
+//	public String toString(String id, String nombre, int costo, String estado)
 
 
 
