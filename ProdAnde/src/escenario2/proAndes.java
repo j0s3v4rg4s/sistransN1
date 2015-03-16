@@ -2,6 +2,7 @@ package escenario2;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import mundo.MateriaPrima;
 import mundo.Pedido;
@@ -23,7 +24,7 @@ public class proAndes {
 	// Variables
 	//-----------------------------------------------------------------
 	public Bodega m_Bodega;
-	
+
 
 	/**
 	 * Variable que respresenta la conexion a la base de datos 
@@ -177,24 +178,92 @@ public class proAndes {
 
 	}
 	/**
-	 * metodo que registra un producto dado 
+	 * metodo que registra un pedido dado 
 	 */
-	
-	public boolean registrarPedidoProducto(Date fecha, String idProducto, int cantidad)
+
+	public Date registrarPedidoProducto(Date fecha, String idProducto, int cantidad, String idCliente)
 	{
-		boolean ans = false; 
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(fecha);
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH);
+		int day = cal.get(Calendar.DAY_OF_MONTH);
+		Date ans=null;
+
+
 		int cant = conexion.buscarCantidadProductoEnBodega(idProducto);
-		
+
 		if (cant > cantidad)
 		{
-			if (conexion.CantidadEnBodegaVSCantidad()== false)
-			;
+			conexion.reservarCantidadProductoEnBodega(cantidad, idProducto);
+			day += 5;
+			ans = new Date(year, month, day);
 		}
 		else 
 		{
-			generarPedido();
-			conexion.disminuirCantidadEnBodega(idProducto, cantidad);			
+			if (conexion.CantidadEnBodegaVSCantidad(idProducto, idCliente)== null)
+			{
+
+			}
+			else
+			{
+				ArrayList<Bodega> aPedir = conexion.CantidadEnBodegaVSCantidad(idProducto, idCliente);
+				for (int i = 0;i<aPedir.size(); i++)
+				{
+					Bodega b = aPedir.get(i);
+					hacerSolicitudPedido(b);
+				}
+
+				if (month == 12)
+				{
+					month = 1;
+					year++;
+				}
+				else 
+					month++;
+				ans = new Date(year, month, day);
+
+			}
 		}
+		return ans;
+	}
+	//	RFC2. CONSULTAR UN MATERIAL Responde toda la 
+	//	información de un material (materia prima, componente, etapa de producto,
+	//	producto), incluyendo su tipo, su nombre, los materiales que lo 
+	//	componen, los materiales que compone, las etapas de producción en las 
+	//	que participa, las unidades producidas, las unidades en producción, 
+	//	los pedidos de cliente en los que está involucrado (para los productos), 
+	//	los pedidos de compra en los que está involucrado (para materias primas y 
+	//	componentes). Los resultados deben poder ser filtrados por tipo de material, 
+	//	volumen, rango de fechas y costo3. Se debe mostrar la fecha, los productos 
+	//	y cantidades solicitadas y el costo. Debe ofrecerse la posibilidad de 
+	//	agrupamiento y ordenamiento de las respuestas según los intereses del 
+	//	usuario que consulta.
+	public String informacionMaterial(String tipo,String id)
+	{
+		int num = Integer.parseInt(id);
+		String ans = "";
+		if (tipo.equals("Materia Prima"))
+			ans = conexion.darInfoMateriaPrima(id);
+		if (tipo.equals("Componente"))
+			ans =conexion.darInfoComponente(id);
+		if (tipo.equals("Etapa de producto"))
+			ans =conexion.darInfoEtapaDeProducción(num);
+		if (tipo.equals("Producto"))
+			ans =conexion.darInfoProducto(id);
+		return ans;
+	}
+	public void hacerSolicitudPedido(Bodega b) 
+	{
+		String idIns = conexion.darIdInsumoPorIdbodega(b.getId());
+		conexion.hacerSolicitudPedidoProveedor((Math.abs(b.cantidad)), idIns);;
+
+	}
+
+	public boolean RegistrarEntregaDePedidoDeProductosACliente(String idCliente)
+	{
+		boolean ans = conexion.EntregaDeProductos(idCliente);
 		return ans;
 	}
 

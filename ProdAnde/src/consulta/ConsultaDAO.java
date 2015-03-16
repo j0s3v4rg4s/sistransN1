@@ -1,6 +1,7 @@
 package consulta;
 import java.io.File;
 import java.io.FileInputStream;
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -207,8 +208,8 @@ public class ConsultaDAO {
 			prepStmt = conexion.prepareStatement(query);
 			ResultSet rs = prepStmt.executeQuery();
 			prepStmt.close();
-			
-			
+
+
 		} 
 		catch (SQLException e) 
 		{
@@ -316,7 +317,6 @@ public class ConsultaDAO {
 	}
 	public String darIdBodegaPorIdInsumoP(String idInsumoP)
 	{
-		boolean a = false;
 		PreparedStatement prepStmt = null;
 		String ans = "";
 		try {
@@ -336,7 +336,60 @@ public class ConsultaDAO {
 			e.printStackTrace();
 		}
 		return ans;
+	} 
+	public String darIdInsumoPorIdbodega(String idBodega)
+	{
+		PreparedStatement prepStmt = null;
+		String ans = "";
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT INSUMO.ID FROM((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA))WHERE BODEGA_ID='"+idBodega+"'";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				ans = rs.getString("BODEGA.ID");
+			}
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ans;
+	} 
+	
+	/**
+	 * Metodo que reserva los insumos de la bodega, para esto se toman todos los elementos que
+	 * pide una etapa de producción
+	 * @throws SQLException 
+	 * @throws Exception 
+	 */
+
+	public void reservarCantidadProductoEnBodega(int cantidad, String id)
+	{
+		PreparedStatement prepStmt = null;
+		String ans = "";
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "UPDATE BODEGA SET CANTIDAD_RESERVADA = (CANTIDAD_RESERVADA +"+cantidad+"), CANTIDAD = (CANTIDAD-"+cantidad+") WHERE ID= '"+ id +"';";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				ans = rs.getString("BODEGA.ID");
+			}
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
 	}
+	
 	public String darIdBodegaPorIdInsumoG(String idInsumoG)
 	{
 		PreparedStatement prepStmt = null;
@@ -359,35 +412,111 @@ public class ConsultaDAO {
 		}
 		return ans;
 	}
-	public Boolean CantidadEnBodegaVSCantidad()
+
+	/**
+	 * Metodo que revisa si la cantidad en bodega es suficiente para producir un producto deseado, para esto 
+	 * revisa una a una la cantidad de las etapas de producción del producto con el id dado como parametro
+	 * si estas son menores arroja false de lo contrario true y las reserva, llama al metodo reservarCantidadEnBodega 
+	 * @throws SQLException 
+	 * @throws Exception 
+	 */
+
+
+	public ArrayList<Bodega> CantidadEnBodegaVSCantidad(String idProd, String idCliente)
 	{
 		boolean ans = false;
 		String cant = "";
 		PreparedStatement prepStmt = null;
+		ArrayList<Bodega> productosAPedir= null;
 		ArrayList<Bodega> bodeg = cargarBodegaEnLista();
 
 		try 
 		{	
+			String rta = "Error";
 			boolean sale = false;
 			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "SELECT ETAPA_PRODUCCION.ID_INSUMO_P,BODEGA.CANTIDAD AS CANTIDAD_EN_BODEGA,  ETAPA_PRODUCCION.CANTIDAD_P AS CANTIDAD_PRODUCIDA FROM((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_INSUMO_G = INSUMOS.ID)";
+			String pre = "SELECT BODEGA.ID,BODEGA.CANTIDAD AS CANTIDAD_EN_BODEGA,  ETAPA_PRODUCCION.CANTIDAD_P AS CANTIDAD_PRODUCIDA FROM(((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_INSUMO_P = INSUMOS.ID)INNER JOIN PRODUCTO ON ETAPA_PRODUCCION.ID_PRODUCTO = PRODUCTO.ID) WHERE PRODUCTO.ID = '" + idProd +"';";
 			prepStmt = conexion.prepareStatement(pre);
 			ResultSet rs = prepStmt.executeQuery(); 
-			String pre1 = "SELECT ETAPA_PRODUCCION.ID_INSUMO_G,BODEGA.CANTIDAD AS CANTIDAD_EN_BODEGA,  ETAPA_PRODUCCION.CANTIDAD_G AS CANTIDAD_GASTADA FROM((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_INSUMO_G = INSUMOS.ID)";
+			String pre1 = "SELECT BODEGA.ID,BODEGA.CANTIDAD AS CANTIDAD_EN_BODEGA,  ETAPA_PRODUCCION.CANTIDAD_G AS CANTIDAD_GASTADA FROM(((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_INSUMO_G = INSUMOS.ID)INNER JOIN PRODUCTO ON ETAPA_PRODUCCION.ID_PRODUCTO = PRODUCTO.ID) WHERE PRODUCTO.ID = '" + idProd +"';";
 			prepStmt = conexion.prepareStatement(pre1);
 			ResultSet rs1 = prepStmt.executeQuery(); 
-			while(rs.next()&&rs1.next()&&!sale)
+			while(rs.next()&&rs1.next())
 			{ 
 				Bodega bP = buscarElementoArray(darIdBodegaPorIdInsumoP(rs.getString("ETAPA_PRODUCCION.ID_INSUMO_P")), bodeg);
 				Bodega bG = buscarElementoArray(darIdBodegaPorIdInsumoG(rs1.getString("ETAPA_PRODUCCION.ID_INSUMO_G")), bodeg);
 				bG.setCantidad(bG.getCantidad()-rs1.getInt("CANTIDAD_GASTADA"));
 				if (bG.getCantidad() < 0)
+				{
+					productosAPedir.add(bG);
+					rta = "UPDATE SOLICITUD SET ESTADO = 'Aceptado Con demoras' WHERE SOLICITUD.DIRECCION_ELECTRONICA = '"+ idCliente+"';";
 					sale = true;
+				}
 				else
-				bP.setCantidad(bP.getCantidad() + rs.getInt("CANTIDAD_PRODUCIDA"));
+					bP.setCantidad(bP.getCantidad() + rs.getInt("CANTIDAD_PRODUCIDA"));
 			}
 			if (sale == false)
-			ans = true;
+			{
+				productosAPedir = null;
+				ReservarCantidadEnBodega(idProd);
+				rta = "UPDATE SOLICITUD SET ESTADO = 'Aceptado' WHERE SOLICITUD.DIRECCION_ELECTRONICA = '"+ idCliente+"';";
+			}
+			prepStmt = conexion.prepareStatement(rta);
+			ResultSet rf = prepStmt.executeQuery(); 
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return productosAPedir;
+	}
+
+	/**
+	 * Metodo que reserva los insumos de la bodega, para esto se toman todos los elementos que
+	 * pide una etapa de producción y se restan a cantidad y se suman a cantidad reservada
+	 * @throws SQLException 
+	 * @throws Exception 
+	 */
+
+	public void ReservarCantidadEnBodega(String idProd)
+	{
+		PreparedStatement prepStmt = null;
+
+		try 
+		{	
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre1 = "SELECT BODEGA.ID,BODEGA.CANTIDAD AS CANTIDAD_EN_BODEGA,  ETAPA_PRODUCCION.CANTIDAD_G AS CANTIDAD_GASTADA FROM(((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_INSUMO_G = INSUMOS.ID)INNER JOIN PRODUCTO ON ETAPA_PRODUCCION.ID_PRODUCTO = PRODUCTO.ID) WHERE PRODUCTO.ID = '" + idProd+"';";
+			prepStmt = conexion.prepareStatement(pre1);
+			ResultSet rs1 = prepStmt.executeQuery(); 
+			while(rs1.next())
+			{ 
+				String reservarCantidadGas = "UPDATE BODEGA SET CANTIDAD_RESERVADA = (CANTIDAD_RESERVADA + CANTIDAD_GASTADA), CANTIDAD = (CANTIDAD-CANTIDAD_GASTADA) WHERE ID= '"+ rs1.getString("BODEGA.ID") +"';";
+				prepStmt = conexion.prepareStatement(reservarCantidadGas);
+			}
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public String darInformacionSolicitud(String idCliente)
+	{
+		String ans = "";
+		PreparedStatement prepStmt = null;
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT ID_INSUMO, CANTIDAD FROM SOLICITUD WHERE DIRECCION_ELECTRONICA = '"+idCliente+";'";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				ans = rs.getString("ID_INSUMO") +"-" +rs.getInt("CANTIDAD");  
+			}
 			prepStmt.close();
 			closeConnection(conexion);
 		} catch (SQLException e) {
@@ -397,10 +526,42 @@ public class ConsultaDAO {
 		}
 		return ans;
 	}
+	
+	public boolean EntregaDeProductos(String idCliente)
+	{
+		PreparedStatement prepStmt = null;
+		boolean answ = false;
+		String[] ans =darInformacionSolicitud(idCliente).split("-");
+		String a = darIdBodegaPorIdInsumoG(ans[1]);
+		
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "UPDATE BODEGA SET CANTIDAD_RESERVADA = (CANTIDAD_RESERVADA -"+ans[0]+") WHERE ID= '"+ a +"';";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				
+			}
+			answ=true;
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return answ;
+	}
+
+	/**
+	 * Metodo que carga los elementos de la bodega en un arrayList para su manipulacion
+	 * sin alterar las bases de datos
+	 * @return la lista de los elementos en bodega
+	 */
 
 	public ArrayList<Bodega> cargarBodegaEnLista()
 	{
-		boolean a = false;
 		PreparedStatement prepStmt = null;
 		ArrayList<Bodega> bodeg = null;
 
@@ -429,25 +590,20 @@ public class ConsultaDAO {
 		ConsultaDAO c = new ConsultaDAO();
 		c.cambiarEstadoEtapa("idprod1-3", "", 0,"", 0);
 	}
-
-
-	public void disminuirCantidadEnBodega(String idProducto, int cantidad) 
-	{
-
-	}
-	public boolean revisarCantidadesConBodega(String idProducto)
-	{
-		boolean a = false;
+	public String darInfoMateriaPrima(String id) {
+		
 		PreparedStatement prepStmt = null;
+		String ans = "";
 
 		try {
 			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "SELECT ID_INSUMO, CANTIDAD FROM MATERIALES_PRODUCCION WHERE ID_PRODUCTO = " +"'" +idProducto+"'";
+			String pre = "SELECT INSUMO.NOMBRE, BODEGA.CANTIDAD AS EXISTENCIAS_EN_BODEGA, ETAPA_PRODUCCION.CANTIDAD AS CANTIDAD_GASTO_ETAPA_PRODUCCION,ETAPA_PRODUCCION.NUMERO AS NUMERO_ETAPA_PRODUCCION,PRODUCTO.NOMBRE, SOLICITUDES.ID FROM (((ETAPA_PRODUCCION INNER JOIN INSUMOS ON ETAPA_PRODUCCION.ID_INSUMOS_G = INSUMOS.ID)INNER JOIN BODEGA ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN PRODUCTO ON ETAPA_PRODUCCION.ID_PRODUCTO = PRODUCTO.ID) WHERE INSUMO.TIPO= 'Materia Prima';";
 			prepStmt = conexion.prepareStatement(pre);
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
-				insumos in = buscarInsumo(rs.getString("ID_INSUMO"));
+				ans = "Nombre: " + rs.getString("INSUMO.NOMBRE")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_EN_BODEGA")+", Cantidad Gastada Por etapa de producción " + rs.getString("CANTIDAD_GASTO_ETAPA_PRODUCCION")+ ", Numero de etapa de producción " + rs.getString("NUMERO_ETAPA_PRODUCCION")+ ", Nombre del producto que genera " + rs.getString("PRODUCTO.NOMBRE")+ ", ID Solicitud: " + rs.getString("SOLICITUDES.ID");
+				
 			}
 			prepStmt.close();
 			closeConnection(conexion);
@@ -456,8 +612,107 @@ public class ConsultaDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return a;
+		return ans;
 	}
+	public String darInfoComponente(String id) {
+		
+		PreparedStatement prepStmt = null;
+		String ans = "";
 
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT INSUMO.NOMBRE, BODEGA.CANTIDAD AS EXISTENCIAS_EN_BODEGA, ETAPA_PRODUCCION.CANTIDAD AS CANTIDAD_GASTO_ETAPA_PRODUCCION,ETAPA_PRODUCCION.NUMERO AS NUMERO_ETAPA_PRODUCCION,PRODUCTO.NOMBRE, SOLICITUDES.ID FROM (((ETAPA_PRODUCCION INNER JOIN INSUMOS ON ETAPA_PRODUCCION.ID_INSUMOS_G = INSUMOS.ID)INNER JOIN BODEGA ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN PRODUCTO ON ETAPA_PRODUCCION.ID_PRODUCTO = PRODUCTO.ID) WHERE INSUMO.TIPO= 'Materia Prima' AND INSUMO.ID = '"+id+"';";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				
+				ans = "Nombre: " + rs.getString("INSUMO.NOMBRE")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_EN_BODEGA")+", Cantidad Gastada Por etapa de producción " + rs.getString("CANTIDAD_GASTO_ETAPA_PRODUCCION")+ ", Numero de etapa de producción " + rs.getString("NUMERO_ETAPA_PRODUCCION")+ ", Nombre del producto que genera " + rs.getString("PRODUCTO.NOMBRE")+ ", ID Solicitud: " + rs.getString("SOLICITUDES.ID");
+			}
+	
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ans;
+	}
+	public String darInfoEtapaDeProducción(int num) {
+		
+		PreparedStatement prepStmt = null;
+		String ans = "";
 
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT * FROM ETAPA_PRODUCCION WHERE ETAPA_PRODUCCION.NUMERO = "+num+";";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				Producto prod = buscarProducto( rs.getString("ID_PRODUCTO"));
+				
+				ans = "Etapa Numero: " + rs.getString("NUMERO")+", Nombre Producto: " +  prod.getId() +", Costo Producto " + prod.getCosto() + "$, Nombre etapa:  " + rs.getString("NOMBRE")+ ", tiempo Inicial " + rs.getString("T_INICIO")+ ", tiempo final " + rs.getString("T_FINAL");
+			}
+	
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ans;
+	}
+	public String darInfoProducto(String id) {
+		
+		PreparedStatement prepStmt = null;
+		String ans = "";
+
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT INSUMO.NOMBRE, BODEGA.CANTIDAD AS EXISTENCIAS_EN_BODEGA, ETAPA_PRODUCCION.CANTIDAD AS CANTIDAD_GASTO_ETAPA_PRODUCCION,ETAPA_PRODUCCION.NUMERO AS NUMERO_ETAPA_PRODUCCION,PRODUCTO.NOMBRE, SOLICITUDES.ID FROM (((ETAPA_PRODUCCION INNER JOIN INSUMOS ON ETAPA_PRODUCCION.ID_INSUMOS_G = INSUMOS.ID)INNER JOIN BODEGA ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN PRODUCTO ON ETAPA_PRODUCCION.ID_PRODUCTO = PRODUCTO.ID) WHERE INSUMO.TIPO= 'Materia Prima' AND INSUMO.ID = '"+id+"';";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				
+				ans = "Nombre: " + rs.getString("INSUMO.NOMBRE")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_EN_BODEGA")+", Cantidad Gastada Por etapa de producción " + rs.getString("CANTIDAD_GASTO_ETAPA_PRODUCCION")+ ", Numero de etapa de producción " + rs.getString("NUMERO_ETAPA_PRODUCCION")+ ", Nombre del producto que genera " + rs.getString("PRODUCTO.NOMBRE")+ ", ID Solicitud: " + rs.getString("SOLICITUDES.ID");
+			}
+	
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ans;
+	}
+	public void hacerSolicitudPedidoProveedor(int cant, String idInsumo)
+	{
+		
+		PreparedStatement prepStmt = null;
+		ArrayList<Bodega> bodeg = null;
+
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "INSERT INTO SOLICITUD (DIRECCION_ELECTRONICA,CANTIDAD,ID_INSUMO) VALUES((SELECT ID FROM SOLICITUD INNER JOIN PROVEEDOR ON SOLICITUD.ID_INSUMO = PROVEEDOR.ID_INSUMO WHERE ID_INSUMO ='"+idInsumo+"'), (SELECT ID FROM SOLICITUD INNER JOIN PROVEEDOR ON SOLICITUD.ID_INSUMO = PROVEEDOR.ID_INSUMO WHERE ID_INSUMO ='"+idInsumo+"'),+"+cant+",'"+ idInsumo+"');";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				
+			}
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 }
