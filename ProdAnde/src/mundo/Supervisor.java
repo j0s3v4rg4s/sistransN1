@@ -23,7 +23,6 @@ public class Supervisor extends Usuario {
 		super(correo, contrasenia, tipoIdentificacion, numeroIdentificacion, nombre,
 				nacionalidad, direccion, telefono, ciudad, departamento, codigoPostal,
 				palabraClave);
-		// TODO Auto-generated constructor stub
 	}
 	
 	

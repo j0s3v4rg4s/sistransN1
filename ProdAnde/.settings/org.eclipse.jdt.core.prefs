@@ -11,4 +11,8 @@ org.eclipse.jdt.core.compiler.problem.enumIdentifier=error
 org.eclipse.jdt.core.compiler.source=1.7
 org.eclipse.jdt.core.compiler.taskCaseSensitive=enabled
 org.eclipse.jdt.core.compiler.taskPriorities=NORMAL,HIGH,NORMAL,NORMAL
+<<<<<<< HEAD
 org.eclipse.jdt.core.compiler.taskTags=TODO,FIXME,XXX,JUANPABLO
+=======
+org.eclipse.jdt.core.compiler.taskTags=TODO,FIXME,XXX,JOSE
+>>>>>>> branch 'master' of https://github.com/ruedagato/sistransN1.git
