@@ -104,6 +104,7 @@ public class ConsultaDAO {
 			throw new Exception("ERROR: ConsultaDAO: closeConnection() = cerrando una conexión.");
 		}
 	}
+	
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
 		String ans= c.darIdInsumoPorIdbodega("id4");
@@ -612,11 +613,7 @@ public class ConsultaDAO {
 	}
 
 
-	public static void main(String[] args) {
-		ConsultaDAO c = new ConsultaDAO();
-		c.cambiarEstadoEtapa("idprod1-1123");
-
-	}
+	
 	public String darInfoMateriaPrima(String id) {
 
 		PreparedStatement prepStmt = null;
