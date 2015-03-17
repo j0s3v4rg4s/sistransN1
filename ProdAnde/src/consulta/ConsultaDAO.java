@@ -107,8 +107,7 @@ public class ConsultaDAO {
 
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
-		String ans= c.darIdInsumoPorIdbodega("id4");
-		System.out.println(ans);
+		c.registrarBodega("test1", 100);
 	}
 	//----------------------------------------------------
 	//Query
@@ -263,6 +262,23 @@ public class ConsultaDAO {
 		try 
 		{
 			establecerConexion(cadenaConexion, usuario, clave);
+			prepStmt = conexion.prepareStatement(query);
+			ResultSet rs = prepStmt.executeQuery();
+			rs2 = rs;
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return rs2;
+	}
+	
+	private ResultSet ejecutarPregunta2(String query)
+	{
+		PreparedStatement prepStmt = null;
+		ResultSet rs2 = null;
+		try 
+		{
 			prepStmt = conexion.prepareStatement(query);
 			ResultSet rs = prepStmt.executeQuery();
 			rs2 = rs;
@@ -773,15 +789,22 @@ public class ConsultaDAO {
 	}
 	
 	public void registrarBodega(String id, int cantidad) {
-		String query = "INSERT INTO BODEGA (ID,CANTIDAD)VALUES ('"+id+"',"+cantidad+")";
+		// JOSE 
+		String query = "INSERT INTO BODEGA (ID,CANTIDAD)VALUES ('B'||SQ_BOD.NEXTVAL,"+cantidad+")";
 		try 
 		{
-			ejecutarPregunta(query).close();
+			establecerConexion(cadenaConexion, usuario, clave);
+			ejecutarPregunta2(query).close();
+			query ="UPDATE INSUMOS SET ID_BODEGA = 'B'||SQ_BOD.CURRVAL WHERE id='"+id+"'";
+			ejecutarPregunta2(query);
 			closeConnection(conexion);
 		} catch (Exception e) 
 		{
 			e.printStackTrace();
 		}
+		
+		
+		
 	}
 	
 
