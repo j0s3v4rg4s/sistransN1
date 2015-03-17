@@ -257,7 +257,7 @@ public class proAndes {
 	public void hacerSolicitudPedido(Bodega b) 
 	{
 		String idIns = conexion.darIdInsumoPorIdbodega(b.getId());
-		conexion.hacerSolicitudPedidoProveedor((Math.abs(b.cantidad)), idIns);;
+		conexion.hacerSolicitudPedidoProveedor((Math.abs(b.getCantidad())), idIns);;
 
 	}
 
@@ -304,19 +304,19 @@ public class proAndes {
 	}
 
 	/**
-	 * metodo que registra la llegada de una materia prima dada 
+	 * metodo que registra la llegada de un insumo a la bodega
 	 */
 
-	public void registrarLlegadaMateriaPrima(MateriaPrima matPrim)
+	public void registrarLlegadaInsumo(String id, int cantidad)
 	{
-
-	}
-	/**
-	 * metodo que registra la llegada de un componente dado
-	 */
-	public void registrarLlegadaComponente(insumos compo)
-	{
-
+		// JOSE metodo de jose 
+		insumos i = conexion.buscarInsumo(id);
+		Bodega b = conexion.buscarBodega(i.getId_bodega());
+		if (b==null)
+		{
+			conexion.registrarBodega(id,cantidad);
+			//JOSE acabar metodo
+		}
 	}
 
 }

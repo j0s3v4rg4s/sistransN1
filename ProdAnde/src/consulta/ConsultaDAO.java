@@ -104,7 +104,7 @@ public class ConsultaDAO {
 			throw new Exception("ERROR: ConsultaDAO: closeConnection() = cerrando una conexión.");
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
 		String ans= c.darIdInsumoPorIdbodega("id4");
@@ -145,27 +145,32 @@ public class ConsultaDAO {
 	}
 
 	public insumos buscarInsumo(String id) {
-		PreparedStatement prepStmt = null;
+		String pre = "SELECT * FROM INSUMOS WHERE ID = '"+id+"'";
 		insumos in = null;
-		try {
-			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "SELECT * FROM INSUMOS WHERE ID = '"+id+"'";
-			prepStmt = conexion.prepareStatement(pre);
-			ResultSet rs = prepStmt.executeQuery();
+		ResultSet rs = ejecutarPregunta(pre);
+
+		try 
+		{
 			while(rs.next())
 			{
 				in = new insumos(rs.getString("ID"), rs.getString("NOMBRE"),rs.getString("UNIDAD_MEDIDA"),rs.getInt("CANTIDAD_INICIAL"), rs.getString("TIPO"));
 				in.setId_bodega(rs.getString("ID_BODEGA"));
 			}
-
-			prepStmt.close();
-			closeConnection(conexion);
-
+			rs.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
+		}
+		finally
+		{
+			try 
+			{
+				closeConnection(conexion);
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
 		}
 
 		return in;
@@ -231,7 +236,7 @@ public class ConsultaDAO {
 
 			e1.printStackTrace();
 		}
-		
+
 		i = buscarInsumo(e.getIdInsumo1());
 		query = "UPDATE BODEGA SET RESERVA=RESERVA+"+e.getProduce()+" WHERE ID='"+i.getId_bodega()+"'";
 		ejecutarPregunta(query);
@@ -241,7 +246,7 @@ public class ConsultaDAO {
 
 			e1.printStackTrace();
 		}
-		
+
 	}
 
 
@@ -253,7 +258,6 @@ public class ConsultaDAO {
 	 */
 	private ResultSet ejecutarPregunta(String query)
 	{
-		//JOSE
 		PreparedStatement prepStmt = null;
 		ResultSet rs2 = null;
 		try 
@@ -291,13 +295,13 @@ public class ConsultaDAO {
 				rs.close();
 				closeConnection(conexion);
 			} catch (SQLException e) {
-			
+
 				e.printStackTrace();
 			} catch (Exception e) {
-		
+
 				e.printStackTrace();
 			}
-			
+
 		}
 		return p;
 	}
@@ -365,7 +369,7 @@ public class ConsultaDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return ans;
 	} 
 	public String darIdInsumoPorIdbodega(String idBodega)
@@ -390,7 +394,7 @@ public class ConsultaDAO {
 		}
 		return ans;
 	} 
-	
+
 	/**
 	 * Metodo que reserva los insumos de la bodega, para esto se toman todos los elementos que
 	 * pide una etapa de producci�n
@@ -613,7 +617,7 @@ public class ConsultaDAO {
 	}
 
 
-	
+
 	public String darInfoMateriaPrima(String id) {
 
 		PreparedStatement prepStmt = null;
@@ -741,5 +745,44 @@ public class ConsultaDAO {
 		}
 
 	}
+	
+	
+	/** Busca un insumo en la bodega por su identificador
+	 * @param id_bodega identificador del isnumo en la bodga
+	 * @return retorna la informacion del insumo en la bodega
+	 */
+	public Bodega buscarBodega(String id_bodega) {
+		// JOSE metodo de jose 
+		String query = "SELECT * FROM BODEGA WHERE ID='"+id_bodega+"'";
+		ResultSet rs = ejecutarPregunta(query);
+		Bodega b = null;
+		try 
+		{
+			while(rs.next())
+			{
+				b = new Bodega(rs.getString("ID"), rs.getInt("CANTIDAD"));
+				b.setReserva(rs.getInt("RESERVA"));
+			}
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return b;
+	}
+	
+	public void registrarBodega(String id, int cantidad) {
+		String query = "INSERT INTO BODEGA (ID,CANTIDAD)VALUES ('"+id+"',"+cantidad+")";
+		try 
+		{
+			ejecutarPregunta(query).close();
+			closeConnection(conexion);
+		} catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
 
 }

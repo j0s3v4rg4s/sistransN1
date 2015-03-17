@@ -7,19 +7,16 @@ package escenario2;
  */
 public class Bodega {
 
-	/**
-	 * @param id
-	 * @param cantidad
-	 */
+	private String id;
+	private int cantidad;
+	private int reserva;
+	
+	
 	public Bodega(String id, int cantidad) {
 		super();
 		this.id = id;
 		this.cantidad = cantidad;
 	}
-
-	String id;
-	int cantidad;
-
 
 	/**
 	 * @return the id
@@ -48,10 +45,13 @@ public class Bodega {
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
-	
-	public String toString(String id, int cantidad)
-	{
-		return "UPDATE BODEGA SET ID = "+"'"+id+"'"+",CANTIDAD = '"+cantidad+"'";
+
+	public int getReserva() {
+		return reserva;
+	}
+
+	public void setReserva(int reserva) {
+		this.reserva = reserva;
 	}
 
 }
