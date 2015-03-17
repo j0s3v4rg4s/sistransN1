@@ -183,6 +183,7 @@ public class proAndes {
 
 	public Date registrarPedidoProducto(Date fecha, String idProducto, int cantidad, String idCliente)
 	{
+		// JUANPABLO 
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(fecha);
@@ -228,20 +229,9 @@ public class proAndes {
 		}
 		return ans;
 	}
-	//	RFC2. CONSULTAR UN MATERIAL Responde toda la 
-	//	informaci�n de un material (materia prima, componente, etapa de producto,
-	//	producto), incluyendo su tipo, su nombre, los materiales que lo 
-	//	componen, los materiales que compone, las etapas de producci�n en las 
-	//	que participa, las unidades producidas, las unidades en producci�n, 
-	//	los pedidos de cliente en los que est� involucrado (para los productos), 
-	//	los pedidos de compra en los que est� involucrado (para materias primas y 
-	//	componentes). Los resultados deben poder ser filtrados por tipo de material, 
-	//	volumen, rango de fechas y costo3. Se debe mostrar la fecha, los productos 
-	//	y cantidades solicitadas y el costo. Debe ofrecerse la posibilidad de 
-	//	agrupamiento y ordenamiento de las respuestas seg�n los intereses del 
-	//	usuario que consulta.
 	public String informacionMaterial(String tipo,String id)
 	{
+		// JUANPABLO 
 		int num = Integer.parseInt(id);
 		String ans = "";
 		if (tipo.equals("Materia Prima"))
@@ -263,6 +253,7 @@ public class proAndes {
 
 	public boolean RegistrarEntregaDePedidoDeProductosACliente(String idCliente)
 	{
+		// JUANPABLO 
 		boolean ans = conexion.EntregaDeProductos(idCliente);
 		return ans;
 	}

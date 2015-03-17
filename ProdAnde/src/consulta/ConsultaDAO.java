@@ -107,18 +107,18 @@ public class ConsultaDAO {
 	}
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
-//		ArrayList<Bodega> productosAPedir= c.CantidadEnBodegaVSCantidad("idprod1", "dirElec2");
-//		if (productosAPedir == null)
-//			System.out.println("null!");
-//		else 
-//		{
-//			for (int i = 0; i< productosAPedir.size(); i++)
-//			{
-//				System.out.println(productosAPedir.get(i).getId());
-//			}
-//		}
-		boolean ans = c.EntregaDeProductos("dirElec2");
-		System.out.println(ans);
+		ArrayList<Bodega> productosAPedir= c.CantidadEnBodegaVSCantidad("idprod1", "dirElec2");
+		if (productosAPedir == null)
+			System.out.println("null!");
+		else 
+		{
+			for (int i = 0; i< productosAPedir.size(); i++)
+			{
+				System.out.println(productosAPedir.get(i).getId());
+			}
+		}
+//		boolean ans = c.EntregaDeProductos("dirElec2");
+//		System.out.println(ans);
 	}
 	//----------------------------------------------------
 	//Query
