@@ -15,6 +15,7 @@ public class Bodega {
 		super();
 		this.id = id;
 		this.cantidad = cantidad;
+		
 	}
 
 	String id;
