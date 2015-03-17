@@ -277,7 +277,7 @@ public class proAndes {
 	 */
 	public boolean registrarEjecucionEtapaProduccion(String idEtapa, int tInicio, int tFin,int cantidadConsumo, String idConsumo, int cantudadProduce, String idProduce)
 	{
-		// TODO implementar
+		// JOSE metodo de jose
 		String[] id = idEtapa.split("-");
 		Producto p = conexion.buscarProducto(id[0]);
 		int etapa = Integer.parseInt(id[1]);

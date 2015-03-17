@@ -33,7 +33,7 @@ public class ConsultaDAO {
 	/**
 	 * conexion con la base de datos
 	 */
-	public Connection conexion;
+	private Connection conexion;
 	/**
 	 * nombre del usuario para conectarse a la base de datos.
 	 */
@@ -107,6 +107,8 @@ public class ConsultaDAO {
 	//----------------------------------------------------
 	//Query
 	//----------------------------------------------------
+
+
 	/**Metodo que busca un producto con el id que entra por parametro
 	 * @param id. identificador del producto
 	 */
@@ -141,12 +143,12 @@ public class ConsultaDAO {
 		insumos in = null;
 		try {
 			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "SELECT * FROM INSUMO WHERE ID = '"+id+"'";
+			String pre = "SELECT * FROM INSUMOS WHERE ID = '"+id+"'";
 			prepStmt = conexion.prepareStatement(pre);
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
-				in = new insumos(rs.getString("ID"), rs.getString("NOMBRE"),rs.getString("UNIDAD_MEDIDA"),rs.getInt("CANTIDAD"), rs.getString("TIPO"));
+				in = new insumos(rs.getString("ID"), rs.getString("NOMBRE"),rs.getString("UNIDAD_MEDIDA"),rs.getInt("CANTIDAD_INICIAL"), rs.getString("TIPO"));
 				in.setId_bodega(rs.getString("ID_BODEGA"));
 			}
 
@@ -196,66 +198,100 @@ public class ConsultaDAO {
 	}
 
 
+
+	/**
+	 * consulata de jose
+	 * @param idEtapa
+	 */
 	public void cambiarEstadoEtapa(String idEtapa) {
-		// TODO Auto-generated method stub
+		//JOSE
 		String[] id = idEtapa.split("-");
 		String query = "UPDATE ETAPA_PRODUCCION SET estado = 'terminado' WHERE NUMERO = "+id[1]+" AND ID_PRODUCTO = '"+id[0]+"'";
-		PreparedStatement prepStmt = null;
+		ejecutarPregunta(query);
+		try {
+			closeConnection(conexion);
+		} catch (Exception e1) {
 
+			e1.printStackTrace();
+		}
+
+		EtapaProduccion e = buscarEtapa(idEtapa);
+		insumos i = buscarInsumo(e.getIdInsumo2());
+		query = "UPDATE BODEGA SET RESERVA=RESERVA-"+e.getGasta()+" WHERE ID='"+i.getId_bodega()+"'";
+		ejecutarPregunta(query);
+		try {
+			closeConnection(conexion);
+		} catch (Exception e1) {
+
+			e1.printStackTrace();
+		}
+		
+		i = buscarInsumo(e.getIdInsumo1());
+		query = "UPDATE BODEGA SET RESERVA=RESERVA+"+e.getProduce()+" WHERE ID='"+i.getId_bodega()+"'";
+		ejecutarPregunta(query);
+		try {
+			closeConnection(conexion);
+		} catch (Exception e1) {
+
+			e1.printStackTrace();
+		}
+		
+	}
+
+
+	/**
+	 * Generar preguntas a la base de datos
+	 * OJO- CERRAR CONEXION DESPUES DE USAR
+	 * @param query. pregunta sql
+	 * @return rs contenedor de las respuestas
+	 */
+	private ResultSet ejecutarPregunta(String query)
+	{
+		//JOSE
+		PreparedStatement prepStmt = null;
+		ResultSet rs2 = null;
 		try 
 		{
 			establecerConexion(cadenaConexion, usuario, clave);
 			prepStmt = conexion.prepareStatement(query);
 			ResultSet rs = prepStmt.executeQuery();
-			
-			
-			EtapaProduccion e = buscarEtapa(idEtapa);
-			insumos i = buscarInsumo(e.getIdInsumo1());
-			query = "UPDATE BODEGA SET RESERVA=RESERVA-"+e.getGasta()+" WHERE ID='"+i.getId_bodega()+"'";
-			prepStmt = conexion.prepareStatement(query);
-			rs = prepStmt.executeQuery();
-			
-			i = buscarInsumo(e.getIdInsumo2());
-			query = "UPDATE BODEGA SET RESERVA=RESERVA+"+e.getProduce()+" WHERE ID='"+i.getId_bodega()+"'";
-			prepStmt = conexion.prepareStatement(query);
-			rs = prepStmt.executeQuery();
-			
-			rs.close();
+			rs2 = rs;
 		} 
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
 		}
-		finally
-		{
-			try {
-				closeConnection(conexion);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		return rs2;
 	}
+
 
 
 	public EtapaProduccion buscarEtapa(String id) {
 		String[] id2 = id.split("-");
-		PreparedStatement prepStmt = null;
 		EtapaProduccion p = null;
+		String pre = "SELECT * FROM ETAPA_PRODUCCION WHERE NUMERO = "+id2[1]+" AND ID_PRODUCTO = '"+id2[0]+"'";
+		ResultSet rs = ejecutarPregunta(pre);
 		try {
-			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "SELECT * FROM ETAPA_PRODUCCION WHERE NUMERO = "+id2[1]+" AND ID_PRODUCTO = '"+id2[0]+"'";
-			prepStmt = conexion.prepareStatement(pre);
-			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
 				p = new EtapaProduccion(rs.getString("ID_PRODUCTO"), rs.getInt("NUMERO"), rs.getString("ESTADO"), rs.getString("NOMBRE"), rs.getString("ID_INSUMO_P"), rs.getString("ID_INSUMO_G"), rs.getInt("CANTIDAD_P"),rs.getInt("CANTIDAD_G"));
 			}
-			prepStmt.close();
-			closeConnection(conexion);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
+		}
+		finally
+		{
+			try {
+				rs.close();
+				closeConnection(conexion);
+			} catch (SQLException e) {
+			
+				e.printStackTrace();
+			} catch (Exception e) {
+		
+				e.printStackTrace();
+			}
+			
 		}
 		return p;
 	}
@@ -291,29 +327,7 @@ public class ConsultaDAO {
 
 	}
 
-	public boolean buscarEtapaProduccion(String idProducto)
-	{
-		boolean a = false;
-		PreparedStatement prepStmt = null;
 
-		try {
-			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "SELECT ID_INSUMO, CANTIDAD FROM MATERIALES_PRODUCCION WHERE ID_PRODUCTO = " +"'" +idProducto+"'";
-			prepStmt = conexion.prepareStatement(pre);
-			ResultSet rs = prepStmt.executeQuery();
-			while(rs.next())
-			{
-				insumos in = buscarInsumo(rs.getString("ID_INSUMO"));
-			}
-			prepStmt.close();
-			closeConnection(conexion);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return a;
-	}
 	public Bodega buscarElementoArray(String id, ArrayList<Bodega> bodeg)
 	{	
 		Bodega bod = null;
@@ -369,7 +383,7 @@ public class ConsultaDAO {
 		}
 		return ans;
 	} 
-	
+
 	/**
 	 * Metodo que reserva los insumos de la bodega, para esto se toman todos los elementos que
 	 * pide una etapa de producci�n
@@ -397,9 +411,9 @@ public class ConsultaDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	
+
 	}
-	
+
 	public String darIdBodegaPorIdInsumoG(String idInsumoG)
 	{
 		PreparedStatement prepStmt = null;
@@ -513,7 +527,7 @@ public class ConsultaDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String darInformacionSolicitud(String idCliente)
 	{
 		String ans = "";
@@ -536,14 +550,14 @@ public class ConsultaDAO {
 		}
 		return ans;
 	}
-	
+
 	public boolean EntregaDeProductos(String idCliente)
 	{
 		PreparedStatement prepStmt = null;
 		boolean answ = false;
 		String[] ans =darInformacionSolicitud(idCliente).split("-");
 		String a = darIdBodegaPorIdInsumoG(ans[1]);
-		
+
 		try {
 			establecerConexion(cadenaConexion, usuario, clave);
 			String pre = "UPDATE BODEGA SET CANTIDAD_RESERVADA = (CANTIDAD_RESERVADA -"+ans[0]+") WHERE ID= '"+ a +"';";
@@ -551,7 +565,7 @@ public class ConsultaDAO {
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
-				
+
 			}
 			answ=true;
 			prepStmt.close();
@@ -598,10 +612,11 @@ public class ConsultaDAO {
 
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
-		c.cambiarEstadoEtapa("idprod1-3");
+		c.cambiarEstadoEtapa("idprod1-1123");
+
 	}
 	public String darInfoMateriaPrima(String id) {
-		
+
 		PreparedStatement prepStmt = null;
 		String ans = "";
 
@@ -613,7 +628,7 @@ public class ConsultaDAO {
 			while(rs.next())
 			{
 				ans = "Nombre: " + rs.getString("INSUMO.NOMBRE")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_EN_BODEGA")+", Cantidad Gastada Por etapa de producci�n " + rs.getString("CANTIDAD_GASTO_ETAPA_PRODUCCION")+ ", Numero de etapa de producci�n " + rs.getString("NUMERO_ETAPA_PRODUCCION")+ ", Nombre del producto que genera " + rs.getString("PRODUCTO.NOMBRE")+ ", ID Solicitud: " + rs.getString("SOLICITUDES.ID");
-				
+
 			}
 			prepStmt.close();
 			closeConnection(conexion);
@@ -625,7 +640,7 @@ public class ConsultaDAO {
 		return ans;
 	}
 	public String darInfoComponente(String id) {
-		
+
 		PreparedStatement prepStmt = null;
 		String ans = "";
 
@@ -636,10 +651,10 @@ public class ConsultaDAO {
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
-				
+
 				ans = "Nombre: " + rs.getString("INSUMO.NOMBRE")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_EN_BODEGA")+", Cantidad Gastada Por etapa de producci�n " + rs.getString("CANTIDAD_GASTO_ETAPA_PRODUCCION")+ ", Numero de etapa de producci�n " + rs.getString("NUMERO_ETAPA_PRODUCCION")+ ", Nombre del producto que genera " + rs.getString("PRODUCTO.NOMBRE")+ ", ID Solicitud: " + rs.getString("SOLICITUDES.ID");
 			}
-	
+
 			prepStmt.close();
 			closeConnection(conexion);
 		} catch (SQLException e) {
@@ -649,11 +664,11 @@ public class ConsultaDAO {
 		}
 		return ans;
 	}
-	
-	
-	
+
+
+
 	public String darInfoEtapaDeProduccion(int num) {
-		
+
 		PreparedStatement prepStmt = null;
 		String ans = "";
 
@@ -665,10 +680,10 @@ public class ConsultaDAO {
 			while(rs.next())
 			{
 				Producto prod = buscarProducto( rs.getString("ID_PRODUCTO"));
-				
+
 				ans = "Etapa Numero: " + rs.getString("NUMERO")+", Nombre Producto: " +  prod.getId() +", Costo Producto " + prod.getCosto() + "$, Nombre etapa:  " + rs.getString("NOMBRE")+ ", tiempo Inicial " + rs.getString("T_INICIO")+ ", tiempo final " + rs.getString("T_FINAL");
 			}
-	
+
 			prepStmt.close();
 			closeConnection(conexion);
 		} catch (SQLException e) {
@@ -679,7 +694,7 @@ public class ConsultaDAO {
 		return ans;
 	}
 	public String darInfoProducto(String id) {
-		
+
 		PreparedStatement prepStmt = null;
 		String ans = "";
 
@@ -690,10 +705,10 @@ public class ConsultaDAO {
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
-				
+
 				ans = "Nombre: " + rs.getString("INSUMO.NOMBRE")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_EN_BODEGA")+", Cantidad Gastada Por etapa de producci�n " + rs.getString("CANTIDAD_GASTO_ETAPA_PRODUCCION")+ ", Numero de etapa de producci�n " + rs.getString("NUMERO_ETAPA_PRODUCCION")+ ", Nombre del producto que genera " + rs.getString("PRODUCTO.NOMBRE")+ ", ID Solicitud: " + rs.getString("SOLICITUDES.ID");
 			}
-	
+
 			prepStmt.close();
 			closeConnection(conexion);
 		} catch (SQLException e) {
@@ -705,7 +720,7 @@ public class ConsultaDAO {
 	}
 	public void hacerSolicitudPedidoProveedor(int cant, String idInsumo)
 	{
-		
+
 		PreparedStatement prepStmt = null;
 		ArrayList<Bodega> bodeg = null;
 
@@ -716,7 +731,7 @@ public class ConsultaDAO {
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
-				
+
 			}
 			prepStmt.close();
 			closeConnection(conexion);
@@ -725,7 +740,7 @@ public class ConsultaDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 }
