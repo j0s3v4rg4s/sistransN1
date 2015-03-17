@@ -104,6 +104,11 @@ public class ConsultaDAO {
 			throw new Exception("ERROR: ConsultaDAO: closeConnection() = cerrando una conexión.");
 		}
 	}
+	public static void main(String[] args) {
+		ConsultaDAO c = new ConsultaDAO();
+		String ans= c.darIdInsumoPorIdbodega("id4");
+		System.out.println(ans);
+	}
 	//----------------------------------------------------
 	//Query
 	//----------------------------------------------------
@@ -345,12 +350,12 @@ public class ConsultaDAO {
 		String ans = "";
 		try {
 			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "SELECT BODEGA.ID FROM((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_INSUMO_G = INSUMOS.ID)WHERE ETAPA_PRODUCCION.ID_INSUMO_G='"+idInsumoP+"'";
+			String pre = "SELECT BODEGA.ID FROM((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_INSUMO_P = INSUMOS.ID)WHERE ETAPA_PRODUCCION.ID_INSUMO_P='"+idInsumoP+"'";
 			prepStmt = conexion.prepareStatement(pre);
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
-				ans = rs.getString("BODEGA.ID");
+				ans = rs.getString("ID");
 			}
 			prepStmt.close();
 			closeConnection(conexion);
@@ -359,6 +364,7 @@ public class ConsultaDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return ans;
 	} 
 	public String darIdInsumoPorIdbodega(String idBodega)
@@ -367,12 +373,12 @@ public class ConsultaDAO {
 		String ans = "";
 		try {
 			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "SELECT INSUMO.ID FROM((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA))WHERE BODEGA_ID='"+idBodega+"'";
+			String pre = "SELECT INSUMOS.ID FROM((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA))WHERE BODEGA.ID='"+idBodega+"'";
 			prepStmt = conexion.prepareStatement(pre);
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
-				ans = rs.getString("BODEGA.ID");
+				ans = rs.getString("ID");
 			}
 			prepStmt.close();
 			closeConnection(conexion);
@@ -383,7 +389,7 @@ public class ConsultaDAO {
 		}
 		return ans;
 	} 
-
+	
 	/**
 	 * Metodo que reserva los insumos de la bodega, para esto se toman todos los elementos que
 	 * pide una etapa de producci�n
@@ -394,16 +400,12 @@ public class ConsultaDAO {
 	public void reservarCantidadProductoEnBodega(int cantidad, String id)
 	{
 		PreparedStatement prepStmt = null;
-		String ans = "";
+
 		try {
 			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "UPDATE BODEGA SET CANTIDAD_RESERVADA = (CANTIDAD_RESERVADA +"+cantidad+"), CANTIDAD = (CANTIDAD-"+cantidad+") WHERE ID= '"+ id +"';";
+			String pre = "UPDATE BODEGA SET RESERVA = (RESERVA +"+cantidad+"), CANTIDAD = (CANTIDAD-"+cantidad+") WHERE ID= '"+ id +"'";
 			prepStmt = conexion.prepareStatement(pre);
 			ResultSet rs = prepStmt.executeQuery();
-			while(rs.next())
-			{
-				ans = rs.getString("BODEGA.ID");
-			}
 			prepStmt.close();
 			closeConnection(conexion);
 		} catch (SQLException e) {
@@ -516,7 +518,7 @@ public class ConsultaDAO {
 			ResultSet rs1 = prepStmt.executeQuery(); 
 			while(rs1.next())
 			{ 
-				String reservarCantidadGas = "UPDATE BODEGA SET CANTIDAD_RESERVADA = (CANTIDAD_RESERVADA + CANTIDAD_GASTADA), CANTIDAD = (CANTIDAD-CANTIDAD_GASTADA) WHERE ID= '"+ rs1.getString("BODEGA.ID") +"';";
+				String reservarCantidadGas = "UPDATE BODEGA SET RESERVA = (RESERVA + CANTIDAD_GASTADA), CANTIDAD = (CANTIDAD-CANTIDAD_GASTADA) WHERE ID= '"+ rs1.getString("BODEGA.ID") +"';";
 				prepStmt = conexion.prepareStatement(reservarCantidadGas);
 			}
 			prepStmt.close();
@@ -560,7 +562,7 @@ public class ConsultaDAO {
 
 		try {
 			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "UPDATE BODEGA SET CANTIDAD_RESERVADA = (CANTIDAD_RESERVADA -"+ans[0]+") WHERE ID= '"+ a +"';";
+			String pre = "UPDATE BODEGA SET RESERVA = (RESERVA -"+ans[0]+") WHERE ID= '"+ a +"';";
 			prepStmt = conexion.prepareStatement(pre);
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
