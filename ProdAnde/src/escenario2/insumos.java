@@ -7,104 +7,112 @@ package escenario2;
  */
 public class insumos {
 
-	/**
-	 * @param id
-	 * @param nombre
-	 * @param cantidad
-	 * @param unidadMedida
-	 * @param tipo
-	 */
-	public insumos(String id, String nombre, int cantidad, String unidadMedida,
-			String tipo) 
-	{
+
+	//-----------------------------------------------------------------
+	// Atributos
+	//-----------------------------------------------------------------
+	
+	private String id;
+	private String nombre;
+	private String unidad;
+	private int cantidad_inicial;
+	private String tipo;
+	private String id_bodega;
+	
+	
+
+	//-----------------------------------------------------------------
+	// Constructor
+	//-----------------------------------------------------------------
+	
+	public insumos(String id, String nombre, String unidad,
+			int cantidad_inicial, String tipo) {
 		super();
 		this.id = id;
-		Nombre = nombre;
-		this.cantidad = cantidad;
-		this.unidadMedida = unidadMedida;
+		this.nombre = nombre;
+		this.unidad = unidad;
+		this.cantidad_inicial = cantidad_inicial;
 		this.tipo = tipo;
 	}
 
-	public RegistroLlegada m_RegistroLlegada;
-	public RegistroPedido m_RegistroPedido;
-	public String id;
-	public String Nombre;
-	public int cantidad;
-	public String unidadMedida;
-	public String tipo;
-	
-	public void finalize() throws Throwable {
 
-	}
+	//-----------------------------------------------------------------
+	// Metodos
+	//-----------------------------------------------------------------
 
-	/**
-	 * @return the id
-	 */
+
 	public String getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
 
-	/**
-	 * @return the nombre
-	 */
+
 	public String getNombre() {
-		return Nombre;
+		return nombre;
 	}
 
-	/**
-	 * @param nombre the nombre to set
-	 */
-	public void setNombre(String nombre) {
-		Nombre = nombre;
+
+
+	public String getUnidad() {
+		return unidad;
 	}
 
-	/**
-	 * @return the cantidad
-	 */
-	public int getCantidad() {
-		return cantidad;
+
+
+	public int getCantidad_inicial() {
+		return cantidad_inicial;
 	}
 
-	/**
-	 * @param cantidad the cantidad to set
-	 */
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
-	}
 
-	/**
-	 * @return the unidadMedida
-	 */
-	public String getUnidadMedida() {
-		return unidadMedida;
-	}
 
-	/**
-	 * @param unidadMedida the unidadMedida to set
-	 */
-	public void setUnidadMedida(String unidadMedida) {
-		this.unidadMedida = unidadMedida;
-	}
-
-	/**
-	 * @return the tipo
-	 */
 	public String getTipo() {
 		return tipo;
 	}
 
-	/**
-	 * @param tipo the tipo to set
-	 */
+
+
+	public String getId_bodega() {
+		return id_bodega;
+	}
+
+
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+
+
+	public void setUnidad(String unidad) {
+		this.unidad = unidad;
+	}
+
+
+
+	public void setCantidad_inicial(int cantidad_inicial) {
+		this.cantidad_inicial = cantidad_inicial;
+	}
+
+
+
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+
+
+
+	public void setId_bodega(String id_bodega) {
+		this.id_bodega = id_bodega;
+	}
+	
+
+	
+	
 
 }

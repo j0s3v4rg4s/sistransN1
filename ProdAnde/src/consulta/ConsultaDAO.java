@@ -151,7 +151,8 @@ public class ConsultaDAO {
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
-				in = new insumos(rs.getString("ID"), rs.getString("NOMBRE"),rs.getInt("CANTIDAD"),rs.getString("UNIDAD_MEDIDA"), rs.getString("TIPO"));
+				in = new insumos(rs.getString("ID"), rs.getString("NOMBRE"),rs.getString("UNIDAD_MEDIDA"),rs.getInt("CANTIDAD"), rs.getString("TIPO"));
+				in.setId_bodega(rs.getString("ID_BODEGA"));
 			}
 
 			prepStmt.close();
@@ -200,8 +201,7 @@ public class ConsultaDAO {
 	}
 
 
-	public void cambiarEstadoEtapa(String idEtapa, String idConsumo,
-			int cantidadConsumo, String idProduce, int cantudadProduce) {
+	public void cambiarEstadoEtapa(String idEtapa) {
 		// TODO Auto-generated method stub
 		String[] id = idEtapa.split("-");
 		String query = "UPDATE ETAPA_PRODUCCION SET estado = 'terminado' WHERE NUMERO = "+id[1]+" AND ID_PRODUCTO = '"+id[0]+"'";
@@ -212,9 +212,20 @@ public class ConsultaDAO {
 			establecerConexion(cadenaConexion, usuario, clave);
 			prepStmt = conexion.prepareStatement(query);
 			ResultSet rs = prepStmt.executeQuery();
-			prepStmt.close();
-
-
+			
+			
+			EtapaProduccion e = buscarEtapa(idEtapa);
+			insumos i = buscarInsumo(e.getIdInsumo1());
+			query = "UPDATE BODEGA SET RESERVA=RESERVA-"+e.getGasta()+" WHERE ID='"+i.getId_bodega()+"'";
+			prepStmt = conexion.prepareStatement(query);
+			rs = prepStmt.executeQuery();
+			
+			i = buscarInsumo(e.getIdInsumo2());
+			query = "UPDATE BODEGA SET RESERVA=RESERVA+"+e.getProduce()+" WHERE ID='"+i.getId_bodega()+"'";
+			prepStmt = conexion.prepareStatement(query);
+			rs = prepStmt.executeQuery();
+			
+			rs.close();
 		} 
 		catch (SQLException e) 
 		{
@@ -225,7 +236,6 @@ public class ConsultaDAO {
 			try {
 				closeConnection(conexion);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -243,7 +253,7 @@ public class ConsultaDAO {
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
-				p = new EtapaProduccion(id2[0], rs.getInt("NUMERO"),rs.getString("ESTADO"),rs.getString("NOMBRE"));
+				p = new EtapaProduccion(rs.getString("ID_PRODUCTO"), rs.getInt("NUMERO"), rs.getString("ESTADO"), rs.getString("NOMBRE"), rs.getString("ID_INSUMO_P"), rs.getString("ID_INSUMO_G"), rs.getInt("CANTIDAD_P"),rs.getInt("CANTIDAD_G"));
 			}
 			prepStmt.close();
 			closeConnection(conexion);
@@ -368,7 +378,7 @@ public class ConsultaDAO {
 	
 	/**
 	 * Metodo que reserva los insumos de la bodega, para esto se toman todos los elementos que
-	 * pide una etapa de producción
+	 * pide una etapa de producciï¿½n
 	 * @throws SQLException 
 	 * @throws Exception 
 	 */
@@ -417,7 +427,7 @@ public class ConsultaDAO {
 
 	/**
 	 * Metodo que revisa si la cantidad en bodega es suficiente para producir un producto deseado, para esto 
-	 * revisa una a una la cantidad de las etapas de producción del producto con el id dado como parametro
+	 * revisa una a una la cantidad de las etapas de producciï¿½n del producto con el id dado como parametro
 	 * si estas son menores arroja false de lo contrario true y las reserva, llama al metodo reservarCantidadEnBodega 
 	 * @throws SQLException 
 	 * @throws Exception 
@@ -477,7 +487,7 @@ public class ConsultaDAO {
 
 	/**
 	 * Metodo que reserva los insumos de la bodega, para esto se toman todos los elementos que
-	 * pide una etapa de producción y se restan a cantidad y se suman a cantidad reservada
+	 * pide una etapa de producciï¿½n y se restan a cantidad y se suman a cantidad reservada
 	 * @throws SQLException 
 	 * @throws Exception 
 	 */
@@ -588,6 +598,7 @@ public class ConsultaDAO {
 	}
 
 
+
 	public String darInfoMateriaPrima(String id) {
 		
 		PreparedStatement prepStmt = null;
@@ -600,7 +611,7 @@ public class ConsultaDAO {
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
-				ans = "Nombre: " + rs.getString("INSUMO.NOMBRE")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_EN_BODEGA")+", Cantidad Gastada Por etapa de producción " + rs.getString("CANTIDAD_GASTO_ETAPA_PRODUCCION")+ ", Numero de etapa de producción " + rs.getString("NUMERO_ETAPA_PRODUCCION")+ ", Nombre del producto que genera " + rs.getString("PRODUCTO.NOMBRE")+ ", ID Solicitud: " + rs.getString("SOLICITUDES.ID");
+				ans = "Nombre: " + rs.getString("INSUMO.NOMBRE")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_EN_BODEGA")+", Cantidad Gastada Por etapa de producciï¿½n " + rs.getString("CANTIDAD_GASTO_ETAPA_PRODUCCION")+ ", Numero de etapa de producciï¿½n " + rs.getString("NUMERO_ETAPA_PRODUCCION")+ ", Nombre del producto que genera " + rs.getString("PRODUCTO.NOMBRE")+ ", ID Solicitud: " + rs.getString("SOLICITUDES.ID");
 				
 			}
 			prepStmt.close();
@@ -625,7 +636,7 @@ public class ConsultaDAO {
 			while(rs.next())
 			{
 				
-				ans = "Nombre: " + rs.getString("INSUMO.NOMBRE")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_EN_BODEGA")+", Cantidad Gastada Por etapa de producción " + rs.getString("CANTIDAD_GASTO_ETAPA_PRODUCCION")+ ", Numero de etapa de producción " + rs.getString("NUMERO_ETAPA_PRODUCCION")+ ", Nombre del producto que genera " + rs.getString("PRODUCTO.NOMBRE")+ ", ID Solicitud: " + rs.getString("SOLICITUDES.ID");
+				ans = "Nombre: " + rs.getString("INSUMO.NOMBRE")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_EN_BODEGA")+", Cantidad Gastada Por etapa de producciï¿½n " + rs.getString("CANTIDAD_GASTO_ETAPA_PRODUCCION")+ ", Numero de etapa de producciï¿½n " + rs.getString("NUMERO_ETAPA_PRODUCCION")+ ", Nombre del producto que genera " + rs.getString("PRODUCTO.NOMBRE")+ ", ID Solicitud: " + rs.getString("SOLICITUDES.ID");
 			}
 	
 			prepStmt.close();
@@ -637,7 +648,10 @@ public class ConsultaDAO {
 		}
 		return ans;
 	}
-	public String darInfoEtapaDeProducción(int num) {
+	
+	
+	
+	public String darInfoEtapaDeProduccion(int num) {
 		
 		PreparedStatement prepStmt = null;
 		String ans = "";
@@ -676,7 +690,7 @@ public class ConsultaDAO {
 			while(rs.next())
 			{
 				
-				ans = "Nombre: " + rs.getString("INSUMO.NOMBRE")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_EN_BODEGA")+", Cantidad Gastada Por etapa de producción " + rs.getString("CANTIDAD_GASTO_ETAPA_PRODUCCION")+ ", Numero de etapa de producción " + rs.getString("NUMERO_ETAPA_PRODUCCION")+ ", Nombre del producto que genera " + rs.getString("PRODUCTO.NOMBRE")+ ", ID Solicitud: " + rs.getString("SOLICITUDES.ID");
+				ans = "Nombre: " + rs.getString("INSUMO.NOMBRE")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_EN_BODEGA")+", Cantidad Gastada Por etapa de producciï¿½n " + rs.getString("CANTIDAD_GASTO_ETAPA_PRODUCCION")+ ", Numero de etapa de producciï¿½n " + rs.getString("NUMERO_ETAPA_PRODUCCION")+ ", Nombre del producto que genera " + rs.getString("PRODUCTO.NOMBRE")+ ", ID Solicitud: " + rs.getString("SOLICITUDES.ID");
 			}
 	
 			prepStmt.close();

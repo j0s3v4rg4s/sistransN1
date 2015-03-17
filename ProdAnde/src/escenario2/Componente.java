@@ -1,3 +1,4 @@
+
 package escenario2;
 
 /**
@@ -7,18 +8,11 @@ package escenario2;
  */
 public class Componente extends insumos {
 
-//	public Componente(){
-//
-//	}
-
-	public Componente(String id, String nombre, int cantidad,
-			String unidadMedida, String tipo) {
-		super(id, nombre, cantidad, unidadMedida, tipo);
+	public Componente(String id, String nombre, String unidad,
+			int cantidad_inicial, String tipo) {
+		super(id, nombre, unidad, cantidad_inicial, tipo);
 		// TODO Auto-generated constructor stub
 	}
 
-	public void finalize() throws Throwable {
-		super.finalize();
-	}
 
 }
