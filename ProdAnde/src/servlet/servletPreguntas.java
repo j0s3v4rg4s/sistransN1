@@ -65,16 +65,36 @@ public class servletPreguntas extends HttpServlet{
     
     private void procesarSolicitud(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
+    	PrintWriter out = response.getWriter( );
+    	String accion = request.getParameter("accion");    	
+    	
+    	
+    	if (accion.equals("actualizar"))
+    	{
+    		cargarInformacion(out);
+    	}  	
+    	
+    	if (accion.equals("registrar"))
+    	{
+    		String id = request.getParameter("parametro");
+    		int t1 = Integer.parseInt(request.getParameter("tini"));
+    		int t2 = Integer.parseInt(request.getParameter("tf"));
+    		boolean t = pro.registrarEjecucionEtapaProduccion(id, t1, t2);
+    		System.out.println("repsuesta obtenida = "+t);
+    		cargarInformacion(out);
+    	}
+    }
+    
+    private void cargarInformacion(PrintWriter out) {
     	ArrayList l = pro.darEtapas();
     	ArrayList<String> titulo = new ArrayList<String>();
+    	titulo.add("ID");
     	titulo.add("Producto");
     	titulo.add("Estado");
     	titulo.add("Etapa");
     	titulo.add("Numero");
     	titulo.add("Estado etapa");
     	titulo.add("Acciones");
-    	
-    	PrintWriter out = response.getWriter( );
     	
     	inicioTabla(out);
     	imprimirFilaTitulo(out,titulo);
@@ -84,10 +104,10 @@ public class servletPreguntas extends HttpServlet{
     		
     	}
     	finTabla(out);
-    	
-    }
-    
-    private void inicioTabla(PrintWriter out)
+		
+	}
+
+	private void inicioTabla(PrintWriter out)
     {
     	out.println("<div class=\"table-responsive\">");
     	out.println("                                    <table class=\"table table-condensed table-bordered table-hover\">");
@@ -111,7 +131,20 @@ public class servletPreguntas extends HttpServlet{
     	{
     		out.println("   	<td>"+titulo.get(i)+"</td>");
     	}
-    	out.println(" <td><button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Registar</button></td>");
+
+    	String cod = titulo.get(0)+"-"+titulo.get(4);
+    	out.println(" <td><button type=\"button\" class=\"btn btn-success\" id=\""+cod+"\">Registar</button></td>");
+    	
+    	
+    	out.println("    <script type=\"text/javascript\">");
+    	out.println("          $(document).ready(function() {");
+    	out.println("               $(\"#"+cod+"\").click(function(event){");
+    	out.println("                  var t1 = document.getElementById(\"tinicio\").value;");
+    	out.println("                  var t2 = document.getElementById(\"tfin\").value;");
+    	out.println("                  $(\"#tabla1\").load('pregunta.htm',{accion: 'registrar', parametro: '"+cod+"',tini: t1,tf: t2}); ");
+    	out.println("               });");
+    	out.println("          });");
+    	out.println("    </script>");
 
     	out.println("</tr>");
 
@@ -121,6 +154,23 @@ public class servletPreguntas extends HttpServlet{
     {
     	out.println(" </table>");
     	out.println("                                </div>");
+    	
+    	out.println("<form name=\"sentMessage\" id=\"contactForm\" novalidate>");
+    	out.println("                        <div class=\"row control-group\">");
+    	out.println("                            <div class=\"form-group col-xs-12 floating-label-form-group controls\">");
+    	out.println("                                <label>Tiempo inicio</label>");
+    	out.println("                                <input type=\"number\" class=\"form-control\" placeholder=\"Ingrese el tiempo\" id=\"tinicio\" required data-validation-required-message=\"Complete el campo\">");
+    	out.println("                                <p class=\"help-block text-danger\"></p>");
+    	out.println("                            </div>");
+    	out.println("                        </div>");
+    	out.println("                        <div class=\"row control-group\">");
+    	out.println("                            <div class=\"form-group col-xs-12 floating-label-form-group controls\">");
+    	out.println("                                <label>Tiempo terminacion</label>");
+    	out.println("                                <input type=\"number\" class=\"form-control\" placeholder=\"Ingrese el tiempo\" id=\"tfin\" required data-validation-required-message=\"Complete el campo\">");
+    	out.println("                                <p class=\"help-block text-danger\"></p>");
+    	out.println("                            </div>");
+    	out.println("                        </div>");
+    	out.println("</form>");
     }
 
 }

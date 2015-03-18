@@ -245,7 +245,7 @@ public class proAndes {
 	 * @param tInicio
 	 * @param tFin
 	 */
-	public boolean registrarEjecucionEtapaProduccion(String idEtapa, int tInicio, int tFin,int cantidadConsumo, String idConsumo, int cantudadProduce, String idProduce)
+	public boolean registrarEjecucionEtapaProduccion(String idEtapa, int tInicio, int tFin)
 	{
 		// JOSE metodo de jose
 		String[] id = idEtapa.split("-");
@@ -258,7 +258,7 @@ public class proAndes {
 
 		if(etapa==0)
 		{
-			conexion.cambiarEstadoEtapa(idEtapa);
+			conexion.cambiarEstadoEtapa(idEtapa,tInicio,tFin);
 			return true;
 		}
 		else
@@ -266,7 +266,7 @@ public class proAndes {
 			EtapaProduccion e = conexion.buscarEtapa(id[0]+"-"+(etapa-1));
 			if (e.getEstado().equals(EtapaProduccion.TERMINADO))
 			{
-				conexion.cambiarEstadoEtapa(idEtapa);
+				conexion.cambiarEstadoEtapa(idEtapa,tInicio,tFin);
 				return true;
 			}
 			return false;

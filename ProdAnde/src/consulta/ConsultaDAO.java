@@ -111,6 +111,7 @@ public class ConsultaDAO {
 	 * @param id. identificador del producto
 	 */
 	public Producto buscarProducto(String id) {
+		System.out.println(id);
 		PreparedStatement prepStmt = null;
 		Producto p = null;
 		try {
@@ -205,11 +206,13 @@ public class ConsultaDAO {
 	/**
 	 * consulata de jose
 	 * @param idEtapa
+	 * @param tFin 
+	 * @param tInicio 
 	 */
-	public void cambiarEstadoEtapa(String idEtapa) {
+	public void cambiarEstadoEtapa(String idEtapa, int tInicio, int tFin) {
 		//JOSE
 		String[] id = idEtapa.split("-");
-		String query = "UPDATE ETAPA_PRODUCCION SET estado = 'terminado' WHERE NUMERO = "+id[1]+" AND ID_PRODUCTO = '"+id[0]+"'";
+		String query = "UPDATE ETAPA_PRODUCCION SET estado = 'terminado', T_INICIO = "+tInicio+", T_FINAL= "+tFin+" WHERE NUMERO = "+id[1]+" AND ID_PRODUCTO = '"+id[0]+"'";
 		ejecutarPregunta(query);
 		try {
 			closeConnection(conexion);
@@ -217,6 +220,10 @@ public class ConsultaDAO {
 
 			e1.printStackTrace();
 		}
+		
+		
+		
+		
 
 		EtapaProduccion e = buscarEtapa(idEtapa);
 		insumos i = buscarInsumo(e.getIdInsumo2());
@@ -949,7 +956,7 @@ public class ConsultaDAO {
 
 	}
 	public ArrayList realizarBusqueda() {
-		String query = "SELECT p.NOMBRE Producto, p.ESTADO, e.NOMBRE Etapa, e.NUMERO, e.ESTADO Estado_Etapa FROM PRODUCTO p INNER JOIN ETAPA_PRODUCCION e on p.Id = e.ID_PRODUCTO";
+		String query = "SELECT p.ID,p.NOMBRE Producto, p.ESTADO, e.NOMBRE Etapa, e.NUMERO, e.ESTADO Estado_Etapa FROM PRODUCTO p INNER JOIN ETAPA_PRODUCCION e on p.Id = e.ID_PRODUCTO ORDER BY e.NUMERO";
 		ResultSet rs = ejecutarPregunta(query);
 		ArrayList<ArrayList<String>> queryA = new ArrayList<ArrayList<String>>();
 		try {
@@ -961,7 +968,7 @@ public class ConsultaDAO {
 				l.add(rs.getString(3));
 				l.add(rs.getString(4));
 				l.add(rs.getString(5));
-				
+				l.add(rs.getString(6));
 				queryA.add(l);
 			}
 			rs.close();
