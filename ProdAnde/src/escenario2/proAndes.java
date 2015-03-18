@@ -288,5 +288,11 @@ public class proAndes {
 			//JOSE acabar metodo
 		}
 	}
+	
+	public ArrayList darEtapas()
+	{
+		// JOSE
+		return conexion.realizarBusqueda();
+	}
 
 }

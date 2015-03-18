@@ -12,8 +12,12 @@
 		<servlet-name>servletLogin</servlet-name>
 		<servlet-class>servlet.servletLogin</servlet-class>
 	</servlet>
-	
-	
+
+	<servlet>
+		<servlet-name>servletPreguntas</servlet-name>
+		<servlet-class>servlet.servletPreguntas</servlet-class>
+	</servlet>
+
 
 	<!-- MAPPING -->
 	<servlet-mapping>
@@ -21,6 +25,10 @@
 		<url-pattern>/p.htm</url-pattern>
 	</servlet-mapping>
 
+	<servlet-mapping>
+		<servlet-name>servletPreguntas</servlet-name>
+		<url-pattern>/pregunta.htm</url-pattern>
+	</servlet-mapping>
 
 	<login-config>
 		<auth-method>BASIC</auth-method>

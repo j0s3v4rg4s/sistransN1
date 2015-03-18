@@ -34,9 +34,11 @@
     
     <script type="text/javascript">
           $(document).ready(function() {
-               $("#prueba1").click(function(event){
-                  $("#cambiar").load('p.htm'); 
+               $("#req10").click(function(event){
+                  $("#tabla1").load('pregunta.htm'); 
                });
+               
+               
           });
         </script>
 
@@ -59,7 +61,6 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="#page-top">ProdAndes</a>
-                <h9 style="color:white">Juan Pablo Arevalo - Jose Vargas</h9>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -77,11 +78,6 @@
                     <li class="page-scroll">
                         <a href="#contact">Registrese/inicie sesion</a>
                     </li>
-
-                    <li >
-                        <a href="#" id="prueba1">Probador</a>
-                    </li>
-
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -103,9 +99,6 @@
                         <span class="name">Bienvenido a ProdAndes</span>
                         <hr class="star-light">
                         <span class="skills">Fabrica de produccion, productos y mejor experiencia para el usuario</span>
-                        <div id="cambiar"> 
-                        <span class="skills">Texto 1</span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -123,7 +116,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
+                    <a href="#portfolioModal1" class="portfolio-link" id="ventana" data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -146,7 +139,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal3" class="portfolio-link" data-toggle="modal">
+                    <a href="#portfolioModal3" class="portfolio-link" id="req10" data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -409,6 +402,11 @@
                             
                             <hr class="star-primary">
                             <p>Esta operaci�n representa la solicitud de producci�n de un cierto volumen de productos por parte de un cliente, quien adem�s especifica la fecha esperada de entrega. ProdAndes debe analizar el pedido y aceptarlo si la empresa est� en capacidad de satisfacerlo (cuenta con las materias primas, componentes y estaciones de producci�n suficientes) y en caso afirmativo indica la fecha de entrega (suponiendo que se vaya a procesar este solo pedido). Cuando el pedido es aceptado, los insumos que requiere se reservan, de manera que el pedido pueda ser satisfecho sin interferencia de otros pedidos de otros usuarios. Cuando un pedido no puede ser satisfecho porque la empresa no cuenta con los insumos necesarios, se coloca en pendiente para luego programar la compra de los insumos faltantes. En caso de conflicto de fechas, el usuario puede desistir del pedido.  Esta operaci�n es realizada por un usuario cliente de la empresa</p>
+                            <div id="probador2">
+                                
+                            </div>
+                            
+                            
                             <div class="row">
                        <div class="col-lg-8 col-lg-offset-2">
                     <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
@@ -550,7 +548,38 @@
                             <h2>Requerimiento funcional numero 10</h2>
                             <h3>Registrar ejecucion de una etapa de produccion</h3>
                             <hr class="star-primary">
-                            <p>Esta es la operaci�n que indica a ProdAndes que una etapa de producci�n, correspondiendo a un pedido de un cliente, se va a ejecutar en una estaci�n de producci�n. Debe verificar la existencia de los productos (en estado de producci�n) resultado de la ejecuci�n de la etapa anterior y realizar las modificaciones de inventario correspondientes (menos insumos y m�s productos) y registrar el tiempo de inicio y de finalizaci�n correspondientes. Esta operaci�n es realizada por un usuario operario. </p>
+                            <div id="tabla1">
+                                <div class="table-responsive">
+                                    <table class="table table-condensed table-bordered table-hover">
+                                        <tr>
+                                            <th>Art&iacute;culo</th>
+                                            <th>Serie</th>
+                                            <th>Peso</th>
+                                            <th>Almacén</th>
+                                            <th>Stock</th>
+                                            <th>Precio</th>
+                                        </tr>
+                                        <tr>
+                                            <td>Producto 1</td>
+                                            <td>3769797</td>
+                                            <td>36 kg</td>
+                                            <td>Madrid</td>
+                                            <td>350</td>
+                                            <td>8,95 €</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Producto 2</td>
+                                            <td>7432309</td>
+                                            <td>17 kg</td>
+                                            <td>Barcelona</td>
+                                            <td>72</td>
+                                            <td>3,70 €</td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+
+                            </div>
                             <ul class="list-inline item-details">
                                 <li>Client:
                                     <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
