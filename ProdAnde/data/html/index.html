@@ -28,6 +28,20 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="./js/jquery-1.11.1.min.js"></script>
+    <script src="js/script.js"></script>
+
+    
+    <script type="text/javascript">
+          $(document).ready(function() {
+               $("#prueba1").click(function(event){
+                  $("#cambiar").load('p.htm'); 
+               });
+          });
+        </script>
+
+
+    
 
 </head>
 
@@ -63,6 +77,11 @@
                     <li class="page-scroll">
                         <a href="#contact">Registrese/inicie sesion</a>
                     </li>
+
+                    <li >
+                        <a href="#" id="prueba1">Probador</a>
+                    </li>
+
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -84,13 +103,16 @@
                         <span class="name">Bienvenido a ProdAndes</span>
                         <hr class="star-light">
                         <span class="skills">Fabrica de produccion, productos y mejor experiencia para el usuario</span>
+                        <div id="cambiar"> 
+                        <span class="skills">Texto 1</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Portfolio Grid Section -->
+    <!-- Botones de las imagenes de los requerimientos -->
     <section id="portfolio">
         <div class="container">
             <div class="row">
@@ -185,7 +207,7 @@
                     <p>Prodandes es un proyecto realizado por Juan Pablo Arevalo y Jose Vargas, estudiantes de ingenieria de sistemas e ingenieria electronica para la materia Sistemas transaccionales curso 2015-1</p>
                 </div>
                 <div class="col-lg-4">
-                    <p>Se basa principalmente en la pagina web de una fabrica de produccion, encargada del desarrollo de productos a traves de solicitudes por parte de un cliente, en estos casos el uso de las bases de datos es vital para el desarrollo de esta página</p>
+                    <p>Se basa principalmente en la pagina web de una fabrica de produccion, encargada del desarrollo de productos a traves de solicitudes por parte de un cliente, en estos casos el uso de las bases de datos es vital para el desarrollo de esta pï¿½gina</p>
                 </div>
                 <div class="col-lg-8 col-lg-offset-2 text-center">
                     <a href="#" class="btn btn-lg btn-outline">
@@ -219,8 +241,8 @@
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Dirección electronica</label>
-                                <input type="email" class="form-control" placeholder="Dirección electronica" id="DIRECCION_ELECTRONICA" required data-validation-required-message="Porfavor ingrese su direccion electronica.">
+                                <label>Direcciï¿½n electronica</label>
+                                <input type="email" class="form-control" placeholder="Direcciï¿½n electronica" id="DIRECCION_ELECTRONICA" required data-validation-required-message="Porfavor ingrese su direccion electronica.">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -254,7 +276,7 @@
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Dirección fisica</label>
+                                <label>Direcciï¿½n fisica</label>
                                 <input type="text" class="form-control" placeholder="Direccion fisica" id="DIRECCION_FISICA" required data-validation-required-message="Porfavor ingrese su direccion fisica">
                                 <p class="help-block text-danger"></p>
                             </div>
@@ -290,7 +312,7 @@
                         
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Contraseña</label>
+                                <label>Contraseï¿½a</label>
                                 <input type="text" class="form-control" placeholder="Tipo de usuario (Proveedor, Cliente, Operario) " id="NUMERO_DOCUMENTO" required data-validation-required-message="Porfavor ingrese su numero de documento">
                                 <p class="help-block text-danger"></p>
                             </div>
@@ -319,8 +341,8 @@
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Contraseña</label>
-                                <input type="text" class="form-control" placeholder="Contraseña" id="CONTRASEÑA" required data-validation-required-message="Porfavor ingrese su contraseña">
+                                <label>Contraseï¿½a</label>
+                                <input type="text" class="form-control" placeholder="Contraseï¿½a" id="CONTRASEï¿½A" required data-validation-required-message="Porfavor ingrese su contraseï¿½a">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -345,7 +367,7 @@
                 <div class="row">
                     <div class="footer-col col-md-4">
                         <h3>Location</h3>
-                        <p>Universidad de los Andes, Sistemas tranasaccionales, 2015-1</p>
+                        <p>Universidad de los Andes, Sistemas transaccionales, 2015-1</p>
                     </div>
                     
                 </div>
@@ -386,7 +408,7 @@
                             <h3>Registrar pedido de productos</h3>
                             
                             <hr class="star-primary">
-                            <p>Esta operación representa la solicitud de producción de un cierto volumen de productos por parte de un cliente, quien además especifica la fecha esperada de entrega. ProdAndes debe analizar el pedido y aceptarlo si la empresa está en capacidad de satisfacerlo (cuenta con las materias primas, componentes y estaciones de producción suficientes) y en caso afirmativo indica la fecha de entrega (suponiendo que se vaya a procesar este solo pedido). Cuando el pedido es aceptado, los insumos que requiere se reservan, de manera que el pedido pueda ser satisfecho sin interferencia de otros pedidos de otros usuarios. Cuando un pedido no puede ser satisfecho porque la empresa no cuenta con los insumos necesarios, se coloca en pendiente para luego programar la compra de los insumos faltantes. En caso de conflicto de fechas, el usuario puede desistir del pedido.  Esta operación es realizada por un usuario cliente de la empresa</p>
+                            <p>Esta operaciï¿½n representa la solicitud de producciï¿½n de un cierto volumen de productos por parte de un cliente, quien ademï¿½s especifica la fecha esperada de entrega. ProdAndes debe analizar el pedido y aceptarlo si la empresa estï¿½ en capacidad de satisfacerlo (cuenta con las materias primas, componentes y estaciones de producciï¿½n suficientes) y en caso afirmativo indica la fecha de entrega (suponiendo que se vaya a procesar este solo pedido). Cuando el pedido es aceptado, los insumos que requiere se reservan, de manera que el pedido pueda ser satisfecho sin interferencia de otros pedidos de otros usuarios. Cuando un pedido no puede ser satisfecho porque la empresa no cuenta con los insumos necesarios, se coloca en pendiente para luego programar la compra de los insumos faltantes. En caso de conflicto de fechas, el usuario puede desistir del pedido.  Esta operaciï¿½n es realizada por un usuario cliente de la empresa</p>
                             <div class="row">
                        <div class="col-lg-8 col-lg-offset-2">
                     <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
@@ -462,7 +484,7 @@
                             <h2>Requerimiento funcional numero 14</h2>
                             <h3>Registrar entrega de pedido de productos a un cliente</h3>
                             <hr class="star-primary">
-                            <p>Esta operación cierra el ciclo de producción de un pedido (solicitud, eventual compra de insumos, producción) y los productos producidos se entregan al cliente, realizando las actualizaciones de inventario correspondientes. Esta operación es realizada por un usuario gerente de producción de la empresa</p>
+                            <p>Esta operaciï¿½n cierra el ciclo de producciï¿½n de un pedido (solicitud, eventual compra de insumos, producciï¿½n) y los productos producidos se entregan al cliente, realizando las actualizaciones de inventario correspondientes. Esta operaciï¿½n es realizada por un usuario gerente de producciï¿½n de la empresa</p>
                             <div class="row">
                        <div class="col-lg-8 col-lg-offset-2">
                     <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
@@ -508,6 +530,9 @@
         </div>
     </div>
         </div>
+
+
+
     <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-content">
             <div class="close-modal" data-dismiss="modal">
@@ -516,6 +541,8 @@
                     </div>
                 </div>
             </div>
+            
+
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
@@ -523,7 +550,7 @@
                             <h2>Requerimiento funcional numero 10</h2>
                             <h3>Registrar ejecucion de una etapa de produccion</h3>
                             <hr class="star-primary">
-                            <p>Esta es la operación que indica a ProdAndes que una etapa de producción, correspondiendo a un pedido de un cliente, se va a ejecutar en una estación de producción. Debe verificar la existencia de los productos (en estado de producción) resultado de la ejecución de la etapa anterior y realizar las modificaciones de inventario correspondientes (menos insumos y más productos) y registrar el tiempo de inicio y de finalización correspondientes. Esta operación es realizada por un usuario operario. </p>
+                            <p>Esta es la operaciï¿½n que indica a ProdAndes que una etapa de producciï¿½n, correspondiendo a un pedido de un cliente, se va a ejecutar en una estaciï¿½n de producciï¿½n. Debe verificar la existencia de los productos (en estado de producciï¿½n) resultado de la ejecuciï¿½n de la etapa anterior y realizar las modificaciones de inventario correspondientes (menos insumos y mï¿½s productos) y registrar el tiempo de inicio y de finalizaciï¿½n correspondientes. Esta operaciï¿½n es realizada por un usuario operario. </p>
                             <ul class="list-inline item-details">
                                 <li>Client:
                                     <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
@@ -560,7 +587,7 @@
                             <h2>Requerimiento funcional numero 11</h2>
                             <h3>Registrar llegada de un material(Materia prima/Componente)</h3>
                             <hr class="star-primary">
-                            <p>Esta operación representa la llegada de materia prima o de componentes a la empresa, respuesta a una solicitud de compra a un proveedor. Se debe registrar además la fecha de llegada y hacer las actualizaciones contables y de inventario correspondientes. Esta operación es realizada por un usuario gerente de producción de la empresa. </p>
+                            <p>Esta operaciï¿½n representa la llegada de materia prima o de componentes a la empresa, respuesta a una solicitud de compra a un proveedor. Se debe registrar ademï¿½s la fecha de llegada y hacer las actualizaciones contables y de inventario correspondientes. Esta operaciï¿½n es realizada por un usuario gerente de producciï¿½n de la empresa. </p>
                             <ul class="list-inline item-details">
                                 <li>Client:
                                     <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
@@ -597,7 +624,7 @@
                             <h2>Requerimiento funcional de consulta numero 1</h2>
                             <h3>Consultar las existencias de materiales (materias primas/componentes/productos) en ProdAndes</h3>
                             <hr class="star-primary">
-                            <p>Los resultados deben ser clasificados según un criterio deseado por quien realiza la consulta (usuario o administración de ProdAndes). Los filtros son, entre otros, tipo de material, rango de existencias en inventario, etapa de producción, fecha de solicitud y/o entrega. Debe ofrecerse la posibilidad de agrupamiento y ordenamiento de las respuestas según los intereses del usuario que consulta. </p>
+                            <p>Los resultados deben ser clasificados segï¿½n un criterio deseado por quien realiza la consulta (usuario o administraciï¿½n de ProdAndes). Los filtros son, entre otros, tipo de material, rango de existencias en inventario, etapa de producciï¿½n, fecha de solicitud y/o entrega. Debe ofrecerse la posibilidad de agrupamiento y ordenamiento de las respuestas segï¿½n los intereses del usuario que consulta. </p>
                             <ul class="list-inline item-details">
                                 <li>Client:
                                     <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
@@ -634,7 +661,7 @@
                             <h2>Requerimiento funcional de consulta numero 2</h2>
                             <h3>Consultar un material</h3>
                             <hr class="star-primary">
-                            <p>Responde toda la información de un material (materia prima, componente, etapa de producto, producto), incluyendo su tipo, su nombre, los materiales que lo componen, los materiales que compone, las etapas de producción en las que participa, las unidades producidas, las unidades en producción, los pedidos de cliente en los que está involucrado (para los productos), los pedidos de compra en los que está involucrado (para materias primas y componentes). Los resultados deben poder ser filtrados por tipo de material, volumen, rango de fechas y costo3. Se debe mostrar la fecha, los productos y cantidades solicitadas y el costo. Debe ofrecerse la posibilidad de agrupamiento y ordenamiento de las respuestas según los intereses del usuario que consulta. </p>
+                            <p>Responde toda la informaciï¿½n de un material (materia prima, componente, etapa de producto, producto), incluyendo su tipo, su nombre, los materiales que lo componen, los materiales que compone, las etapas de producciï¿½n en las que participa, las unidades producidas, las unidades en producciï¿½n, los pedidos de cliente en los que estï¿½ involucrado (para los productos), los pedidos de compra en los que estï¿½ involucrado (para materias primas y componentes). Los resultados deben poder ser filtrados por tipo de material, volumen, rango de fechas y costo3. Se debe mostrar la fecha, los productos y cantidades solicitadas y el costo. Debe ofrecerse la posibilidad de agrupamiento y ordenamiento de las respuestas segï¿½n los intereses del usuario que consulta. </p>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Id material</label>
@@ -675,6 +702,12 @@
             </div>
         </div>
     </div>
+
+
+
+
+
+
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>

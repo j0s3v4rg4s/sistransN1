@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+                         "http://java.sun.com/dtd/web-app_2_3.dtd">
+<!-- Universidad de los Andes (Bogotá - Colombia) Departamento de Ingeniería 
+	de Sistemas y Computación Licenciado bajo el esquema Academic Free License 
+	version 2.1 Proyecto Cupi2 (http://cupi2.uniandes.edu.co) Ejercicio: n18_calculadoraWeb 
+	Autor: Pablo Barvo - 05-Mayo-2006 -->
+<web-app>
+	<description>Servlet memes Web</description>
+	<!-- SERVLETS -->
+	<servlet>
+		<servlet-name>servletLogin</servlet-name>
+		<servlet-class>servlet.servletLogin</servlet-class>
+	</servlet>
+	
+	
+
+	<!-- MAPPING -->
+	<servlet-mapping>
+		<servlet-name>servletLogin</servlet-name>
+		<url-pattern>/p.htm</url-pattern>
+	</servlet-mapping>
+
+
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	</login-config>
+</web-app>
