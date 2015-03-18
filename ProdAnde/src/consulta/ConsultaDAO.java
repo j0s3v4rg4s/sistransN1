@@ -33,7 +33,7 @@ public class ConsultaDAO {
 	/**
 	 * conexion con la base de datos
 	 */
-	public Connection conexion;
+	private Connection conexion;
 	/**
 	 * nombre del usuario para conectarse a la base de datos.
 	 */
@@ -153,27 +153,32 @@ public class ConsultaDAO {
 	}
 
 	public insumos buscarInsumo(String id) {
-		PreparedStatement prepStmt = null;
+		String pre = "SELECT * FROM INSUMOS WHERE ID = '"+id+"'";
 		insumos in = null;
-		try {
-			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "SELECT * FROM INSUMO WHERE ID = '"+id+"'";
-			prepStmt = conexion.prepareStatement(pre);
-			ResultSet rs = prepStmt.executeQuery();
+		ResultSet rs = ejecutarPregunta(pre);
+
+		try 
+		{
 			while(rs.next())
 			{
-				in = new insumos(rs.getString("ID"), rs.getString("NOMBRE"),rs.getString("UNIDAD_MEDIDA"),rs.getInt("CANTIDAD"), rs.getString("TIPO"));
+				in = new insumos(rs.getString("ID"), rs.getString("NOMBRE"),rs.getString("UNIDAD_MEDIDA"),rs.getInt("CANTIDAD_INICIAL"), rs.getString("TIPO"));
 				in.setId_bodega(rs.getString("ID_BODEGA"));
 			}
-
-			prepStmt.close();
-			closeConnection(conexion);
-
+			rs.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
+		}
+		finally
+		{
+			try 
+			{
+				closeConnection(conexion);
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
 		}
 
 		return in;
@@ -212,66 +217,115 @@ public class ConsultaDAO {
 	}
 
 
+
+	/**
+	 * consulata de jose
+	 * @param idEtapa
+	 */
 	public void cambiarEstadoEtapa(String idEtapa) {
-		// TODO Auto-generated method stub
+		//JOSE
 		String[] id = idEtapa.split("-");
 		String query = "UPDATE ETAPA_PRODUCCION SET estado = 'terminado' WHERE NUMERO = "+id[1]+" AND ID_PRODUCTO = '"+id[0]+"'";
-		PreparedStatement prepStmt = null;
+		ejecutarPregunta(query);
+		try {
+			closeConnection(conexion);
+		} catch (Exception e1) {
 
+			e1.printStackTrace();
+		}
+
+		EtapaProduccion e = buscarEtapa(idEtapa);
+		insumos i = buscarInsumo(e.getIdInsumo2());
+		query = "UPDATE BODEGA SET RESERVA=RESERVA-"+e.getGasta()+" WHERE ID='"+i.getId_bodega()+"'";
+		ejecutarPregunta(query);
+		try {
+			closeConnection(conexion);
+		} catch (Exception e1) {
+
+			e1.printStackTrace();
+		}
+
+		i = buscarInsumo(e.getIdInsumo1());
+		query = "UPDATE BODEGA SET RESERVA=RESERVA+"+e.getProduce()+" WHERE ID='"+i.getId_bodega()+"'";
+		ejecutarPregunta(query);
+		try {
+			closeConnection(conexion);
+		} catch (Exception e1) {
+
+			e1.printStackTrace();
+		}
+
+	}
+
+
+	/**
+	 * Generar preguntas a la base de datos
+	 * OJO- CERRAR CONEXION DESPUES DE USAR
+	 * @param query. pregunta sql
+	 * @return rs contenedor de las respuestas
+	 */
+	private ResultSet ejecutarPregunta(String query)
+	{
+		PreparedStatement prepStmt = null;
+		ResultSet rs2 = null;
 		try 
 		{
 			establecerConexion(cadenaConexion, usuario, clave);
 			prepStmt = conexion.prepareStatement(query);
 			ResultSet rs = prepStmt.executeQuery();
-			
-			
-			EtapaProduccion e = buscarEtapa(idEtapa);
-			insumos i = buscarInsumo(e.getIdInsumo1());
-			query = "UPDATE BODEGA SET RESERVA=RESERVA-"+e.getGasta()+" WHERE ID='"+i.getId_bodega()+"'";
-			prepStmt = conexion.prepareStatement(query);
-			rs = prepStmt.executeQuery();
-			
-			i = buscarInsumo(e.getIdInsumo2());
-			query = "UPDATE BODEGA SET RESERVA=RESERVA+"+e.getProduce()+" WHERE ID='"+i.getId_bodega()+"'";
-			prepStmt = conexion.prepareStatement(query);
-			rs = prepStmt.executeQuery();
-			
-			rs.close();
+			rs2 = rs;
 		} 
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
 		}
-		finally
+		return rs2;
+	}
+	
+	private ResultSet ejecutarPregunta2(String query)
+	{
+		PreparedStatement prepStmt = null;
+		ResultSet rs2 = null;
+		try 
 		{
-			try {
-				closeConnection(conexion);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			prepStmt = conexion.prepareStatement(query);
+			ResultSet rs = prepStmt.executeQuery();
+			rs2 = rs;
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
 		}
+		return rs2;
 	}
 
 
 	public EtapaProduccion buscarEtapa(String id) {
 		String[] id2 = id.split("-");
-		PreparedStatement prepStmt = null;
 		EtapaProduccion p = null;
+		String pre = "SELECT * FROM ETAPA_PRODUCCION WHERE NUMERO = "+id2[1]+" AND ID_PRODUCTO = '"+id2[0]+"'";
+		ResultSet rs = ejecutarPregunta(pre);
 		try {
-			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "SELECT * FROM ETAPA_PRODUCCION WHERE NUMERO = "+id2[1]+" AND ID_PRODUCTO = '"+id2[0]+"'";
-			prepStmt = conexion.prepareStatement(pre);
-			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
 				p = new EtapaProduccion(rs.getString("ID_PRODUCTO"), rs.getInt("NUMERO"), rs.getString("ESTADO"), rs.getString("NOMBRE"), rs.getString("ID_INSUMO_P"), rs.getString("ID_INSUMO_G"), rs.getInt("CANTIDAD_P"),rs.getInt("CANTIDAD_G"));
 			}
-			prepStmt.close();
-			closeConnection(conexion);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
+		}
+		finally
+		{
+			try {
+				rs.close();
+				closeConnection(conexion);
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			} catch (Exception e) {
+
+				e.printStackTrace();
+			}
+
 		}
 		return p;
 	}
@@ -307,36 +361,14 @@ public class ConsultaDAO {
 
 	}
 
-	public boolean buscarEtapaProduccion(String idProducto)
-	{
-		boolean a = false;
-		PreparedStatement prepStmt = null;
 
-		try {
-			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "SELECT ID_INSUMO, CANTIDAD FROM MATERIALES_PRODUCCION WHERE ID_PRODUCTO = " +"'" +idProducto+"'";
-			prepStmt = conexion.prepareStatement(pre);
-			ResultSet rs = prepStmt.executeQuery();
-			while(rs.next())
-			{
-				insumos in = buscarInsumo(rs.getString("ID_INSUMO"));
-			}
-			prepStmt.close();
-			closeConnection(conexion);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return a;
-	}
-	public Bodega buscarElementoArray(String idBodega, ArrayList<Bodega> bodeg)
+	public Bodega buscarElementoArray(String id, ArrayList<Bodega> bodeg)
 	{	
 		Bodega bod = null;
 		for (int i=0; i<bodeg.size(); i++)
 		{
 			Bodega temp = bodeg.get(i);
-			if (temp.getId().equals(idBodega))
+			if (temp.getId().equals(id))
 				bod= temp;
 		}
 		return bod;
@@ -361,7 +393,7 @@ public class ConsultaDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return ans;
 	} 
 	public String darIdInsumoPorIdbodega(String idBodega)
@@ -885,7 +917,53 @@ public class ConsultaDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+	}
+	
+	
+	/** Busca un insumo en la bodega por su identificador
+	 * @param id_bodega identificador del isnumo en la bodga
+	 * @return retorna la informacion del insumo en la bodega
+	 */
+	public Bodega buscarBodega(String id_bodega) {
+		// JOSE metodo de jose 
+		String query = "SELECT * FROM BODEGA WHERE ID='"+id_bodega+"'";
+		ResultSet rs = ejecutarPregunta(query);
+		Bodega b = null;
+		try 
+		{
+			while(rs.next())
+			{
+				b = new Bodega(rs.getString("ID"), rs.getInt("CANTIDAD"));
+				b.setReserva(rs.getInt("RESERVA"));
+			}
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return b;
+	}
+	
+	public void registrarBodega(String id, int cantidad) {
+		// JOSE 
+		String query = "INSERT INTO BODEGA (ID,CANTIDAD)VALUES ('B'||SQ_BOD.NEXTVAL,"+cantidad+")";
+		try 
+		{
+			establecerConexion(cadenaConexion, usuario, clave);
+			ejecutarPregunta2(query).close();
+			query ="UPDATE INSUMOS SET ID_BODEGA = 'B'||SQ_BOD.CURRVAL WHERE id='"+id+"'";
+			ejecutarPregunta2(query);
+			closeConnection(conexion);
+		} catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		
 		
 	}
 	
+
 }
