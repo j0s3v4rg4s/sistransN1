@@ -37,11 +37,14 @@
                $("#req10").click(function(event){
                   $("#tabla1").load('pregunta.htm',{accion: 'actualizar'}); 
                });
+
+               $("#req11").click(function(event){
+                    console.log('hola');
+                  $("#tabla2").load('pregunta.htm',{accion: 'actualizarReq2'}); 
+               });
+
           });
     </script>
-
-
-    
 
 </head>
 
@@ -114,7 +117,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal1" class="portfolio-link" id="ventana" data-toggle="modal">
+                    <a href="#portfolioModal1" class="portfolio-link" id="req12" data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -148,7 +151,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
+                    <a href="#portfolioModal4" class="portfolio-link" id="req11" data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -614,7 +617,13 @@
                             <h2>Requerimiento funcional numero 11</h2>
                             <h3>Registrar llegada de un material(Materia prima/Componente)</h3>
                             <hr class="star-primary">
-                            <p>Esta operaci�n representa la llegada de materia prima o de componentes a la empresa, respuesta a una solicitud de compra a un proveedor. Se debe registrar adem�s la fecha de llegada y hacer las actualizaciones contables y de inventario correspondientes. Esta operaci�n es realizada por un usuario gerente de producci�n de la empresa. </p>
+
+
+                            <div id="tabla2">
+                                
+                            </div>
+
+
                             <ul class="list-inline item-details">
                                 <li>Client:
                                     <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
