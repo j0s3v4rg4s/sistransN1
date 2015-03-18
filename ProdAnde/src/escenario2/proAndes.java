@@ -4,8 +4,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import mundo.MateriaPrima;
-import mundo.Pedido;
 import consulta.ConsultaDAO;
 
 
@@ -100,20 +98,7 @@ public class proAndes {
 	{
 
 	}
-	/**
-	 * metodo que registra un pedido 
-	 */
-	public void registrarPedido(Pedido ped)
-	{
 
-	}
-	/**
-	 * metodo que cancela un pedido realizado
-	 */
-	public void cancelarPedido(Pedido ped)
-	{
-
-	}
 	/**
 	 * metodo que registra un pedido 
 	 */
@@ -149,13 +134,7 @@ public class proAndes {
 	{
 
 	}
-	/**
-	 * metodo que registra una materia prima dada 
-	 */
-	public void registrarMateriaPrima(MateriaPrima mP)
-	{
-
-	}
+	
 	/**
 	 * metodo que registra un componente dado 
 	 */
