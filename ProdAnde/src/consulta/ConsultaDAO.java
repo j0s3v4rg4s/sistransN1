@@ -102,7 +102,7 @@ public class ConsultaDAO {
 	}
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
-		c.realizarBusqueda();
+		
 	}
 	//----------------------------------------------------
 	//Query
@@ -951,24 +951,22 @@ public class ConsultaDAO {
 		{
 			e.printStackTrace();
 		}
-
-
-
 	}
-	public ArrayList realizarBusqueda() {
-		String query = "SELECT p.ID,p.NOMBRE Producto, p.ESTADO, e.NOMBRE Etapa, e.NUMERO, e.ESTADO Estado_Etapa FROM PRODUCTO p INNER JOIN ETAPA_PRODUCCION e on p.Id = e.ID_PRODUCTO ORDER BY e.NUMERO";
+	
+	
+	public ArrayList realizarBusqueda(String query) {
+		// JOSE
 		ResultSet rs = ejecutarPregunta(query);
 		ArrayList<ArrayList<String>> queryA = new ArrayList<ArrayList<String>>();
 		try {
+			int n = rs.getMetaData().getColumnCount();
 			while(rs.next())
 			{
 				ArrayList<String> l = new ArrayList<String>();
-				l.add(rs.getString(1));
-				l.add(rs.getString(2));
-				l.add(rs.getString(3));
-				l.add(rs.getString(4));
-				l.add(rs.getString(5));
-				l.add(rs.getString(6));
+				for(int i=0;i<n;i++)
+				{
+					l.add(rs.getString(i+1));
+				}
 				queryA.add(l);
 			}
 			rs.close();
@@ -977,6 +975,25 @@ public class ConsultaDAO {
 			e.printStackTrace();
 		}
 		return queryA;
+	}
+	
+	
+	/**
+	 * realiza una pregunta de actualizacion a la base de datos 
+	 * @param query
+	 */
+	public void preguntador(String query) {
+		try {
+			ejecutarPregunta(query).close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			closeConnection(conexion);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 

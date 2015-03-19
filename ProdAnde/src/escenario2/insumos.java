@@ -19,6 +19,9 @@ public class insumos {
 	private String tipo;
 	private String id_bodega;
 	
+	public static final String COMPONENTE = "componente";
+	public static final String MATERUA_PRIMA = "materia prima";
+	
 	
 
 	//-----------------------------------------------------------------

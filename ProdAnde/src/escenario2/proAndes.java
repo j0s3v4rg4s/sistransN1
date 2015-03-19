@@ -273,10 +273,12 @@ public class proAndes {
 		}
 	}
 
+
 	/**
 	 * metodo que registra la llegada de un insumo a la bodega
+	 * @param id del insumo 
+	 * @param cantidad cantidad de llegada 
 	 */
-
 	public void registrarLlegadaInsumo(String id, int cantidad)
 	{
 		// JOSE metodo de jose 
@@ -285,14 +287,36 @@ public class proAndes {
 		if (b==null)
 		{
 			conexion.registrarBodega(id,cantidad);
-			//JOSE acabar metodo
+		}
+		else
+		{
+			String query="UPDATE BODEGA SET CANTIDAD = "+cantidad+" WHERE id = '"+i.getId_bodega()+"'";
+			System.out.println(query);
+			conexion.preguntador(query);
 		}
 	}
 	
 	public ArrayList darEtapas()
 	{
-		// JOSE
-		return conexion.realizarBusqueda();
+		// JOSE pregunta etapas
+		String query = "SELECT p.ID,p.NOMBRE Producto, p.ESTADO, e.NOMBRE Etapa, e.NUMERO, e.ESTADO Estado_Etapa FROM PRODUCTO p INNER JOIN ETAPA_PRODUCCION e on p.Id = e.ID_PRODUCTO ORDER BY e.NUMERO";
+		return conexion.realizarBusqueda(query);
+	}
+
+	public ArrayList darInsumos(String insumo) {
+		if(insumo.equals(insumos.COMPONENTE))
+		{
+			String query = "SELECT i.ID, i.NOMBRE FROM INSUMOS i WHERE TIPO = '"+insumos.COMPONENTE+"'";
+			return conexion.realizarBusqueda(query);
+		}
+		else
+		{
+			String query = "SELECT i.ID, i.NOMBRE FROM INSUMOS i WHERE TIPO = '"+insumos.MATERUA_PRIMA+"'";
+			return conexion.realizarBusqueda(query);
+		}
+		
+		
+		
 	}
 
 }
