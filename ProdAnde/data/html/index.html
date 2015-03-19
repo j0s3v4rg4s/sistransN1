@@ -45,6 +45,10 @@
             	   console.log('holii');
                  $("#tablaRF14").load('RF14.htm',{accion: 'actualizar'}); 
               });
+              
+               $("#req11").click(function (event) {
+                    $("#tabla2").load('pregunta.htm', {accion: 'actualizarReq2'});
+                });
                
           });
     </script>
@@ -589,6 +593,85 @@
                                 </li>
                             </ul>
                             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <h2>Requerimiento funcional numero 11</h2>
+                                <h3>Registrar llegada de un material(Materia prima/Componente)</h3>
+                                <hr class="star-primary">
+
+
+                                <div id="tabla2">
+                                    <h3>Hola</h3>
+                                </div>
+
+                                <form name="sentMessage" id="contactForm" novalidate>
+                                    <div class="row control-group">
+                                        <div class="form-group col-xs-12 floating-label-form-group controls">
+                                            <label>Cantidad Material</label>                                        
+                                            <input type="number" class="form-control" placeholder="Ingrese cantidad meterial" id="materia" required data-validation-required-message="Porfavor ingrese su direccion electronica">
+                                            <p class="help-block text-danger"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row control-group">
+                                        <div class="form-group col-xs-12 floating-label-form-group controls">
+                                            <label>Cantidad componente</label>                                        
+                                            <input type="number" class="form-control" placeholder="Ingrese cantidad componente" id="componente" required data-validation-required-message="Porfavor ingrese su direccion electronica">
+                                            <p class="help-block text-danger"></p>
+                                        </div>
+                                    </div>
+
+                                    <br>
+                                    <div id="success"></div>
+                                    <div class="row">
+                                        <div class="form-group col-xs-12">
+                                            <button type="button" class="btn btn-success btn-lg" id="bm">Agregar material</button>
+                                            <button type="button" class="btn btn-success btn-lg" id="bc">Agregar componente</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <script type="text/javascript">
+                                        $(document).ready(function  (){
+                                            $("#bm").click(function (event){
+                                                var id = document.getElementById("sel1").value;
+                                                var can = document.getElementById("materia").value;
+                                                $("#tabla2").load('pregunta.htm', {accion: 'agregarInsumo', den: id,cant: can});
+                                                
+                                            });
+                                            
+                                            $("#bc").click(function (event){
+                                                var id = document.getElementById("sel2").value;
+                                                var can = document.getElementById("componente").value;
+                                                $("#tabla2").load('pregunta.htm', {accion: 'agregarInsumo', den: id,cant: can});
+                                            });
+                                        });
+                                        
+                                        
+                                    </script>
+
+                                </form>
+
+
+
+
+                                <ul class="list-inline item-details">
+                                    <li>Client:
+                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
+                                        </strong>
+                                    </li>
+                                    <li>Date:
+                                        <strong><a href="http://startbootstrap.com">April 2014</a>
+                                        </strong>
+                                    </li>
+                                    <li>Service:
+                                        <strong><a href="http://startbootstrap.com">Web Development</a>
+                                        </strong>
+                                    </li>
+                                </ul>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>

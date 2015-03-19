@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import escenario2.insumos;
 import escenario2.proAndes;
 
 public class servletPreguntas extends HttpServlet{
@@ -17,160 +18,202 @@ public class servletPreguntas extends HttpServlet{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private proAndes pro = new proAndes();
 
 	/**
-     * Inicializacin del Servlet
-     */
-    public void init( ) throws ServletException
-    {
-    	
-    }
-    
-    /**
-     * fin de un servlet
-     */
-    public void destroy( )
-    {
-    	
-    }
-    
-    
+	 * Inicializacin del Servlet
+	 */
+	public void init( ) throws ServletException
+	{
 
-    /**
-     * Maneja un pedido GET de un cliente
-     * @param request Pedido del cliente
-     * @param response Respuesta
-     */
-    protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
-    {
-    	// Maneja el GET y el POST de la misma manera
-        procesarSolicitud( request, response );
-    }
-   
+	}
 
 	/**
-     * Maneja un pedido POST de un cliente
-     * @param request Pedido del cliente
-     * @param response Respuesta
-     */
-    protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
-    {
-    	// Maneja el GET y el POST de la misma manera
-        procesarSolicitud( request, response );
-    }
-    
-    
-    
-    private void procesarSolicitud(HttpServletRequest request,
+	 * fin de un servlet
+	 */
+	public void destroy( )
+	{
+
+	}
+
+
+
+	/**
+	 * Maneja un pedido GET de un cliente
+	 * @param request Pedido del cliente
+	 * @param response Respuesta
+	 */
+	protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
+	{
+		// Maneja el GET y el POST de la misma manera
+		procesarSolicitud( request, response );
+	}
+
+
+	/**
+	 * Maneja un pedido POST de un cliente
+	 * @param request Pedido del cliente
+	 * @param response Respuesta
+	 */
+	protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
+	{
+		// Maneja el GET y el POST de la misma manera
+		procesarSolicitud( request, response );
+	}
+
+
+
+	private void procesarSolicitud(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
-    	PrintWriter out = response.getWriter( );
-    	String accion = request.getParameter("accion");    	
-    	
-    	
-    	if (accion.equals("actualizar"))
-    	{
-    		cargarInformacion(out);
-    	}  	
-    	
-    	if (accion.equals("registrar"))
-    	{
-    		String id = request.getParameter("parametro");
-    		int t1 = Integer.parseInt(request.getParameter("tini"));
-    		int t2 = Integer.parseInt(request.getParameter("tf"));
-    		boolean t = pro.registrarEjecucionEtapaProduccion(id, t1, t2);
-    		System.out.println("repsuesta obtenida = "+t);
-    		cargarInformacion(out);
-    	}
-    }
-    
-    private void cargarInformacion(PrintWriter out) {
-    	ArrayList l = pro.darEtapas();
-    	ArrayList<String> titulo = new ArrayList<String>();
-    	titulo.add("ID");
-    	titulo.add("Producto");
-    	titulo.add("Estado");
-    	titulo.add("Etapa");
-    	titulo.add("Numero");
-    	titulo.add("Estado etapa");
-    	titulo.add("Acciones");
-    	
-    	inicioTabla(out);
-    	imprimirFilaTitulo(out,titulo);
-    	for (int i=0;i<l.size();i++)
-    	{
-    		imprimirFila(out, (ArrayList<String>)l.get(i));
-    		
-    	}
-    	finTabla(out);
+		PrintWriter out = response.getWriter( );
+
+		String accion = request.getParameter("accion");    
+		System.out.println(accion);
+
+
+		if (accion!=null && !accion.equals("") && accion.equals("actualizar"))
+		{
+			cargarInformacion(out);
+		}  	
+
+		if (accion.equals("registrar"))
+		{
+			String id = request.getParameter("parametro");
+			int t1 = Integer.parseInt(request.getParameter("tini"));
+			int t2 = Integer.parseInt(request.getParameter("tf"));
+			boolean t = pro.registrarEjecucionEtapaProduccion(id, t1, t2);
+			cargarInformacion(out);
+		}
+
+		if(accion.equals("actualizarReq2"))
+		{
+			imprimirOpciones(out);
+		}
 		
+		if(accion.equals("agregarInsumo"))
+		{
+			String id = request.getParameter("den");
+			int cantidad = Integer.parseInt(request.getParameter("cant"));
+			pro.registrarLlegadaInsumo(id, cantidad);
+			imprimirOpciones(out);
+		}
+	}
+
+
+
+	private void imprimirOpciones(PrintWriter out) {
+		ArrayList material = pro.darInsumos(insumos.MATERUA_PRIMA);
+		ArrayList componente = pro.darInsumos(insumos.COMPONENTE);
+		
+		out.println("<label>Material</label>                                        ");
+		out.println("                                        <select class=\"form-control\" id=\"sel1\">");
+		for(int i=0;i<material.size();i++)
+		{
+			ArrayList<String> dato = (ArrayList<String>)material.get(i);
+			out.println("<option value=\""+dato.get(0)+"\">"+dato.get(1)+"</option>");
+			
+		}
+		out.println("     </select>");
+		
+		
+		out.println("<label>Componente</label>                                        ");
+		out.println("                                        <select class=\"form-control\" id=\"sel2\">");
+		for(int i=0;i<componente.size();i++)
+		{
+			ArrayList<String> dato = (ArrayList<String>)componente.get(i);
+			out.println("<option value=\""+dato.get(0)+"\">"+dato.get(1)+"</option>");
+			
+		}
+		out.println("     </select>");
+	}
+
+	private void cargarInformacion(PrintWriter out) {
+		ArrayList l = pro.darEtapas();
+		ArrayList<String> titulo = new ArrayList<String>();
+		titulo.add("ID");
+		titulo.add("Producto");
+		titulo.add("Estado");
+		titulo.add("Etapa");
+		titulo.add("Numero");
+		titulo.add("Estado etapa");
+		titulo.add("Acciones");
+
+		inicioTabla(out);
+		imprimirFilaTitulo(out,titulo);
+		for (int i=0;i<l.size();i++)
+		{
+			imprimirFila(out, (ArrayList<String>)l.get(i));
+
+		}
+		finTabla(out);
+
 	}
 
 	private void inicioTabla(PrintWriter out)
-    {
-    	out.println("<div class=\"table-responsive\">");
-    	out.println("                                    <table class=\"table table-condensed table-bordered table-hover\">");
-    }
-    
-    private void imprimirFilaTitulo(PrintWriter out, ArrayList<String> titulo)
-    {
-    	out.println("<tr>");
-    	for (int i=0;i<titulo.size();i++)
-    	{
-    		out.println("   	<th>"+titulo.get(i)+"</th>");
-    	}
-    	out.println("</tr>");
+	{
+		out.println("<div class=\"table-responsive\">");
+		out.println("                                    <table class=\"table table-condensed table-bordered table-hover\">");
+	}
 
-    }
-    
-    private void imprimirFila(PrintWriter out, ArrayList<String> titulo)
-    {
-    	out.println("<tr>");
-    	for (int i=0;i<titulo.size();i++)
-    	{
-    		out.println("   	<td>"+titulo.get(i)+"</td>");
-    	}
+	private void imprimirFilaTitulo(PrintWriter out, ArrayList<String> titulo)
+	{
+		out.println("<tr>");
+		for (int i=0;i<titulo.size();i++)
+		{
+			out.println("   	<th>"+titulo.get(i)+"</th>");
+		}
+		out.println("</tr>");
 
-    	String cod = titulo.get(0)+"-"+titulo.get(4);
-    	out.println(" <td><button type=\"button\" class=\"btn btn-success\" id=\""+cod+"\">Registar</button></td>");
-    	
-    	
-    	out.println("    <script type=\"text/javascript\">");
-    	out.println("          $(document).ready(function() {");
-    	out.println("               $(\"#"+cod+"\").click(function(event){");
-    	out.println("                  var t1 = document.getElementById(\"tinicio\").value;");
-    	out.println("                  var t2 = document.getElementById(\"tfin\").value;");
-    	out.println("                  $(\"#tabla1\").load('pregunta.htm',{accion: 'registrar', parametro: '"+cod+"',tini: t1,tf: t2}); ");
-    	out.println("               });");
-    	out.println("          });");
-    	out.println("    </script>");
+	}
 
-    	out.println("</tr>");
+	private void imprimirFila(PrintWriter out, ArrayList<String> titulo)
+	{
+		out.println("<tr>");
+		for (int i=0;i<titulo.size();i++)
+		{
+			out.println("   		<td>"+titulo.get(i)+"</td>");
+		}
 
-    }
-    
-    private void finTabla(PrintWriter out)
-    {
-    	out.println(" </table>");
-    	out.println("                                </div>");
-    	
-    	out.println("<form name=\"sentMessage\" id=\"contactForm\" novalidate>");
-    	out.println("                        <div class=\"row control-group\">");
-    	out.println("                            <div class=\"form-group col-xs-12 floating-label-form-group controls\">");
-    	out.println("                                <label>Tiempo inicio</label>");
-    	out.println("                                <input type=\"number\" class=\"form-control\" placeholder=\"Ingrese el tiempo\" id=\"tinicio\" required data-validation-required-message=\"Complete el campo\">");
-    	out.println("                                <p class=\"help-block text-danger\"></p>");
-    	out.println("                            </div>");
-    	out.println("                        </div>");
-    	out.println("                        <div class=\"row control-group\">");
-    	out.println("                            <div class=\"form-group col-xs-12 floating-label-form-group controls\">");
-    	out.println("                                <label>Tiempo terminacion</label>");
-    	out.println("                                <input type=\"number\" class=\"form-control\" placeholder=\"Ingrese el tiempo\" id=\"tfin\" required data-validation-required-message=\"Complete el campo\">");
-    	out.println("                                <p class=\"help-block text-danger\"></p>");
-    	out.println("                            </div>");
-    	out.println("                        </div>");
-    	out.println("</form>");
-    }
+		String cod = titulo.get(0)+"-"+titulo.get(4);
+		out.println(" <td><button type=\"button\" class=\"btn btn-success\" id=\""+cod+"\">Registar</button></td>");
+
+
+		out.println("    <script type=\"text/javascript\">");
+		out.println("          $(document).ready(function() {");
+		out.println("               $(\"#"+cod+"\").click(function(event){");
+		out.println("                  var t1 = document.getElementById(\"tinicio\").value;");
+		out.println("                  var t2 = document.getElementById(\"tfin\").value;");
+		out.println("                  $(\"#tabla1\").load('pregunta.htm',{accion: 'registrar', parametro: '"+cod+"',tini: t1,tf: t2}); ");
+		out.println("               });");
+		out.println("          });");
+		out.println("    </script>");
+
+		out.println("</tr>");
+
+	}
+
+	private void finTabla(PrintWriter out)
+	{
+		out.println(" </table>");
+		out.println("                                </div>");
+
+		out.println("<form name=\"sentMessage\" id=\"contactForm\" novalidate>");
+		out.println("                        <div class=\"row control-group\">");
+		out.println("                            <div class=\"form-group col-xs-12 floating-label-form-group controls\">");
+		out.println("                                <label>Tiempo inicio</label>");
+		out.println("                                <input type=\"number\" class=\"form-control\" placeholder=\"Ingrese el tiempo\" id=\"tinicio\" required data-validation-required-message=\"Complete el campo\">");
+		out.println("                                <p class=\"help-block text-danger\"></p>");
+		out.println("                            </div>");
+		out.println("                        </div>");
+		out.println("                        <div class=\"row control-group\">");
+		out.println("                            <div class=\"form-group col-xs-12 floating-label-form-group controls\">");
+		out.println("                                <label>Tiempo terminacion</label>");
+		out.println("                                <input type=\"number\" class=\"form-control\" placeholder=\"Ingrese el tiempo\" id=\"tfin\" required data-validation-required-message=\"Complete el campo\">");
+		out.println("                                <p class=\"help-block text-danger\"></p>");
+		out.println("                            </div>");
+		out.println("                        </div>");
+		out.println("</form>");
+	}
 
 }
