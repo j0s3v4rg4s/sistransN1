@@ -1,8 +1,9 @@
 package escenario2;
 
-import java.sql.Date;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import consulta.ConsultaDAO;
 
@@ -154,8 +155,15 @@ public class proAndes {
 	 */
 	public void registrarEtapaProduccion (EtapaProduccion etapaP)
 	{
-
+		
 	}
+	public static Date addDays(Date dt, int days)
+    {
+		Calendar c = Calendar.getInstance();
+		c.setTime(dt); 
+		c = CalendarUtil.addDays(c, 21);
+		return c.getTime(); 
+    }
 	/**
 	 * metodo que registra un pedido dado 
 	 */
@@ -163,46 +171,36 @@ public class proAndes {
 	public Date registrarPedidoProducto(Date fecha, String idProducto, int cantidad, String idCliente)
 	{
 		// JUANPABLO 
-
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(fecha);
-		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH);
-		int day = cal.get(Calendar.DAY_OF_MONTH);
-		Date ans=null;
-
+		
+		Date ans = fecha;
 
 		int cant = conexion.buscarCantidadProductoEnBodega(idProducto);
 
 		if (cant > cantidad)
 		{
 			conexion.reservarCantidadProductoEnBodega(cantidad, idProducto);
-			day += 5;
-			ans = new Date(year, month, day);
+		
+			ans = addDays(ans, 2);
 		}
 		else 
 		{
 			if (conexion.CantidadEnBodegaVSCantidad(idProducto, idCliente)== null)
 			{
-
+				ans = addDays(ans, 5);
 			}
 			else
 			{
 				ArrayList<Bodega> aPedir = conexion.CantidadEnBodegaVSCantidad(idProducto, idCliente);
+				
+				
 				for (int i = 0;i<aPedir.size(); i++)
 				{
 					Bodega b = aPedir.get(i);
-					hacerSolicitudPedido(b);
+					conexion.actualizarEstado(idCliente, Producto.PENDIENTE);
 				}
 
-				if (month == 12)
-				{
-					month = 1;
-					year++;
-				}
-				else 
-					month++;
-				ans = new Date(year, month, day);
+				
+				ans = addDays(ans, 15);
 
 			}
 		}
@@ -223,17 +221,12 @@ public class proAndes {
 			ans =conexion.darInfoProducto(id);
 		return ans;
 	}
-	public void hacerSolicitudPedido(Bodega b) 
-	{
-		String idIns = conexion.darIdInsumoPorIdbodega(b.getId());
-		conexion.hacerSolicitudPedidoProveedor((Math.abs(b.getCantidad())), idIns);;
+	
 
-	}
-
-	public boolean RegistrarEntregaDePedidoDeProductosACliente(String idCliente)
+	public boolean RegistrarEntregaDePedidoDeProductosACliente(String idCliente, String idprod, int cant)
 	{
 		// JUANPABLO 
-		boolean ans = conexion.EntregaDeProductos(idCliente);
+		boolean ans = conexion.EntregaDeProductos(idCliente, idprod, cant);
 		return ans;
 	}
 
@@ -294,5 +287,17 @@ public class proAndes {
 		// JOSE
 		return conexion.realizarBusqueda();
 	}
+	public ArrayList darProductos()
+	{
+		// JUAN PABLO 
+		return conexion.realizarBusquedaProducto();
+	}
+	
+	public ArrayList darSolicitudes()
+	{
+		// JUAN PABLO 
+		return conexion.realizarBusquedaSolicitudes();
+	}
+	
 
 }

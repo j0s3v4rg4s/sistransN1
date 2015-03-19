@@ -15,6 +15,8 @@ public class Producto {
 	public static final String SIN_EMPEZAR = "sinEmpezar";
 
 	public static final String PRODUCIOENDO = "produciendo";
+	
+	public static final String PENDIENTE = "produciendo";
 
 	public static final String TERMINADO = "terminado";
 

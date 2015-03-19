@@ -17,7 +17,16 @@
 		<servlet-name>servletPreguntas</servlet-name>
 		<servlet-class>servlet.servletPreguntas</servlet-class>
 	</servlet>
-
+	
+	<servlet>
+		<servlet-name>servletRF12</servlet-name>
+		<servlet-class>servlet.ServletRF12</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>servletRF14</servlet-name>
+		<servlet-class>servlet.ServletRF14</servlet-class>
+	</servlet>
 
 	<!-- MAPPING -->
 	<servlet-mapping>
@@ -29,7 +38,15 @@
 		<servlet-name>servletPreguntas</servlet-name>
 		<url-pattern>/pregunta.htm</url-pattern>
 	</servlet-mapping>
-
+	
+	<servlet-mapping>
+		<servlet-name>servletRF12</servlet-name>
+		<url-pattern>/RF12.htm</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>servletRF14</servlet-name>
+		<url-pattern>/RF14.htm</url-pattern>
+	</servlet-mapping>
 	<login-config>
 		<auth-method>BASIC</auth-method>
 	</login-config>

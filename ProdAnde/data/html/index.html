@@ -37,11 +37,17 @@
                $("#req10").click(function(event){
                   $("#tabla1").load('pregunta.htm',{accion: 'actualizar'}); 
                });
+               $("#req12").click(function(event){
+                    console.log('hola');
+                  $("#tablaRF12").load('RF12.htm',{accion: 'actualizar'}); 
+               });
+               $("#req14").click(function(event){
+            	   console.log('holii');
+                 $("#tablaRF14").load('RF14.htm',{accion: 'actualizar'}); 
+              });
+               
           });
     </script>
-
-
-    
 
 </head>
 
@@ -114,7 +120,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal1" class="portfolio-link" id="ventana" data-toggle="modal">
+                    <a href="#portfolioModal1" class="portfolio-link" id="req12" data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -126,7 +132,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal2" class="portfolio-link" data-toggle="modal">
+                    <a href="#portfolioModal2" class="portfolio-link"   id="req14" data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -148,7 +154,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
+                    <a href="#portfolioModal4" class="portfolio-link" id="req11" data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -399,48 +405,11 @@
                             <h3>Registrar pedido de productos</h3>
                             
                             <hr class="star-primary">
-                            <p>Esta operaci�n representa la solicitud de producci�n de un cierto volumen de productos por parte de un cliente, quien adem�s especifica la fecha esperada de entrega. ProdAndes debe analizar el pedido y aceptarlo si la empresa est� en capacidad de satisfacerlo (cuenta con las materias primas, componentes y estaciones de producci�n suficientes) y en caso afirmativo indica la fecha de entrega (suponiendo que se vaya a procesar este solo pedido). Cuando el pedido es aceptado, los insumos que requiere se reservan, de manera que el pedido pueda ser satisfecho sin interferencia de otros pedidos de otros usuarios. Cuando un pedido no puede ser satisfecho porque la empresa no cuenta con los insumos necesarios, se coloca en pendiente para luego programar la compra de los insumos faltantes. En caso de conflicto de fechas, el usuario puede desistir del pedido.  Esta operaci�n es realizada por un usuario cliente de la empresa</p>
-                            <div id="probador2">
+                            <p>Esta operacion representa la solicitud de produccion de un cierto volumen de productos por parte de un cliente, quien ademas especifica la fecha esperada de entrega. ProdAndes debe analizar el pedido y aceptarlo si la empresa est� en capacidad de satisfacerlo (cuenta con las materias primas, componentes y estaciones de produccion suficientes) y en caso afirmativo indica la fecha de entrega (suponiendo que se vaya a procesar este solo pedido). Cuando el pedido es aceptado, los insumos que requiere se reservan, de manera que el pedido pueda ser satisfecho sin interferencia de otros pedidos de otros usuarios. Cuando un pedido no puede ser satisfecho porque la empresa no cuenta con los insumos necesarios, se coloca en pendiente para luego programar la compra de los insumos faltantes. En caso de conflicto de fechas, el usuario puede desistir del pedido.  Esta operacion es realizada por un usuario cliente de la empresa</p>
+                            <div id="tablaRF12">
                                 
                             </div>
-                            
-                            
-                            <div class="row">
-                       <div class="col-lg-8 col-lg-offset-2">
-                    <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
-                    <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
-                    <form name="sentMessage" id="contactForm" novalidate>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>IdProducto</label>
-                                <input type="text" class="form-control" placeholder="Ingrese el Id del producto" id="ID_PRODUCTO" required data-validation-required-message="Porfavor ingrese el id del producto a agregar">
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Cantidad</label>
-                                <input type="number" class="form-control" placeholder="Ingrese la cantidad a pedir" id="CANTIDAD" required data-validation-required-message="Porfavor ingrese la cantidad deseada">
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Fecha deseada</label>
-                                <h4> Fecha deseada:  </h4>
-                                 <input type="date"  placeholder="Ingrese la cantidad a pedir" id="CANTIDAD" required data-validation-required-message="Porfavor ingrese la cantidad deseada">
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
-                        <br>
-                        <div id="RegPedido"></div>
-                        <div class="row">
-                            <div class="form-group col-xs-12">
-                                <button type="submit" class="btn btn-success btn-lg">Registrar pedido</button>
-                            </div>
-                        </div>
-                        
-                    </form>
+                    
                 </div>
                             <ul class="list-inline item-details">
                                 <li>Client:
@@ -480,30 +449,14 @@
                             <h2>Requerimiento funcional numero 14</h2>
                             <h3>Registrar entrega de pedido de productos a un cliente</h3>
                             <hr class="star-primary">
-                            <p>Esta operaci�n cierra el ciclo de producci�n de un pedido (solicitud, eventual compra de insumos, producci�n) y los productos producidos se entregan al cliente, realizando las actualizaciones de inventario correspondientes. Esta operaci�n es realizada por un usuario gerente de producci�n de la empresa</p>
+                            <p>Esta operacion cierra el ciclo de produccion de un pedido (solicitud, eventual compra de insumos, produccion) y los productos producidos se entregan al cliente, realizando las actualizaciones de inventario correspondientes. Esta operacion es realizada por un usuario gerente de produccion de la empresa</p>
+                            <div id="tablaRF14">
+                                <h1>MUESTRA</h1>>
+                            </div>
                             <div class="row">
                        <div class="col-lg-8 col-lg-offset-2">
-                    <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
-                    <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
-                    <form name="sentMessage" id="contactForm" novalidate>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Direccion electronica</label>
-                                <input type="email" class="form-control" placeholder="Ingrese la direccion electronica del cliente" id="DIRECCION_ELECTRONICA" required data-validation-required-message="Porfavor ingrese su direccion electronica">
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
+                       
                         
-                        <br>
-                        <div id="success"></div>
-                        <div class="row">
-                            <div class="form-group col-xs-12">
-                                <button type="submit" class="btn btn-success btn-lg">Cerrar ciclo</button>
-                            </div>
-                        </div>
-                        
-                    </form>
-                </div>
                             <ul class="list-inline item-details">
                                 <li>Client:
                                     <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
@@ -614,7 +567,13 @@
                             <h2>Requerimiento funcional numero 11</h2>
                             <h3>Registrar llegada de un material(Materia prima/Componente)</h3>
                             <hr class="star-primary">
-                            <p>Esta operaci�n representa la llegada de materia prima o de componentes a la empresa, respuesta a una solicitud de compra a un proveedor. Se debe registrar adem�s la fecha de llegada y hacer las actualizaciones contables y de inventario correspondientes. Esta operaci�n es realizada por un usuario gerente de producci�n de la empresa. </p>
+
+
+                            <div id="tabla2">
+                                
+                            </div>
+
+
                             <ul class="list-inline item-details">
                                 <li>Client:
                                     <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
@@ -651,7 +610,7 @@
                             <h2>Requerimiento funcional de consulta numero 1</h2>
                             <h3>Consultar las existencias de materiales (materias primas/componentes/productos) en ProdAndes</h3>
                             <hr class="star-primary">
-                            <p>Los resultados deben ser clasificados seg�n un criterio deseado por quien realiza la consulta (usuario o administraci�n de ProdAndes). Los filtros son, entre otros, tipo de material, rango de existencias en inventario, etapa de producci�n, fecha de solicitud y/o entrega. Debe ofrecerse la posibilidad de agrupamiento y ordenamiento de las respuestas seg�n los intereses del usuario que consulta. </p>
+                            <p>Los resultados deben ser clasificados segun un criterio deseado por quien realiza la consulta (usuario o administracion de ProdAndes). Los filtros son, entre otros, tipo de material, rango de existencias en inventario, etapa de produccion, fecha de solicitud y/o entrega. Debe ofrecerse la posibilidad de agrupamiento y ordenamiento de las respuestas segun los intereses del usuario que consulta. </p>
                             <ul class="list-inline item-details">
                                 <li>Client:
                                     <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
@@ -688,7 +647,7 @@
                             <h2>Requerimiento funcional de consulta numero 2</h2>
                             <h3>Consultar un material</h3>
                             <hr class="star-primary">
-                            <p>Responde toda la informaci�n de un material (materia prima, componente, etapa de producto, producto), incluyendo su tipo, su nombre, los materiales que lo componen, los materiales que compone, las etapas de producci�n en las que participa, las unidades producidas, las unidades en producci�n, los pedidos de cliente en los que est� involucrado (para los productos), los pedidos de compra en los que est� involucrado (para materias primas y componentes). Los resultados deben poder ser filtrados por tipo de material, volumen, rango de fechas y costo3. Se debe mostrar la fecha, los productos y cantidades solicitadas y el costo. Debe ofrecerse la posibilidad de agrupamiento y ordenamiento de las respuestas seg�n los intereses del usuario que consulta. </p>
+                            <p>Responde toda la informacion de un material (materia prima, componente, etapa de producto, producto), incluyendo su tipo, su nombre, los materiales que lo componen, los materiales que compone, las etapas de producci�n en las que participa, las unidades producidas, las unidades en produccion, los pedidos de cliente en los que est� involucrado (para los productos), los pedidos de compra en los que est� involucrado (para materias primas y componentes). Los resultados deben poder ser filtrados por tipo de material, volumen, rango de fechas y costo. Se debe mostrar la fecha, los productos y cantidades solicitadas y el costo. Debe ofrecerse la posibilidad de agrupamiento y ordenamiento de las respuestas segun los intereses del usuario que consulta. </p>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Id material</label>
