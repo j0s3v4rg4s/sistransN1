@@ -103,6 +103,8 @@ public class ConsultaDAO {
 	}
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
+		c.EntregaDeProductos("dirElec1","idprod1", 10);
+		
 
 		
 	}
@@ -726,6 +728,7 @@ public class ConsultaDAO {
 		PreparedStatement prepStmt = null;
 		boolean answ = false;
 		String a = darIdBodegaPorIdProducto(idProducto);
+		System.out.println(a);
 		int cant = verificarCantidadEnBodega(a);
 	
 		try {
@@ -734,7 +737,7 @@ public class ConsultaDAO {
 			prepStmt = conexion.prepareStatement(pre);
 			ResultSet rs = prepStmt.executeQuery();
 			answ=true;
-			borrarSolicitud(idCliente, idProducto, cant);
+			borrarSolicitud(idCliente, idProducto, cantidad);
 			prepStmt.close();
 			closeConnection(conexion);
 		} catch (SQLException e) {
@@ -756,6 +759,7 @@ public class ConsultaDAO {
 			ResultSet rs = prepStmt.executeQuery();
 			prepStmt.close();
 			closeConnection(conexion);
+			System.out.println("La hicimos!!");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -792,7 +796,7 @@ public class ConsultaDAO {
 		String ans = "";
 		try {
 			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "SELECT BODEGA.ID FROM((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_INSUMO_P = INSUMOS.ID)WHERE ETAPA_PRODUCCION.ID_PRODUCTO='"+idProd+"'";
+			String pre = "SELECT BODEGA.ID FROM(BODEGA INNER JOIN PRODUCTO ON BODEGA.ID = PRODUCTO.ID_BODEGA)WHERE PRODUCTO.ID='"+idProd+"'";
 			prepStmt = conexion.prepareStatement(pre);
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
