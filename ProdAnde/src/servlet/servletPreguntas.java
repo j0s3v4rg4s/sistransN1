@@ -98,6 +98,28 @@ public class servletPreguntas extends HttpServlet{
 			pro.registrarLlegadaInsumo(id, cantidad);
 			imprimirOpciones(out);
 		}
+		
+		if(accion.equals("filtro"))
+		{
+			int minimo = Integer.parseInt(request.getParameter("mc"));
+			int maximo = Integer.parseInt(request.getParameter("xc"));
+			int oredenar = Integer.parseInt(request.getParameter("ord"));
+			int tipo = Integer.parseInt(request.getParameter("tp"));
+			int etapa = Integer.parseInt(request.getParameter("etp"));
+			String fecha = request.getParameter("fec");
+			
+			ArrayList filtro = pro.filtro(minimo,maximo,oredenar,tipo,etapa,fecha);
+			ArrayList<String> titulo = (ArrayList<String>) filtro.get(0);
+			inicioTabla(out);
+			filtro.remove(0);
+			imprimirFilaTitulo(out, titulo);
+			for (int i=0;i<filtro.size();i++)
+			{
+				imprimirFilaInfo(out, (ArrayList<String>)filtro.get(i));
+			}
+			finTabla2(out);
+			
+		}
 	}
 
 
@@ -107,7 +129,6 @@ public class servletPreguntas extends HttpServlet{
 		ArrayList componente = pro.darInsumos(insumos.COMPONENTE);
 		
 		out.println("<label>Material</label>                                        ");
-		System.out.println("Pasa por aca");
 		out.println("                                        <select class=\"form-control\" id=\"sel1\">");
 		for(int i=0;i<material.size();i++)
 		{
@@ -167,6 +188,17 @@ public class servletPreguntas extends HttpServlet{
 		out.println("</tr>");
 
 	}
+	
+	private void imprimirFilaInfo(PrintWriter out, ArrayList<String> titulo)
+	{
+		out.println("<tr>");
+		for (int i=0;i<titulo.size();i++)
+		{
+			out.println("   		<td>"+titulo.get(i)+"</td>");
+		}
+		out.println("</tr>");
+
+	}
 
 	private void imprimirFila(PrintWriter out, ArrayList<String> titulo)
 	{
@@ -215,6 +247,13 @@ public class servletPreguntas extends HttpServlet{
 		out.println("                            </div>");
 		out.println("                        </div>");
 		out.println("</form>");
+	}
+	
+	
+	private void finTabla2(PrintWriter out)
+	{
+		out.println(" </table>");
+		out.println("                                </div>");
 	}
 
 }

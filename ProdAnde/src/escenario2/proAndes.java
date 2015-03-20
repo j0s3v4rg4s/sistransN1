@@ -311,8 +311,82 @@ public class proAndes {
 		}
 
 
+	}
+	
+	public ArrayList filtro(int minimo, int maximo, int oredenar, int tipo,
+			int etapa, String fecha) {
+
+		String cantidades = "";
+		if(minimo != -1)
+			cantidades +="where t.CANTIDAD >= "+minimo+"";
+
+		if(maximo != -1)
+		{
+			if(!cantidades.equals(""))
+				cantidades +=" AND t.CANTIDAD <= "+maximo+"";
+			else
+				cantidades +="where t.CANTIDAD <= "+maximo+"";
+		}
+
+		switch (tipo) {
+		case 1: 
+			if(!cantidades.equals(""))
+				cantidades +=" and t.tipo='producto'";
+			else
+				cantidades +="where t.tipo='producto'";
+			break;
+		case 2:
+			if(!cantidades.equals(""))
+				cantidades +=" and t.tipo='materia prima'";
+			else
+				cantidades +="where t.tipo='materia prima'";
+			break;
+		case 3:
+			if(!cantidades.equals(""))
+				cantidades +=" and t.tipo='componente'";
+			else
+				cantidades +="where t.tipo='componente'";
+			break;
+		}
+
+		if(etapa==-1)
+		{
+			if(oredenar==0)
+			{
+				String query = "SELECT * FROM (SELECT p.NOMBRE, b.CANTIDAD, b.RESERVA, 'producto' as tipo FROM BODEGA b inner JOIN PRODUCTO p on p.ID_BODEGA=b.ID union SELECT i.NOMBRE, b.CANTIDAD, b.RESERVA,i.TIPO FROM BODEGA b inner JOIN INSUMOS i on b.id = i.ID_BODEGA) t "+cantidades;
+				System.out.println(query);
+				ArrayList rs = conexion.realizarBusqueda2(query);
+				return rs;
+			}
+			else
+			{
+				String query = "SELECT t.tipo, COUNT(t.tipo) CANTIDAD FROM (SELECT p.NOMBRE, b.CANTIDAD, b.RESERVA, 'producto' as tipo FROM BODEGA b inner JOIN PRODUCTO p on p.ID_BODEGA=b.ID union SELECT i.NOMBRE, b.CANTIDAD, b.RESERVA,i.TIPO FROM BODEGA b inner JOIN INSUMOS i on b.id = i.ID_BODEGA) t "+cantidades+" GROUP BY t.tipo";
+				System.out.println(query);
+				ArrayList rs = conexion.realizarBusqueda2(query);
+				return rs;
+			}
+
+		}
+		else
+		{
+			if(oredenar==0)
+			{
+				String query = "SELECT * FROM (SELECT t.NOMBRE, b.CANTIDAD, b.RESERVA, 'producto' as tipo FROM (SELECT p.NOMBRE, p.ID_BODEGA,e.NUMERO FROM ETAPA_PRODUCCION e inner join PRODUCTO p on p.ID = e.ID_PRODUCTO WHERE e.NUMERO = "+etapa+") t INNER JOIN BODEGA b on t.ID_BODEGA = b.id UNION SELECT it.NOMBRE, b.CANTIDAD, b.RESERVA, it.TIPO FROM (SELECT i.ID_BODEGA, i.NOMBRE, i.TIPO FROM ETAPA_PRODUCCION e inner join INSUMOS i on e.ID_INSUMO_G = i.ID WHERE e.NUMERO = "+etapa+" union SELECT i.ID_BODEGA, i.NOMBRE ,i.TIPO FROM ETAPA_PRODUCCION e inner join INSUMOS i on e.ID_INSUMO_P = i.ID WHERE e.NUMERO = "+etapa+") it INNER JOIN bodega b on it.ID_BODEGA = b.ID) t "+cantidades;
+				ArrayList rs = conexion.realizarBusqueda2(query);
+				return rs;
+			}
+			else
+			{
+				String query = "SELECT t.tipo, COUNT(t.tipo) CANTIDAD FROM (SELECT t.NOMBRE, b.CANTIDAD, b.RESERVA, 'producto' as tipo FROM (SELECT p.NOMBRE, p.ID_BODEGA,e.NUMERO FROM ETAPA_PRODUCCION e inner join PRODUCTO p on p.ID = e.ID_PRODUCTO WHERE e.NUMERO = "+etapa+") t INNER JOIN BODEGA b on t.ID_BODEGA = b.id UNION SELECT it.NOMBRE, b.CANTIDAD, b.RESERVA, it.TIPO FROM (SELECT i.ID_BODEGA, i.NOMBRE, i.TIPO FROM ETAPA_PRODUCCION e inner join INSUMOS i on e.ID_INSUMO_G = i.ID WHERE e.NUMERO = "+etapa+" union SELECT i.ID_BODEGA, i.NOMBRE ,i.TIPO FROM ETAPA_PRODUCCION e inner join INSUMOS i on e.ID_INSUMO_P = i.ID WHERE e.NUMERO = "+etapa+") it INNER JOIN bodega b on it.ID_BODEGA = b.ID) t "+cantidades+" GROUP BY t.tipo";
+				ArrayList rs = conexion.realizarBusqueda2(query);
+				return rs;
+			}
+
+		}
+
 
 	}
+	
 	public ArrayList darProductos()
 	{
 		// JUAN PABLO 

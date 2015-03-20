@@ -668,7 +668,112 @@
                                 <h2>Requerimiento funcional de consulta numero 1</h2>
                                 <h3>Consultar las existencias de materiales (materias primas/componentes/productos) en ProdAndes</h3>
                                 <hr class="star-primary">
-                                <p>Los resultados deben ser clasificados seg�n un criterio deseado por quien realiza la consulta (usuario o administraci�n de ProdAndes). Los filtros son, entre otros, tipo de material, rango de existencias en inventario, etapa de producci�n, fecha de solicitud y/o entrega. Debe ofrecerse la posibilidad de agrupamiento y ordenamiento de las respuestas seg�n los intereses del usuario que consulta. </p>
+                                
+                                   <div id="formulario">
+                                    <form class="form-horizontal">
+                                        <fieldset>
+
+                                            <!-- Form Name -->
+                                            <legend>Filtros</legend>
+
+                                            <!-- Select Basic -->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="selectbasic">Ordenar por</label>
+                                                <div class="col-md-5">
+                                                    <select id="selectbasic" name="selectbasic" class="form-control">
+                                                        <option value="0">-none-</option>
+                                                        <option value="1">Tipo</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- Select Basic -->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="tipo">Tipo</label>
+                                                <div class="col-md-5">
+                                                    <select id="tipo" name="tipo" class="form-control">
+                                                        <option value="0">-none-</option>
+                                                        <option value="1">Producto</option>
+                                                        <option value="2">Materia Prima</option>
+                                                        <option value="3">Componente</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- Text input-->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="minimo1">Minimo bodega</label>  
+                                                <div class="col-md-5">
+                                                    <input id="minimo1" name="minimo1" placeholder="Cantidad" class="form-control input-md" type="number">
+
+                                                </div>
+                                            </div>
+
+                                            <!-- Text input-->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="maximo1">Maximo bodega</label>  
+                                                <div class="col-md-5">
+                                                    <input id="maximo1" name="maximo1" placeholder="Cantidad" class="form-control input-md" type="number">
+
+                                                </div>
+                                            </div>
+
+                                            <!-- Text input-->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="etapa">Etapa produccion</label>  
+                                                <div class="col-md-5">
+                                                    <input id="etapa" name="etapa" placeholder="numero etapa" class="form-control input-md" type="number">
+
+                                                </div>
+                                            </div>
+
+                                            <!-- Text input-->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="fecha">Fecha solicitud</label>  
+                                                <div class="col-md-5">
+                                                    <input id="fecha" name="fecha" placeholder="dd/mm/aa" class="form-control input-md" type="text">
+
+                                                </div>
+                                            </div>
+
+                                            <!-- Button -->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="buscar"></label>
+                                                <div class="col-md-4">
+                                                    <button id="buscar" name="buscar" class="btn btn-primary">Buscar</button>
+                                                </div>
+                                            </div>
+
+                                        </fieldset>
+                                    </form>
+                                </div>
+                                
+                                <div id="restForm">
+                                    
+                                </div>
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+                                        $("#buscar").click(function (event) {
+                                            var minCan = document.getElementById("minimo1").value;
+                                            var maxCan = document.getElementById("maximo1").value;
+                                            var ordenar = document.getElementById("selectbasic").value;
+                                            var tipo = document.getElementById("tipo").value;
+                                            var etapa = document.getElementById("etapa").value;
+                                            var fecha = document.getElementById("fecha").value;
+
+                                            if(minCan==='')
+                                                minCan=-1;
+                                            if(maxCan==='')
+                                                maxCan=-1;
+                                            if(etapa==='')
+                                                etapa=-1;
+                                             $("#restForm").load('pregunta.htm', {accion: 'filtro', mc: minCan, xc: maxCan, ord: ordenar, tp: tipo, etp: etapa, fec: fecha});
+                                        });
+                                    });
+                                </script>
+
+                                
+                                
                                 <ul class="list-inline item-details">
                                     <li>Client:
                                         <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
