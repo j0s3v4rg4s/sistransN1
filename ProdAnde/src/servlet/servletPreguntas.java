@@ -107,6 +107,7 @@ public class servletPreguntas extends HttpServlet{
 		ArrayList componente = pro.darInsumos(insumos.COMPONENTE);
 		
 		out.println("<label>Material</label>                                        ");
+		System.out.println("Pasa por aca");
 		out.println("                                        <select class=\"form-control\" id=\"sel1\">");
 		for(int i=0;i<material.size();i++)
 		{

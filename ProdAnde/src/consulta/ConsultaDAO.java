@@ -103,7 +103,9 @@ public class ConsultaDAO {
 	}
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
-		c.EntregaDeProductos("dirElec1","idprod1", 10);
+		ArrayList<String> ans = c.darInfoMateriaPrima("id2") ;
+		for (int i=0; i< ans.size(); i++)
+			System.out.println(ans);
 		
 
 		
@@ -846,20 +848,20 @@ public class ConsultaDAO {
 
 
 
-	public String darInfoMateriaPrima(String id) {
+	public ArrayList<String> darInfoMateriaPrima(String id) {
 
 		PreparedStatement prepStmt = null;
 		String ans = "";
-
+		ArrayList<String> rta = new ArrayList<String>();
 		try {
 			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "SELECT INSUMO.NOMBRE, BODEGA.CANTIDAD AS EXISTENCIAS_EN_BODEGA, ETAPA_PRODUCCION.CANTIDAD AS CANTIDAD_GASTO_ETAPA_PRODUCCION,ETAPA_PRODUCCION.NUMERO AS NUMERO_ETAPA_PRODUCCION,PRODUCTO.NOMBRE, SOLICITUDES.ID FROM (((ETAPA_PRODUCCION INNER JOIN INSUMOS ON ETAPA_PRODUCCION.ID_INSUMOS_G = INSUMOS.ID)INNER JOIN BODEGA ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN PRODUCTO ON ETAPA_PRODUCCION.ID_PRODUCTO = PRODUCTO.ID) WHERE INSUMO.TIPO= 'Materia Prima';";
+			String pre = "SELECT INSUMOS.NOMBRE AS INSN, BODEGA.CANTIDAD AS EXISTENCIAS_BODEGA, ETAPA_PRODUCCION.CANTIDAD_G AS CANTIDAD_GASTADA,ETAPA_PRODUCCION.NUMERO AS NUM_ETAPA_PRODUCCION,PRODUCTO.NOMBRE AS PROD, SOLICITUDES.ID AS IDS FROM ((((ETAPA_PRODUCCION INNER JOIN INSUMOS ON ETAPA_PRODUCCION.ID_INSUMO_G = INSUMOS.ID)INNER JOIN BODEGA ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN PRODUCTO ON ETAPA_PRODUCCION.ID_PRODUCTO = PRODUCTO.ID)INNER JOIN SOLICITUDES ON SOLICITUDES.ID_PRODUCTO = PRODUCTO.ID) WHERE INSUMOS.TIPO= 'materia prima' AND INSUMOS.ID = '"+id+"'";
 			prepStmt = conexion.prepareStatement(pre);
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
-				ans = "Nombre: " + rs.getString("INSUMO.NOMBRE")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_EN_BODEGA")+", Cantidad Gastada Por etapa de producci�n " + rs.getString("CANTIDAD_GASTO_ETAPA_PRODUCCION")+ ", Numero de etapa de producci�n " + rs.getString("NUMERO_ETAPA_PRODUCCION")+ ", Nombre del producto que genera " + rs.getString("PRODUCTO.NOMBRE")+ ", ID Solicitud: " + rs.getString("SOLICITUDES.ID");
-
+				ans = "Nombre: " + rs.getString("INSN")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_BODEGA")+", Cantidad Gastada Por etapa de produccion " + rs.getString("CANTIDAD_GASTADA")+ ", Numero de etapa de produccion " + rs.getString("NUM_ETAPA_PRODUCCION")+ ", Nombre del producto que genera " + rs.getString("PROD")+ ", ID Solicitud: " + rs.getString("IDS");
+				rta.add(ans);
 			}
 			prepStmt.close();
 			closeConnection(conexion);
@@ -868,26 +870,28 @@ public class ConsultaDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return ans;
+		return rta;
 	}
 
 
-	public String darInfoComponente(String id) {
+	public ArrayList<String> darInfoComponente(String id) {
 
 		PreparedStatement prepStmt = null;
 		String ans = "";
+		ArrayList<String> rta = new ArrayList<String>();
+		
 
 		try {
 			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "SELECT INSUMO.NOMBRE, BODEGA.CANTIDAD AS EXISTENCIAS_EN_BODEGA, ETAPA_PRODUCCION.CANTIDAD AS CANTIDAD_GASTO_ETAPA_PRODUCCION,ETAPA_PRODUCCION.NUMERO AS NUMERO_ETAPA_PRODUCCION,PRODUCTO.NOMBRE, SOLICITUDES.ID FROM (((ETAPA_PRODUCCION INNER JOIN INSUMOS ON ETAPA_PRODUCCION.ID_INSUMOS_G = INSUMOS.ID)INNER JOIN BODEGA ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN PRODUCTO ON ETAPA_PRODUCCION.ID_PRODUCTO = PRODUCTO.ID) WHERE INSUMO.TIPO= 'Materia Prima' AND INSUMO.ID = '"+id+"';";
+			String pre = "SELECT INSUMOS.NOMBRE AS INSN, BODEGA.CANTIDAD AS EXISTENCIAS_BODEGA, ETAPA_PRODUCCION.CANTIDAD_G AS CANTIDAD_GASTADA,ETAPA_PRODUCCION.NUMERO AS NUM_ETAPA_PRODUCCION,PRODUCTO.NOMBRE AS PROD, SOLICITUDES.ID AS IDS FROM ((((ETAPA_PRODUCCION INNER JOIN INSUMOS ON ETAPA_PRODUCCION.ID_INSUMO_G = INSUMOS.ID)INNER JOIN BODEGA ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN PRODUCTO ON ETAPA_PRODUCCION.ID_PRODUCTO = PRODUCTO.ID)INNER JOIN SOLICITUDES ON SOLICITUDES.ID_PRODUCTO = PRODUCTO.ID) WHERE INSUMOS.TIPO= 'componente' AND INSUMOS.ID = '"+id+"'";
 			prepStmt = conexion.prepareStatement(pre);
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
-
-				ans = "Nombre: " + rs.getString("INSUMO.NOMBRE")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_EN_BODEGA")+", Cantidad Gastada Por etapa de producci�n " + rs.getString("CANTIDAD_GASTO_ETAPA_PRODUCCION")+ ", Numero de etapa de producci�n " + rs.getString("NUMERO_ETAPA_PRODUCCION")+ ", Nombre del producto que genera " + rs.getString("PRODUCTO.NOMBRE")+ ", ID Solicitud: " + rs.getString("SOLICITUDES.ID");
+				ans = "Nombre: " + rs.getString("INSN")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_BODEGA")+", Cantidad Gastada Por etapa de produccion " + rs.getString("CANTIDAD_GASTADA")+ ", Numero de etapa de produccion " + rs.getString("NUM_ETAPA_PRODUCCION")+ ", Nombre del producto que genera " + rs.getString("PROD")+ ", ID Solicitud: " + rs.getString("IDS");
+				rta.add(ans);
 			}
-
+System.out.println("sirve aca");
 			prepStmt.close();
 			closeConnection(conexion);
 		} catch (SQLException e) {
@@ -895,26 +899,29 @@ public class ConsultaDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return ans;
+		System.out.println();
+		return rta;
 	}
 
 
 
-	public String darInfoEtapaDeProduccion(int num) {
+	public ArrayList<String> darInfoEtapaDeProduccion(int num) {
 
 		PreparedStatement prepStmt = null;
 		String ans = "";
+		ArrayList<String> rta = new ArrayList<String>();
 
 		try {
 			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "SELECT * FROM ETAPA_PRODUCCION WHERE ETAPA_PRODUCCION.NUMERO = "+num+";";
+			String pre = "SELECT * FROM ETAPA_PRODUCCION WHERE ETAPA_PRODUCCION.NUMERO = "+num;
 			prepStmt = conexion.prepareStatement(pre);
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
 				Producto prod = buscarProducto( rs.getString("ID_PRODUCTO"));
 
-				ans = "Etapa Numero: " + rs.getString("NUMERO")+", Nombre Producto: " +  prod.getId() +", Costo Producto " + prod.getCosto() + "$, Nombre etapa:  " + rs.getString("NOMBRE")+ ", tiempo Inicial " + rs.getString("T_INICIO")+ ", tiempo final " + rs.getString("T_FINAL");
+				ans = "Etapa Numero: " + rs.getString("NUMERO")+", Nombre Producto: " +  prod.getId() +", Costo Producto: " + prod.getCosto() + "$, Nombre etapa:  " + rs.getString("NOMBRE")+ ", tiempo Inicial: " + rs.getString("T_INICIO")+ ", tiempo final: " + rs.getString("T_FINAL")+ ", estado: " + rs.getString("ESTADO")+ ", ID indsumo a producir: " + rs.getString("ID_INSUMO_P")+ ", Cantidad producida: " + rs.getString("CANTIDAD_P")+ ", Id del insumo gastado: " + rs.getString("ID_INSUMO_G")+ ", Cantidad del insumo gastado: " + rs.getString("CANTIDAD_G");
+				rta.add(ans);
 			}
 
 			prepStmt.close();
@@ -924,22 +931,23 @@ public class ConsultaDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return ans;
+		return rta;
 	}
-	public String darInfoProducto(String id) {
+	public ArrayList<String> darInfoProducto(String id) {
 
 		PreparedStatement prepStmt = null;
 		String ans = "";
-
+		ArrayList<String> rta = new ArrayList<String>();
 		try {
 			establecerConexion(cadenaConexion, usuario, clave);
-			String pre = "SELECT INSUMO.NOMBRE, BODEGA.CANTIDAD AS EXISTENCIAS_EN_BODEGA, ETAPA_PRODUCCION.CANTIDAD AS CANTIDAD_GASTO_ETAPA_PRODUCCION,ETAPA_PRODUCCION.NUMERO AS NUMERO_ETAPA_PRODUCCION,PRODUCTO.NOMBRE, SOLICITUDES.ID FROM (((ETAPA_PRODUCCION INNER JOIN INSUMOS ON ETAPA_PRODUCCION.ID_INSUMOS_G = INSUMOS.ID)INNER JOIN BODEGA ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN PRODUCTO ON ETAPA_PRODUCCION.ID_PRODUCTO = PRODUCTO.ID) WHERE INSUMO.TIPO= 'Materia Prima' AND INSUMO.ID = '"+id+"';";
+			String pre = "SELECT BODEGA.CANTIDAD AS EXISTENCIAS_BODEGA, ETAPA_PRODUCCION.CANTIDAD_G AS CANTIDAD_GASTADA,ETAPA_PRODUCCION.NUMERO AS NUM_ETAPA_PRODUCCION,PRODUCTO.NOMBRE AS PN, SOLICITUDES.ID AS IDS FROM (((ETAPA_PRODUCCION INNER JOIN PRODUCTO ON ETAPA_PRODUCCION.ID_PRODUCTO = PRODUCTO.ID) INNER JOIN BODEGA ON BODEGA.ID = PRODUCTO.ID_BODEGA)INNER JOIN SOLICITUDES ON SOLICITUDES.ID_PRODUCTO = PRODUCTO.ID) WHERE PRODUCTO.ID = '"+id+"'";
 			prepStmt = conexion.prepareStatement(pre);
 			ResultSet rs = prepStmt.executeQuery();
 			while(rs.next())
 			{
 
-				ans = "Nombre: " + rs.getString("INSUMO.NOMBRE")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_EN_BODEGA")+", Cantidad Gastada Por etapa de producci�n " + rs.getString("CANTIDAD_GASTO_ETAPA_PRODUCCION")+ ", Numero de etapa de producci�n " + rs.getString("NUMERO_ETAPA_PRODUCCION")+ ", Nombre del producto que genera " + rs.getString("PRODUCTO.NOMBRE")+ ", ID Solicitud: " + rs.getString("SOLICITUDES.ID");
+				ans = "Id producto: " + id +", Nombre del producto: "+ rs.getString("PN")+", Existencias en bodega: " + rs.getString("EXISTENCIAS_BODEGA")+", Cantidad Gastada Por etapa de produccion " + rs.getString("CANTIDAD_GASTADA")+ ", Numero de etapa de produccion " + rs.getInt("NUM_ETAPA_PRODUCCION")+ ", ID Solicitud: " + rs.getString("IDS");
+				rta.add(ans);
 			}
 
 			prepStmt.close();
@@ -949,7 +957,7 @@ public class ConsultaDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return ans;
+		return rta;
 	}
 	
 
@@ -1066,5 +1074,48 @@ public class ConsultaDAO {
 		return queryA;
 	
 	}
+	
+	/**
+	 * realiza una pregunta de actualizacion a la base de datos 
+	 * @param query
+	 */
+	public void preguntador(String query) {
+		try {
+			ejecutarPregunta(query).close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			closeConnection(conexion);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public ArrayList realizarBusqueda(String query) {
+		// JOSE
+		ResultSet rs = ejecutarPregunta(query);
+		ArrayList<ArrayList<String>> queryA = new ArrayList<ArrayList<String>>();
+		try {
+			int n = rs.getMetaData().getColumnCount();
+			while(rs.next())
+			{
+				ArrayList<String> l = new ArrayList<String>();
+				for(int i=0;i<n;i++)
+				{
+					l.add(rs.getString(i+1));
+				}
+				queryA.add(l);
+			}
+			rs.close();
+			closeConnection(conexion);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return queryA;
+	}
+	
+
 
 }

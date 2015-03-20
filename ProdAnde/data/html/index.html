@@ -38,17 +38,21 @@
                   $("#tabla1").load('pregunta.htm',{accion: 'actualizar'}); 
                });
                $("#req12").click(function(event){
-                    console.log('hola');
+                  
                   $("#tablaRF12").load('RF12.htm',{accion: 'actualizar'}); 
                });
                $("#req14").click(function(event){
-            	   console.log('holii');
+            
                  $("#tablaRF14").load('RF14.htm',{accion: 'actualizar'}); 
               });
-              
-               $("#req11").click(function (event) {
-                    $("#tabla2").load('pregunta.htm', {accion: 'actualizarReq2'});
-                });
+               $("#req11").click(function(event){
+            	  
+                 $("#tabla2").load('pregunta.htm',{accion: 'actualizarReq2'}); 
+              });
+               $("#reqFC2").click(function(event){
+            	 
+                 $("#tablaRFC2").load('RFC2.htm',{accion: 'actualizar'}); 
+              });
                
           });
     </script>
@@ -180,7 +184,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal6" class="portfolio-link" data-toggle="modal">
+                    <a href="#portfolioModal6" class="portfolio-link"  id="reqFC2"data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -435,8 +439,7 @@
                 </div>
                     </div>
                 </div>
-            </div>
-        </div>
+           
         
     <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-content">
@@ -483,116 +486,89 @@
         </div>
     </div>
         </div>
+	 </div>
 
 
-
-    <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
+    
+            
+<div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
                     </div>
                 </div>
-            </div>
-            
 
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>Requerimiento funcional numero 10</h2>
-                            <h3>Registrar ejecucion de una etapa de produccion</h3>
-                            <hr class="star-primary">
-                            <div id="tabla1">
-                                <div class="table-responsive">
-                                    <table class="table table-condensed table-bordered table-hover">
-                                        <tr>
-                                            <th>Art&iacute;culo</th>
-                                            <th>Serie</th>
-                                            <th>Peso</th>
-                                            <th>Almacén</th>
-                                            <th>Stock</th>
-                                            <th>Precio</th>
-                                        </tr>
-                                        <tr>
-                                            <td>Producto 1</td>
-                                            <td>3769797</td>
-                                            <td>36 kg</td>
-                                            <td>Madrid</td>
-                                            <td>350</td>
-                                            <td>8,95 €</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Producto 2</td>
-                                            <td>7432309</td>
-                                            <td>17 kg</td>
-                                            <td>Barcelona</td>
-                                            <td>72</td>
-                                            <td>3,70 €</td>
-                                        </tr>
-                                    </table>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <h2>Requerimiento funcional numero 10</h2>
+                                <h3>Registrar ejecucion de una etapa de produccion</h3>
+                                <hr class="star-primary">
+                                <div id="tabla1">
+                                    <div class="table-responsive">
+                                        <table class="table table-condensed table-bordered table-hover">
+                                            <tr>
+                                                <th>Art&iacute;culo</th>
+                                                <th>Serie</th>
+                                                <th>Peso</th>
+                                                <th>Almacén</th>
+                                                <th>Stock</th>
+                                                <th>Precio</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Producto 1</td>
+                                                <td>3769797</td>
+                                                <td>36 kg</td>
+                                                <td>Madrid</td>
+                                                <td>350</td>
+                                                <td>8,95 €</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Producto 2</td>
+                                                <td>7432309</td>
+                                                <td>17 kg</td>
+                                                <td>Barcelona</td>
+                                                <td>72</td>
+                                                <td>3,70 €</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+
+
                                 </div>
-
-
+                                <ul class="list-inline item-details">
+                                    <li>Client:
+                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
+                                        </strong>
+                                    </li>
+                                    <li>Date:
+                                        <strong><a href="http://startbootstrap.com">April 2014</a>
+                                        </strong>
+                                    </li>
+                                    <li>Service:
+                                        <strong><a href="http://startbootstrap.com">Web Development</a>
+                                        </strong>
+                                    </li>
+                                </ul>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
                             </div>
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong><a href="http://startbootstrap.com">April 2014</a>
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong><a href="http://startbootstrap.com">Web Development</a>
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
+        <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>Requerimiento funcional numero 11</h2>
-                            <h3>Registrar llegada de un material(Materia prima/Componente)</h3>
-                            <hr class="star-primary">
-
-
-                            <div id="tabla2">
-                                
-                            </div>
-
-
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong><a href="http://startbootstrap.com">April 2014</a>
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong><a href="http://startbootstrap.com">Web Development</a>
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-8 col-lg-offset-2">
@@ -677,100 +653,86 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
+        <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>Requerimiento funcional de consulta numero 1</h2>
-                            <h3>Consultar las existencias de materiales (materias primas/componentes/productos) en ProdAndes</h3>
-                            <hr class="star-primary">
-                            <p>Los resultados deben ser clasificados segun un criterio deseado por quien realiza la consulta (usuario o administracion de ProdAndes). Los filtros son, entre otros, tipo de material, rango de existencias en inventario, etapa de produccion, fecha de solicitud y/o entrega. Debe ofrecerse la posibilidad de agrupamiento y ordenamiento de las respuestas segun los intereses del usuario que consulta. </p>
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong><a href="http://startbootstrap.com">April 2014</a>
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong><a href="http://startbootstrap.com">Web Development</a>
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <h2>Requerimiento funcional de consulta numero 1</h2>
+                                <h3>Consultar las existencias de materiales (materias primas/componentes/productos) en ProdAndes</h3>
+                                <hr class="star-primary">
+                                <p>Los resultados deben ser clasificados seg�n un criterio deseado por quien realiza la consulta (usuario o administraci�n de ProdAndes). Los filtros son, entre otros, tipo de material, rango de existencias en inventario, etapa de producci�n, fecha de solicitud y/o entrega. Debe ofrecerse la posibilidad de agrupamiento y ordenamiento de las respuestas seg�n los intereses del usuario que consulta. </p>
+                                <ul class="list-inline item-details">
+                                    <li>Client:
+                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
+                                        </strong>
+                                    </li>
+                                    <li>Date:
+                                        <strong><a href="http://startbootstrap.com">April 2014</a>
+                                        </strong>
+                                    </li>
+                                    <li>Service:
+                                        <strong><a href="http://startbootstrap.com">Web Development</a>
+                                        </strong>
+                                    </li>
+                                </ul>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
+        <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>Requerimiento funcional de consulta numero 2</h2>
-                            <h3>Consultar un material</h3>
-                            <hr class="star-primary">
-                            <p>Responde toda la informacion de un material (materia prima, componente, etapa de producto, producto), incluyendo su tipo, su nombre, los materiales que lo componen, los materiales que compone, las etapas de producci�n en las que participa, las unidades producidas, las unidades en produccion, los pedidos de cliente en los que est� involucrado (para los productos), los pedidos de compra en los que est� involucrado (para materias primas y componentes). Los resultados deben poder ser filtrados por tipo de material, volumen, rango de fechas y costo. Se debe mostrar la fecha, los productos y cantidades solicitadas y el costo. Debe ofrecerse la posibilidad de agrupamiento y ordenamiento de las respuestas segun los intereses del usuario que consulta. </p>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Id material</label>
-                                <input type="text" class="form-control" placeholder="Ingrese el Id del material " id="ID_MATERIAL" required data-validation-required-message="Porfavor ingrese el id del material">
-                                <p class="help-block text-danger"></p>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <h2>Requerimiento funcional de consulta numero 2</h2>
+                                <h3>Consultar un material</h3>
+                                <hr class="star-primary">
+                                <p>Responde toda la informacion de un material (materia prima, componente, etapa de producto, producto), incluyendo su tipo, su nombre, los materiales que lo componen, los materiales que compone, las etapas de produccion en las que participa, las unidades producidas, las unidades en produccion, los pedidos de cliente en los que esta involucrado (para los productos), los pedidos de compra en los que esta involucrado (para materias primas y componentes). Los resultados deben poder ser filtrados por tipo de material, volumen, rango de fechas y costo. Se debe mostrar la fecha, los productos y cantidades solicitadas y el costo. Debe ofrecerse la posibilidad de agrupamiento y ordenamiento de las respuestas segun los intereses del usuario que consulta. </p>
+                                <div id="tablaRFC2">
+                                    
+                                </div>
+
+                    
+                                <ul class="list-inline item-details">
+
+                                    <li>Client:
+                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
+                                        </strong>
+                                    </li>
+                                    <li>Date:
+                                        <strong><a href="http://startbootstrap.com">April 2014</a>
+                                        </strong>
+                                    </li>
+                                    <li>Service:
+                                        <strong><a href="http://startbootstrap.com">Web Development</a>
+                                        </strong>
+                                    </li>
+                                </ul>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
                             </div>
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Tipo</label>
-                                <input type="text" class="form-control" placeholder="Ingrese el tipo del material" id="TIPO" required data-validation-required-message="Porfavor ingrese el tipo del material">
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
-                            <div id="success"></div>
-                        <div class="row">
-                            <div class="form-group col-xs-12">
-                                <button type="submit" class="btn btn-success btn-lg">Dar informacion material</button>
-                            </div>
-                        </div>
-                            <ul class="list-inline item-details">
-                        
-                                <li>Client:
-                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong><a href="http://startbootstrap.com">April 2014</a>
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong><a href="http://startbootstrap.com">Web Development</a>
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
 

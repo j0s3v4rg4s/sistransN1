@@ -8,11 +8,7 @@
 <web-app>
 	<description>Servlet memes Web</description>
 	<!-- SERVLETS -->
-	<servlet>
-		<servlet-name>servletLogin</servlet-name>
-		<servlet-class>servlet.servletLogin</servlet-class>
-	</servlet>
-
+	
 	<servlet>
 		<servlet-name>servletPreguntas</servlet-name>
 		<servlet-class>servlet.servletPreguntas</servlet-class>
@@ -27,12 +23,14 @@
 		<servlet-name>servletRF14</servlet-name>
 		<servlet-class>servlet.ServletRF14</servlet-class>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>servletRFC2</servlet-name>
+		<servlet-class>servlet.ServletRFC2</servlet-class>
+	</servlet>
 
 	<!-- MAPPING -->
-	<servlet-mapping>
-		<servlet-name>servletLogin</servlet-name>
-		<url-pattern>/p.htm</url-pattern>
-	</servlet-mapping>
+	
 
 	<servlet-mapping>
 		<servlet-name>servletPreguntas</servlet-name>
@@ -46,6 +44,10 @@
 	<servlet-mapping>
 		<servlet-name>servletRF14</servlet-name>
 		<url-pattern>/RF14.htm</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>servletRFC2</servlet-name>
+		<url-pattern>/RFC2.htm</url-pattern>
 	</servlet-mapping>
 	<login-config>
 		<auth-method>BASIC</auth-method>

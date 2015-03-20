@@ -135,7 +135,7 @@ public class proAndes {
 	{
 
 	}
-	
+
 	/**
 	 * metodo que registra un componente dado 
 	 */
@@ -155,15 +155,15 @@ public class proAndes {
 	 */
 	public void registrarEtapaProduccion (EtapaProduccion etapaP)
 	{
-		
+
 	}
 	public static Date addDays(Date dt, int days)
-    {
+	{
 		Calendar c = Calendar.getInstance();
 		c.setTime(dt); 
 		c = CalendarUtil.addDays(c, 21);
 		return c.getTime(); 
-    }
+	}
 	/**
 	 * metodo que registra un pedido dado 
 	 */
@@ -171,7 +171,7 @@ public class proAndes {
 	public Date registrarPedidoProducto(Date fecha, String idProducto, int cantidad, String idCliente)
 	{
 		// JUANPABLO 
-		
+
 		Date ans = fecha;
 
 		int cant = conexion.buscarCantidadProductoEnBodega(idProducto);
@@ -179,7 +179,7 @@ public class proAndes {
 		if (cant > cantidad)
 		{
 			conexion.reservarCantidadProductoEnBodega(cantidad, idProducto);
-		
+
 			ans = addDays(ans, 2);
 		}
 		else 
@@ -191,37 +191,39 @@ public class proAndes {
 			else
 			{
 				ArrayList<Bodega> aPedir = conexion.CantidadEnBodegaVSCantidad(idProducto, idCliente);
-				
-				
+
+
 				for (int i = 0;i<aPedir.size(); i++)
 				{
 					Bodega b = aPedir.get(i);
 					conexion.actualizarEstado(idCliente, Producto.PENDIENTE);
 				}
 
-				
+
 				ans = addDays(ans, 15);
 
 			}
 		}
 		return ans;
 	}
-	public String informacionMaterial(String tipo,String id)
+	public ArrayList<String> informacionMaterial(String tipo,String id)
 	{
 		// JUANPABLO 
-		int num = Integer.parseInt(id);
-		String ans = "";
+		ArrayList<String> ans = new ArrayList<String>();
 		if (tipo.equals("Materia Prima"))
 			ans = conexion.darInfoMateriaPrima(id);
 		if (tipo.equals("Componente"))
 			ans =conexion.darInfoComponente(id);
 		if (tipo.equals("Etapa de producto"))
+		{
+			int num = Integer.parseInt(id);
 			ans =conexion.darInfoEtapaDeProduccion(num);
+		}
 		if (tipo.equals("Producto"))
 			ans =conexion.darInfoProducto(id);
 		return ans;
 	}
-	
+
 
 	public boolean RegistrarEntregaDePedidoDeProductosACliente(String idCliente, String idprod, int cant)
 	{
@@ -288,7 +290,7 @@ public class proAndes {
 			conexion.preguntador(query);
 		}
 	}
-	
+
 	public ArrayList darEtapas()
 	{
 		// JOSE pregunta etapas
@@ -307,21 +309,21 @@ public class proAndes {
 			String query = "SELECT i.ID, i.NOMBRE FROM INSUMOS i WHERE TIPO = '"+insumos.MATERUA_PRIMA+"'";
 			return conexion.realizarBusqueda(query);
 		}
-		
-		
-		
+
+
+
 	}
 	public ArrayList darProductos()
 	{
 		// JUAN PABLO 
 		return conexion.realizarBusquedaProducto();
 	}
-	
+
 	public ArrayList darSolicitudes()
 	{
 		// JUAN PABLO 
 		return conexion.realizarBusquedaSolicitudes();
 	}
-	
+
 
 }
