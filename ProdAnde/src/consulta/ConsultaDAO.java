@@ -104,11 +104,7 @@ public class ConsultaDAO {
 	}
 	public static void main(String[] args) {
 		ConsultaDAO c = new ConsultaDAO();
-		System.out.println("Julian zorra");
-		ArrayList<String> ans = c.darInfoMateriaPrima("id2") ;
-		for (int i=0; i< ans.size(); i++)
-			System.out.println(ans.get(i));
-		System.out.println("La hicimos!!");
+		c.preguntador("commit");
 
 
 	}
