@@ -398,6 +398,15 @@ public class proAndes {
 		// JUAN PABLO 
 		return conexion.realizarBusquedaSolicitudes();
 	}
-
+	
+	
+	/************************************ jose ite 3 *****************/
+	
+	
+	
+	
+	
+	
+	/*****************************************************************/
 
 }
