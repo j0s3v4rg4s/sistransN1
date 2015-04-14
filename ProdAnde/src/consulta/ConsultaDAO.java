@@ -82,7 +82,7 @@ public class ConsultaDAO {
 		try
 		{
 			conexion = DriverManager.getConnection(url,usuario,clave);
-			conexion.setAutoCommit(false);
+			conexion.setAutoCommit(true);
 		}
 		catch( SQLException exception )
 		{
