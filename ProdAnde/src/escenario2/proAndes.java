@@ -313,6 +313,9 @@ public class proAndes {
 
 	}
 	
+	
+	
+	
 	public ArrayList filtro(int minimo, int maximo, int oredenar, int tipo,
 			int etapa, String fecha) {
 
@@ -466,6 +469,30 @@ public class proAndes {
 	}
 	
 	
+	/*****************************************************************/
+
+	/************************************ Juan Pablo iteración 3 *****************/
+
+	public ArrayList<String> informacionPedido(String solicitud,String id)
+	{
+		// JUANPABLO 
+		ArrayList<String> ans = new ArrayList<String>();
+		if (solicitud.equals("Id Pedido"))
+			ans = conexion.darInfoPedidoPorId(id);
+		if (solicitud.equals("Id Producto"))
+			ans =conexion.darInfoPedidoPorIdProducto(id);
+		if (solicitud.equals("Id Cliente"))
+		{
+			ans =conexion.darInfoPedidoPorIdCliente(id);
+		}
+		return ans;
+	}
+	
+	public void cancelarPedido(String id)
+	{
+		// JUANPABLO 
+		conexion.cancelarPedidoProductos(id);
+	}
 	/*****************************************************************/
 
 }

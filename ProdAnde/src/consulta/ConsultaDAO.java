@@ -15,6 +15,7 @@ import escenario2.Bodega;
 import escenario2.EstacionProduccion;
 import escenario2.EtapaProduccion;
 import escenario2.Producto;
+import escenario2.Solicitud;
 import escenario2.insumos;
 /**
  * @author jose
@@ -1141,6 +1142,134 @@ public class ConsultaDAO {
 			e.printStackTrace();
 		}
 		return queryA;
+	}
+
+	public ArrayList<String> darInfoPedidoPorId(String id)
+	{
+
+		PreparedStatement prepStmt = null;
+		String ans = "";
+		ArrayList<String> rta = new ArrayList<String>();
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT SOLICITUDES.ID_CLIENTE AS ID_CLIENTE, PRODUCTO.ESTADO, CLIENTE.NOMBRE AS NOMBRE_CLIENTE,SOLICITUDES.ID_PRODUCTO AS ID_PRODUCTO,PRODUCTO.NOMBRE AS NOMBRE_PRODUCTO, SOLICITUDES.FECHA, SOLICITUDES.CANTIDAD, PRODUCTO.COSTO AS COSTO_UNITARIO,INSUMOS.NOMBRE FROM ((((SOLICITUDES INNER JOIN CLIENTE ON SOLICITUDES.ID_CLIENTE = CLIENTE.DIRECCION_ELECTRONICA) INNER JOIN PRODUCTO ON SOLICITUDES.ID_PRODUCTO= PRODUCTO.ID)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO) INNER JOIN INSUMOS ON (INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_G AND INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P)) WHERE SOLICITUDES.ID = '"+id+"'";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				ans = "Id pedido: " + id +"/n /n Id del cliente: "+ rs.getString("ID_CLIENTE")+"/n Nombre del Cliente: " + rs.getString("NOMBRE_CLIENTE")+"/n Id del producto pedido " + rs.getString("ID_PRODUCTO")+ "/n Nombre del producto pedido " + rs.getString("NOMBRE_PRODUCTO")+"/n Estado del pedido: " + rs.getString("ESTADO")+ "/n Fecha Solicitud: " + rs.getString("FECHA") + "/n Cantidad solicitada: " + rs.getInt("CANTIDAD") + "/n Costo unitario: " + rs.getInt("COSTO_UNITARIO") + "/n Costo total: " + rs.getInt("CANTIDAD")*rs.getInt("COSTO_UNITARIO");
+				rta.add(ans);
+			}
+
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rta;
+	}
+
+	public ArrayList<String> darInfoPedidoPorIdProducto(String id)
+	{
+
+		PreparedStatement prepStmt = null;
+		String ans = "";
+		ArrayList<String> rta = new ArrayList<String>();
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT SOLICITUDES.ID_CLIENTE AS ID_CLIENTE, PRODUCTO.ESTADO, CLIENTE.NOMBRE AS NOMBRE_CLIENTE,SOLICITUDES.ID AS ID_PEDIDO,PRODUCTO.NOMBRE AS NOMBRE_PRODUCTO, SOLICITUDES.FECHA, SOLICITUDES.CANTIDAD, PRODUCTO.COSTO AS COSTO_UNITARIO,INSUMOS.NOMBRE FROM ((((SOLICITUDES INNER JOIN CLIENTE ON SOLICITUDES.ID_CLIENTE = CLIENTE.DIRECCION_ELECTRONICA) INNER JOIN PRODUCTO ON SOLICITUDES.ID_PRODUCTO= PRODUCTO.ID)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO) INNER JOIN INSUMOS ON (INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_G AND INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P)) WHERE SOLICITUDES.ID_PRODUCTO = '"+id+"'";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				ans = "Id producto: " + id +"/n /n Id del cliente: "+ rs.getString("ID_CLIENTE")+"/n Nombre del Cliente: " + rs.getString("NOMBRE_CLIENTE")+"/n Id del pedido " + rs.getString("ID_PEDIDO")+ "/n Nombre del producto pedido " + rs.getString("NOMBRE_PRODUCTO")+"/n Estado del pedido: " + rs.getString("ESTADO")+ "/n Fecha Solicitud: " + rs.getString("FECHA") + "/n Cantidad solicitada: " + rs.getInt("CANTIDAD") + "/n Costo unitario: " + rs.getInt("COSTO_UNITARIO") + "/n Costo total: " + rs.getInt("CANTIDAD")*rs.getInt("COSTO_UNITARIO");
+				rta.add(ans);
+			}
+
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rta;
+	}
+
+	public ArrayList<String> darInfoPedidoPorIdCliente(String id) 
+	{
+
+		PreparedStatement prepStmt = null;
+		String ans = "";
+		ArrayList<String> rta = new ArrayList<String>();
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT SOLICITUDES.ID_PRODUCTO AS ID_PRODUCTO, PRODUCTO.ESTADO, CLIENTE.NOMBRE AS NOMBRE_CLIENTE,SOLICITUDES.ID AS ID_PEDIDO,PRODUCTO.NOMBRE AS NOMBRE_PRODUCTO, SOLICITUDES.FECHA, SOLICITUDES.CANTIDAD, PRODUCTO.COSTO AS COSTO_UNITARIO,INSUMOS.NOMBRE FROM ((((SOLICITUDES INNER JOIN CLIENTE ON SOLICITUDES.ID_CLIENTE = CLIENTE.DIRECCION_ELECTRONICA) INNER JOIN PRODUCTO ON SOLICITUDES.ID_PRODUCTO= PRODUCTO.ID)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO) INNER JOIN INSUMOS ON (INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_G AND INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P)) WHERE SOLICITUDES.ID_CLIENTE = '"+id+"'";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				ans = "Id Cliente: " + id +"/n /n Nombre del Cliente: " + rs.getString("NOMBRE_CLIENTE") +"/n Id del producto: "+ rs.getString("ID_PRODUCTO") +"/n Id del pedido " + rs.getString("ID_PEDIDO")+ "/n Nombre del producto pedido " + rs.getString("NOMBRE_PRODUCTO")+"/n Estado del pedido: " + rs.getString("ESTADO")+ "/n Fecha Solicitud: " + rs.getString("FECHA") + "/n Cantidad solicitada: " + rs.getInt("CANTIDAD") + "/n Costo unitario: " + rs.getInt("COSTO_UNITARIO") + "/n Costo total: " + rs.getInt("CANTIDAD")*rs.getInt("COSTO_UNITARIO");
+				rta.add(ans);
+			}
+
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rta;
+	}
+
+	public ArrayList<Solicitud> darSolicitudesPorUsuario(String idUser)
+	{
+		PreparedStatement prepStmt = null;
+		ArrayList<Solicitud> rta = new ArrayList<Solicitud>();
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "SELECT * FROM SOLICITUDES WHERE ID_CLIENTE = '"+idUser+"'";
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+				Solicitud ans = new Solicitud(idUser, rs.getString("ID_PRODUCTO"), rs.getInt("CANTIDAD"), rs.getDate("FECHA"), rs.getString("ID"));
+				rta.add(ans);
+			}
+
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rta;
+
+	}
+
+	public void cancelarPedidoProductos(String id)
+	{
+		PreparedStatement prepStmt = null;
+		try {
+			establecerConexion(cadenaConexion, usuario, clave);
+			String pre = "DELETE FROM SOLICITUDES WHERE ID = '" + id + "'" ;
+			prepStmt = conexion.prepareStatement(pre);
+			ResultSet rs = prepStmt.executeQuery();
+			while(rs.next())
+			{
+			}
+
+			prepStmt.close();
+			closeConnection(conexion);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 
