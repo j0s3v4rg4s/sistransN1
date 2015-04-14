@@ -1,11 +1,16 @@
 package escenario2;
 
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.omg.CORBA.TRANSACTION_MODE;
+
 import consulta.ConsultaDAO;
+import consulta.ConsultaDAO2;
 
 
 /**
@@ -29,6 +34,7 @@ public class proAndes {
 	 * Variable que respresenta la conexion a la base de datos 
 	 */
 	public ConsultaDAO conexion;
+	private ConsultaDAO2 conexion2;
 
 	//-----------------------------------------------------------------
 	// Constructor
@@ -37,6 +43,7 @@ public class proAndes {
 
 	public proAndes(){
 		conexion = new ConsultaDAO();
+		conexion2 = new ConsultaDAO2();
 
 
 	}
@@ -407,28 +414,42 @@ public class proAndes {
 	
 	public void apagarEstacion(String id)
 	{
-		String query = "SELECT * FROM ESTACIONES WHERE ESTACION_ID="+id;
-		ArrayList etapas = conexion.realizarBusqueda2(query);
-		query = "UPDATE ESTACION_PRODUCCION set ESTADO='DESACTIVO' WHERE CODIGO="+id;
-		conexion.preguntador(query);
-		query = "DELETE FROM ESTACIONES WHERE ESTACION_ID="+id;
-		conexion.preguntador(query);
-		for (int i=1;i<etapas.size();i++)
-		{
-			ArrayList<String> etapa = (ArrayList<String>) etapas.get(i);
-			String etapaNum = etapa.get(0);
-			String etapaPro = etapa.get(1);
-			
-			query = "SELECT cuenta2.estacion FROM (SELECT min(cuenta.numero_etapas) as total FROM(SELECT ESTACION_ID estacion,COUNT(ETAPA_PRODUCTO) numero_etapas FROM ESTACIONes GROUP BY ESTACION_ID) cuenta) s INNER join (SELECT ESTACION_ID estacion,COUNT(ETAPA_PRODUCTO) numero_etapas FROM ESTACIONes GROUP BY ESTACION_ID) cuenta2 on cuenta2.numero_etapas=s.total";
-			ArrayList<ArrayList<String>> etMAyor = conexion.realizarBusqueda2(query);
-			String idEstacion = etMAyor.get(1).get(0);
-			
-			query="INSERT INTO ESTACIONES VALUES ("+etapaNum+",'"+etapaPro+"',"+idEstacion+")";
-			conexion.preguntador(query);
-			
-			
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			String query = "SELECT * FROM ESTACIONES WHERE ESTACION_ID="+id;
+			ArrayList etapas = conexion2.realizarBusqueda(query);
+			query = "UPDATE ESTACION_PRODUCCION set ESTADO='DESACTIVO' WHERE CODIGO="+id;
+			conexion2.preguntador(query);
+			query = "DELETE FROM ESTACIONES WHERE ESTACION_ID="+id;
+			conexion2.preguntador(query);
+			for (int i=1;i<etapas.size();i++)
+			{
+				ArrayList<String> etapa = (ArrayList<String>) etapas.get(i);
+				String etapaNum = etapa.get(0);
+				String etapaPro = etapa.get(1);
+				
+				query = "SELECT cuenta2.estacion FROM (SELECT min(cuenta.numero_etapas) as total FROM(SELECT ESTACION_ID estacion,COUNT(ETAPA_PRODUCTO) numero_etapas FROM ESTACIONes GROUP BY ESTACION_ID) cuenta) s INNER join (SELECT ESTACION_ID estacion,COUNT(ETAPA_PRODUCTO) numero_etapas FROM ESTACIONes GROUP BY ESTACION_ID) cuenta2 on cuenta2.numero_etapas=s.total";
+				ArrayList<ArrayList<String>> etMAyor = conexion2.realizarBusqueda(query);
+				String idEstacion = etMAyor.get(1).get(0);
+				
+				query="INSERT INTO ESTACIONES VALUES ("+etapaNum+",'"+etapaPro+"',"+idEstacion+")";
+				conexion2.preguntador(query);
+			}
+			conexion2.getConexion().commit();
+		} 
+		catch (SQLException e) {
+			try {
+				conexion2.getConexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
 		}
-		conexion.preguntador("commit");
+		finally
+		{
+			conexion2.terminarTransaccion();
+		}
+		
 	}
 	
 	public void prenderEstacion(String id)
@@ -471,7 +492,7 @@ public class proAndes {
 	
 	/*****************************************************************/
 
-	/************************************ Juan Pablo iteración 3 *****************/
+	/************************************ Juan Pablo iteraciï¿½n 3 *****************/
 
 	public ArrayList<String> informacionPedido(String solicitud,String id)
 	{
