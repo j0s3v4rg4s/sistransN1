@@ -402,7 +402,7 @@ public class proAndes {
 	
 	/************************************ jose ite 3 *****************/
 	
-	public void apagarEtapa(String id)
+	public void apagarEstacion(String id)
 	{
 		String query = "SELECT * FROM ESTACIONES WHERE ESTACION_ID="+id;
 		ArrayList etapas = conexion.realizarBusqueda2(query);
@@ -428,7 +428,7 @@ public class proAndes {
 		conexion.preguntador("commit");
 	}
 	
-	public void prenderEtapa(String id)
+	public void prenderEstacion(String id)
 	{
 		String query = "UPDATE ESTACION_PRODUCCION set ESTADO='ACTIVADO' WHERE CODIGO="+id;
 		conexion.preguntador(query);
@@ -457,6 +457,12 @@ public class proAndes {
 			actual ++;
 		}
 		conexion.preguntador("commit");
+	}
+	
+	public ArrayList darEstaciones()
+	{
+		String query = "SELECT * FROM ESTACION_PRODUCCION";
+		return conexion.realizarBusqueda2(query);
 	}
 	
 	
