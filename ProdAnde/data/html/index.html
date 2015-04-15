@@ -41,6 +41,10 @@
                   
                   $("#tablaRF12").load('RF12.htm',{accion: 'actualizar'}); 
                });
+               $("#req13").click(function(event){
+                   
+                   $("#tablaRF13").load('RF13.htm',{accion: 'actualizar'}); 
+                });
                $("#req14").click(function(event){
             
                  $("#tablaRF14").load('RF14.htm',{accion: 'actualizar'}); 
@@ -49,6 +53,10 @@
             	  
                  $("#tabla2").load('pregunta.htm',{accion: 'actualizarReq2'}); 
               });
+               $("#reqFC5").click(function(event){
+             	  
+                   $("#tablaRFC5").load('RFC5.htm',{accion: 'actualizar'}); 
+                });
                $("#reqFC2").click(function(event){
             	 
                  $("#tablaRFC2").load('RFC2.htm',{accion: 'actualizar'}); 
@@ -189,7 +197,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal6" class="portfolio-link"  id="reqFC2"data-toggle="modal">
+                    <a href="#portfolioModal6" class="portfolio-link"  id="reqFC2" data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -202,7 +210,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal7" class="portfolio-link" id="req11" data-toggle="modal">
+                    <a href="#portfolioModal7" class="portfolio-link" id="req13" data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -226,7 +234,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal9" class="portfolio-link" data-toggle="modal">
+                    <a href="#portfolioModal9" class="portfolio-link"  id="reqFC5" data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -926,7 +934,7 @@
                                 <h3>Cancelar Pedido de productos</h3>
                                 <hr class="star-primary">
                                 <p>Cancela la operacion anterior, teniendo en cuenta todas las restricciones de coherencia correspondientes. Esta operacion es realizada por un usuario cliente de la empresa que realizo el pedido que se quiere cancelar </p>
-                                <div id="tablaRFC2">
+                                <div id="tablaRF13">
                                     
           		</div>
 
@@ -1014,9 +1022,9 @@
                                 <h3>Consultar pedidos</h3>
                                 <hr class="star-primary">
                                 <p>Muestra la información de los pedidos y su estado actual. Esta consulta puede ser filtrada por diferentes conceptos y se espera como resultado: cliente, productos, cantidades, costos, fechas, materiales requeridos para satisfacer el pedido, ….Esta operación es realizada por el encargado de ProdAndes. </p>
-                                <div id="tablaRFC2">
-                                    
-          		</div>
+                                <div id="tablaRFC5">
+                                <div id="tablaRFC52">
+                                </div>
 
                     
                                 <ul class="list-inline item-details">

@@ -1073,6 +1073,30 @@ public class ConsultaDAO {
 		return queryA;
 
 	}
+	
+	public ArrayList realizarBusquedaSolicitudesPorIdCliente(String id)
+	{
+		String query = "SELECT ID_PRODUCTO,CANTIDAD,FECHA,ID FROM SOLICITUDES WHERE ID_CLIENTE = '"+id+"'";
+		ResultSet rs = ejecutarPregunta(query);
+		ArrayList<ArrayList<String>> queryA = new ArrayList<ArrayList<String>>();
+		try {
+			while(rs.next())
+			{
+				ArrayList<String> l = new ArrayList<String>();
+				l.add(rs.getString(1));
+				l.add(rs.getString(2));
+				l.add(rs.getString(3));
+				l.add(rs.getString(4));
+				queryA.add(l);
+			}
+			rs.close();
+			closeConnection(conexion);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return queryA;
+
+	}
 
 	/**
 	 * realiza una pregunta de actualizacion a la base de datos 
