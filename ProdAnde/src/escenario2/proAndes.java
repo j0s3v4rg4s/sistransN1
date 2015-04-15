@@ -319,10 +319,10 @@ public class proAndes {
 
 
 	}
-	
-	
-	
-	
+
+
+
+
 	public ArrayList filtro(int minimo, int maximo, int oredenar, int tipo,
 			int etapa, String fecha) {
 
@@ -396,7 +396,7 @@ public class proAndes {
 
 
 	}
-	
+
 	public ArrayList darProductos()
 	{
 		// JUAN PABLO 
@@ -408,10 +408,10 @@ public class proAndes {
 		// JUAN PABLO 
 		return conexion.realizarBusquedaSolicitudes();
 	}
-	
-	
+
+
 	/************************************ jose ite 3 *****************/
-	
+
 	public void apagarEstacion(String id)
 	{
 		try {
@@ -427,11 +427,12 @@ public class proAndes {
 				ArrayList<String> etapa = (ArrayList<String>) etapas.get(i);
 				String etapaNum = etapa.get(0);
 				String etapaPro = etapa.get(1);
-				
+
 				query = "SELECT cuenta2.estacion FROM (SELECT min(cuenta.numero_etapas) as total FROM(SELECT ESTACION_ID estacion,COUNT(ETAPA_PRODUCTO) numero_etapas FROM ESTACIONes GROUP BY ESTACION_ID) cuenta) s INNER join (SELECT ESTACION_ID estacion,COUNT(ETAPA_PRODUCTO) numero_etapas FROM ESTACIONes GROUP BY ESTACION_ID) cuenta2 on cuenta2.numero_etapas=s.total";
 				ArrayList<ArrayList<String>> etMAyor = conexion2.realizarBusqueda(query);
+				if(etMAyor.size()<2)
+					throw new SQLException();
 				String idEstacion = etMAyor.get(1).get(0);
-				
 				query="INSERT INTO ESTACIONES VALUES ("+etapaNum+",'"+etapaPro+"',"+idEstacion+")";
 				conexion2.preguntador(query);
 			}
@@ -449,47 +450,64 @@ public class proAndes {
 		{
 			conexion2.terminarTransaccion();
 		}
-		
+
 	}
-	
+
 	public void prenderEstacion(String id)
 	{
-		String query = "UPDATE ESTACION_PRODUCCION set ESTADO='ACTIVADO' WHERE CODIGO="+id;
-		conexion.preguntador(query);
-		query = "SELECT cuenta2.estacion, s.total FROM (SELECT MAX(cuenta.numero_etapas) as total FROM(SELECT ESTACION_ID estacion,COUNT(ETAPA_PRODUCTO) numero_etapas FROM ESTACIONes GROUP BY ESTACION_ID) cuenta) s INNER join (SELECT ESTACION_ID estacion,COUNT(ETAPA_PRODUCTO) numero_etapas FROM ESTACIONes GROUP BY ESTACION_ID) cuenta2 on cuenta2.numero_etapas=s.total";
-		ArrayList<ArrayList<String>> etMAyor = conexion.realizarBusqueda2(query);
-		
-		String estacion = etMAyor.get(1).get(0);
-		String maximo = etMAyor.get(1).get(1);
-		int actual = 0;
-		
-		while(actual<Integer.parseInt(maximo))
-		{
-			query = "SELECT * FROM ESTACIONES WHERE ESTACION_ID="+estacion;
-			ArrayList<ArrayList<String>> etapas = conexion.realizarBusqueda2(query);
-			String etapaNum = etapas.get(1).get(0);
-			String etapaPro = etapas.get(1).get(1);
-			query = "DELETE FROM ESTACIONES WHERE ETAPA_NUMERO="+etapaNum+" and ETAPA_PRODUCTO='"+etapaPro+"' and ESTACION_ID="+estacion;
-			conexion.preguntador(query);
-			query="INSERT INTO ESTACIONES VALUES ("+etapaNum+",'"+etapaPro+"',"+id+")";
-			conexion.preguntador(query);
-			
+
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "UPDATE ESTACION_PRODUCCION set ESTADO='ACTIVADO' WHERE CODIGO="+id;
+			conexion2.preguntador(query);
 			query = "SELECT cuenta2.estacion, s.total FROM (SELECT MAX(cuenta.numero_etapas) as total FROM(SELECT ESTACION_ID estacion,COUNT(ETAPA_PRODUCTO) numero_etapas FROM ESTACIONes GROUP BY ESTACION_ID) cuenta) s INNER join (SELECT ESTACION_ID estacion,COUNT(ETAPA_PRODUCTO) numero_etapas FROM ESTACIONes GROUP BY ESTACION_ID) cuenta2 on cuenta2.numero_etapas=s.total";
-			etMAyor = conexion.realizarBusqueda2(query);
-			estacion = etMAyor.get(1).get(0);
-			maximo = etMAyor.get(1).get(1);
-			actual ++;
+			ArrayList<ArrayList<String>> etMAyor = conexion2.realizarBusqueda(query);
+
+			String estacion = etMAyor.get(1).get(0);
+			String maximo = etMAyor.get(1).get(1);
+			int actual = 0;
+			
+			if(Integer.parseInt(maximo)==1)
+			{
+				System.out.println("ENTRE");
+				conexion2.getConexion().rollback();
+			}
+			else
+			{
+				while(actual<Integer.parseInt(maximo))
+				{
+					query = "SELECT * FROM ESTACIONES WHERE ESTACION_ID="+estacion;
+					ArrayList<ArrayList<String>> etapas = conexion2.realizarBusqueda(query);
+					String etapaNum = etapas.get(1).get(0);
+					String etapaPro = etapas.get(1).get(1);
+					query = "DELETE FROM ESTACIONES WHERE ETAPA_NUMERO="+etapaNum+" and ETAPA_PRODUCTO='"+etapaPro+"' and ESTACION_ID="+estacion;
+					conexion2.preguntador(query);
+					query="INSERT INTO ESTACIONES VALUES ("+etapaNum+",'"+etapaPro+"',"+id+")";
+					conexion2.preguntador(query);
+
+					query = "SELECT cuenta2.estacion, s.total FROM (SELECT MAX(cuenta.numero_etapas) as total FROM(SELECT ESTACION_ID estacion,COUNT(ETAPA_PRODUCTO) numero_etapas FROM ESTACIONes GROUP BY ESTACION_ID) cuenta) s INNER join (SELECT ESTACION_ID estacion,COUNT(ETAPA_PRODUCTO) numero_etapas FROM ESTACIONes GROUP BY ESTACION_ID) cuenta2 on cuenta2.numero_etapas=s.total";
+					etMAyor = conexion2.realizarBusqueda(query);
+					estacion = etMAyor.get(1).get(0);
+					maximo = etMAyor.get(1).get(1);
+					actual ++;
+				}
+				conexion2.getConexion().commit();
+			}
+				
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		conexion.preguntador("commit");
+
 	}
-	
+
 	public ArrayList darEstaciones()
 	{
-		String query = "SELECT * FROM ESTACION_PRODUCCION";
+		String query = "SELECT ESTACION_PRODUCCION.CODIGO, ESTACION_PRODUCCION.CAPACIDAD,r.numero_etapas, ESTACION_PRODUCCION.ESTADO FROM ESTACION_PRODUCCION LEFT join (SELECT ESTACION_ID estacion,COUNT(ETAPA_PRODUCTO) numero_etapas FROM ESTACIONes GROUP BY ESTACION_ID) r on ESTACION_PRODUCCION.CODIGO=r.estacion";
 		return conexion.realizarBusqueda2(query);
 	}
-	
-	
+
+
 	/*****************************************************************/
 
 	/************************************ Juan Pablo iteraci�n 3 *****************/
@@ -508,7 +526,7 @@ public class proAndes {
 		}
 		return ans;
 	}
-	
+
 	public void cancelarPedido(String id)
 	{
 		// JUANPABLO 

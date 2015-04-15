@@ -54,6 +54,10 @@
                  $("#tablaRFC2").load('RFC2.htm',{accion: 'actualizar'}); 
               });
                
+               $("#req17").click(function(event){
+                 $("#contenidorf17").load('pregunta.htm',{accion:'rf17'});
+               });
+               
           });
     </script>
 
@@ -214,7 +218,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal8" class="portfolio-link" id="req11" data-toggle="modal">
+                    <a href="#portfolioModal8" class="portfolio-link" id="req17" data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -954,6 +958,10 @@
             </div>
         </div>
 		
+
+
+
+
 		<div class="portfolio-modal modal fade" id="portfolioModal8" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-content">
                 <div class="close-modal" data-dismiss="modal">
@@ -966,13 +974,12 @@
                     <div class="row">
                         <div class="col-lg-8 col-lg-offset-2">
                             <div class="modal-body">
-                                <h2>Requerimiento funcional numero 7</h2>
+                                <h2>Requerimiento funcional numero 17</h2>
                                 <h3>Reportar cambio de estado de una estacion de produccion</h3>
                                 <hr class="star-primary">
-                                <p>Dada una estacion de produccion y el cambio de estado deseado, se modifica la informacion existente para reflejar ese cambio. Si la estacion estaba activa y se quiere desactivar, todas las etapas de produccion que le estaban asignadas deben ser asignadas a las otras estaciones de produccion de manera que el trabajo total quede lo mas uniformemente repartido entre las estaciones activas (esta operación se llama balanceo de carga). De la misma manera, cuando una estación de producción se activa, se le asignan algunas de las etapas que ya están vigentes en el sistema, nuevamente tratando que la distribucion sea uniforme. Esta operacion es realizada por un usuario gerente de producción de la empresa. </p>
-                                <div id="tablaRFC2">
+                                <div id="contenidorf17">
                                     
-          		</div>
+          		                </div>
 
                     
                                 <ul class="list-inline item-details">
@@ -997,6 +1004,14 @@
                 </div>
             </div>
         </div>
+
+
+
+
+
+
+
+
 	
 	<div class="portfolio-modal modal fade" id="portfolioModal9" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-content">

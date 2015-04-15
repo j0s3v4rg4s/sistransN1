@@ -70,7 +70,26 @@ public class servletPreguntas extends HttpServlet{
 
 		String accion = request.getParameter("accion");    
 		System.out.println(accion);
-
+		
+		if(accion.equals("hacerr17"))
+		{
+			String param = request.getParameter("parametro");
+			String[] pas = param.split("-");
+			if(pas[1].equals("a"))
+			{
+				pro.prenderEstacion(pas[0]);
+			}
+			else
+			{
+				pro.apagarEstacion(pas[0]);
+			}
+			actualizarr17(out);
+		}
+		
+		if(accion.equals("rf17"))
+		{
+			actualizarr17(out);
+		}
 
 		if (accion!=null && !accion.equals("") && accion.equals("actualizar"))
 		{
@@ -123,6 +142,18 @@ public class servletPreguntas extends HttpServlet{
 	}
 
 
+
+	private void actualizarr17(PrintWriter out) {
+		inicioTabla(out);
+		ArrayList<ArrayList<String>> estaciones = pro.darEstaciones();
+		imprimirFilaTitulo(out, estaciones.get(0));
+		for(int i=1;i<estaciones.size();i++)
+		{
+			imprimirFilarf17(out, estaciones.get(i));
+		}
+		finTabla2(out);
+		
+	}
 
 	private void imprimirOpciones(PrintWriter out) {
 		ArrayList material = pro.darInsumos(insumos.MATERUA_PRIMA);
@@ -225,6 +256,48 @@ public class servletPreguntas extends HttpServlet{
 		out.println("</tr>");
 
 	}
+	
+	
+	
+	
+	
+	private void imprimirFilarf17(PrintWriter out, ArrayList<String> titulo)
+	{
+		out.println("<tr>");
+		for (int i=0;i<titulo.size();i++)
+		{
+			out.println("   		<td>"+titulo.get(i)+"</td>");
+		}
+
+		String cod = titulo.get(0);
+		if(titulo.get(3).equals("DESACTIVO"))
+		{
+			cod = cod+"-a";
+			out.println(" <td><button type=\"button\" class=\"btn btn-success\" id=\""+cod+"\">Activar</button></td>");
+		}
+		else
+		{
+			cod = cod+"-d";
+			out.println(" <td><button type=\"button\" class=\"btn btn-success\" id=\""+cod+"\">Desactivar</button></td>");
+		}
+			
+
+		out.println("    <script type=\"text/javascript\">");
+		out.println("          $(document).ready(function() {");
+		out.println("               $(\"#"+cod+"\").click(function(event){");
+		out.println("                  $(\"#contenidorf17\").load('pregunta.htm',{accion: 'hacerr17', parametro: '"+cod+"'}); ");
+		out.println("               });");
+		out.println("          });");
+		out.println("    </script>");
+
+		out.println("</tr>");
+
+	}
+
+	
+	
+	
+	
 
 	private void finTabla(PrintWriter out)
 	{
