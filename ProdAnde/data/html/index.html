@@ -12,7 +12,8 @@
     <title>Prodandes</title>
     
     <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href ="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/filtro.css">
 
     <!-- Custom CSS -->
     <link href="css/freelancer.css" rel="stylesheet">
@@ -30,6 +31,7 @@
     <![endif]-->
     <script src="./js/jquery-1.11.1.min.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/filtro.js"></script>
 
     
     <script type="text/javascript">
@@ -1072,10 +1074,85 @@
                                 <h2>Requerimiento funcional de consulta numero 6</h2>
                                 <h3>Consultar clientes</h3>
                                 <hr class="star-primary">
-                                <p>Muestra la información de los clientes. Esta consulta puede ser filtrada por diferentes conceptos y se espera como resultado: información general, los pedidos, … . Esta operación es realizada por el encargado de ProdAndes. </p>
-                                <div id="tablaRFC2">
+                                
+                                <form class="form-horizontal">
+                                        <fieldset>
+
+                                            <!-- Form Name -->
+                                            <legend>FiltrosSELECT * FROM CLIENTE;</legend>
+
+                                            <!-- Select Basic -->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="selectbasic">Ordenar por</label>
+                                                <div class="col-md-5">
+                                                    <select id="ordenCliente" name="selectbasic" class="form-control">
+                                                        <option value="0">-None-</option>
+                                                        <option value="Nombre">Nombre</option>
+                                                        <option value="direccion">Drecci&oacute;n</option>
+                                                        <option value="nombre_representante">Nombre representante</option>
+                                                        <option value="numero_registro">Numero registro</option>
+                                                        <option value="Telefono">Telefono</option>
+                                                        <option value="Ciudad">Ciudad</option>
+                                                        <option value="direccion_electronica">Correo</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!-- Button -->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="buscar"></label>
+                                                <div class="col-md-4">
+                                                    <button id="buscarCliente" name="buscar" class="btn btn-primary">Buscar</button>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Text input-->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="fecha">Correo cliente</label>  
+                                                <div class="col-md-5">
+                                                    <input id="corrrrr" name="fecha" placeholder="exaple@example.com" class="form-control input-md" type="text">
+
+                                                </div>
+                                            </div>
+
+                                            <!-- Button -->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="buscar"></label>
+                                                <div class="col-md-4">
+                                                    <button id="buscarClientedireccion" name="buscar" class="btn btn-primary">Buscar solicitudes</button>
+                                                </div>
+                                            </div>
+
+                                            
+
+                                        </fieldset>
+                                </form>
+
+
+                                
+
+
+                                <div id="nuevovalorrr">
+
+                                </div>
+
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+                                        $("#buscarCliente").click(function (event) {
+                                            var ordenar = document.getElementById("ordenCliente").value;
+                                            $("#nuevovalorrr").load('pregunta.htm', {accion: 'filtroCliente', param: ordenar});
+                                        });
+
+                                        $("#buscarClientedireccion").click(function (event) {
+                                            var correo = document.getElementById("corrrrr").value;
+                                            $("#nuevovalorrr").load('pregunta.htm', {accion: 'filtroSolicitud', param: correo});
+                                        });
+
+
+
+                                    });
+                                </script>
                                     
-          		</div>
+          		                
 
                     
                                 <ul class="list-inline item-details">

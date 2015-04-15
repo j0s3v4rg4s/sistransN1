@@ -495,16 +495,53 @@ public class proAndes {
 			}
 				
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			try {
+				conexion2.getConexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
-
+		finally
+		{
+			conexion2.terminarTransaccion();
+		}
 	}
 
 	public ArrayList darEstaciones()
 	{
 		String query = "SELECT ESTACION_PRODUCCION.CODIGO, ESTACION_PRODUCCION.CAPACIDAD,r.numero_etapas, ESTACION_PRODUCCION.ESTADO FROM ESTACION_PRODUCCION LEFT join (SELECT ESTACION_ID estacion,COUNT(ETAPA_PRODUCTO) numero_etapas FROM ESTACIONes GROUP BY ESTACION_ID) r on ESTACION_PRODUCCION.CODIGO=r.estacion";
 		return conexion.realizarBusqueda2(query);
+	}
+	
+	public ArrayList<ArrayList<String>> darClientes(String ordenado)
+	{
+		String query = "";
+		try {
+			if(ordenado.equals("0"))
+				query = "SELECT * FROM CLIENTE";
+			else
+				query = "SELECT * FROM CLIENTE ORDER BY "+ordenado;
+			
+			return conexion2.realizarBusqueda(query);
+		} catch (SQLException e) {
+			conexion2.terminarTransaccion();
+		}
+		return null;
+
+	}
+	
+	public ArrayList<ArrayList<String>> darsolicitudCliente(String correo)
+	{
+		String query="";
+		try {
+			query = "SELECT * FROM SOLICITUDES WHERE ID_CLIENTE='"+correo+"'";
+			return conexion2.realizarBusqueda(query);
+		} catch (Exception e) {
+			conexion2.terminarTransaccion();
+		}
+		return null;
+		
 	}
 
 

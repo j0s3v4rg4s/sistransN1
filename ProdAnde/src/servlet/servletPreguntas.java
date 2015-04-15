@@ -70,7 +70,32 @@ public class servletPreguntas extends HttpServlet{
 
 		String accion = request.getParameter("accion");    
 		System.out.println(accion);
+
+		if(accion.equals("filtroSolicitud"))
+		{
+			String correo = request.getParameter("param");
+			ArrayList<ArrayList<String>> cli = pro.darsolicitudCliente(correo);
+			tablaInicioNueva(out);
+			cabeza(out, cli.get(0));
+			for (int i = 1; i < cli.size(); i++) {
+				cuerpo(out, cli.get(i));
+			}
+			finTabla2(out);
+		}
 		
+		if(accion.equals("filtroCliente"))
+		{
+			
+			String param = request.getParameter("param");
+			ArrayList<ArrayList<String>> cli = pro.darClientes(param);
+			tablaInicioNueva(out);
+			cabeza(out, cli.get(0));
+			for (int i = 1; i < cli.size(); i++) {
+				cuerpo(out, cli.get(i));
+			}
+			finTabla2(out);
+			
+		}
 		if(accion.equals("hacerr17"))
 		{
 			String param = request.getParameter("parametro");
@@ -85,7 +110,7 @@ public class servletPreguntas extends HttpServlet{
 			}
 			actualizarr17(out);
 		}
-		
+
 		if(accion.equals("rf17"))
 		{
 			actualizarr17(out);
@@ -109,7 +134,7 @@ public class servletPreguntas extends HttpServlet{
 		{
 			imprimirOpciones(out);
 		}
-		
+
 		if(accion.equals("agregarInsumo"))
 		{
 			String id = request.getParameter("den");
@@ -117,7 +142,7 @@ public class servletPreguntas extends HttpServlet{
 			pro.registrarLlegadaInsumo(id, cantidad);
 			imprimirOpciones(out);
 		}
-		
+
 		if(accion.equals("filtro"))
 		{
 			int minimo = Integer.parseInt(request.getParameter("mc"));
@@ -126,7 +151,7 @@ public class servletPreguntas extends HttpServlet{
 			int tipo = Integer.parseInt(request.getParameter("tp"));
 			int etapa = Integer.parseInt(request.getParameter("etp"));
 			String fecha = request.getParameter("fec");
-			
+
 			ArrayList filtro = pro.filtro(minimo,maximo,oredenar,tipo,etapa,fecha);
 			ArrayList<String> titulo = (ArrayList<String>) filtro.get(0);
 			inicioTabla(out);
@@ -137,7 +162,7 @@ public class servletPreguntas extends HttpServlet{
 				imprimirFilaInfo(out, (ArrayList<String>)filtro.get(i));
 			}
 			finTabla2(out);
-			
+
 		}
 	}
 
@@ -152,31 +177,31 @@ public class servletPreguntas extends HttpServlet{
 			imprimirFilarf17(out, estaciones.get(i));
 		}
 		finTabla2(out);
-		
+
 	}
 
 	private void imprimirOpciones(PrintWriter out) {
 		ArrayList material = pro.darInsumos(insumos.MATERUA_PRIMA);
 		ArrayList componente = pro.darInsumos(insumos.COMPONENTE);
-		
+
 		out.println("<label>Material</label>                                        ");
 		out.println("                                        <select class=\"form-control\" id=\"sel1\">");
 		for(int i=0;i<material.size();i++)
 		{
 			ArrayList<String> dato = (ArrayList<String>)material.get(i);
 			out.println("<option value=\""+dato.get(0)+"\">"+dato.get(1)+"</option>");
-			
+
 		}
 		out.println("     </select>");
-		
-		
+
+
 		out.println("<label>Componente</label>                                        ");
 		out.println("                                        <select class=\"form-control\" id=\"sel2\">");
 		for(int i=0;i<componente.size();i++)
 		{
 			ArrayList<String> dato = (ArrayList<String>)componente.get(i);
 			out.println("<option value=\""+dato.get(0)+"\">"+dato.get(1)+"</option>");
-			
+
 		}
 		out.println("     </select>");
 	}
@@ -219,7 +244,7 @@ public class servletPreguntas extends HttpServlet{
 		out.println("</tr>");
 
 	}
-	
+
 	private void imprimirFilaInfo(PrintWriter out, ArrayList<String> titulo)
 	{
 		out.println("<tr>");
@@ -256,11 +281,11 @@ public class servletPreguntas extends HttpServlet{
 		out.println("</tr>");
 
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	private void imprimirFilarf17(PrintWriter out, ArrayList<String> titulo)
 	{
 		out.println("<tr>");
@@ -280,7 +305,7 @@ public class servletPreguntas extends HttpServlet{
 			cod = cod+"-d";
 			out.println(" <td><button type=\"button\" class=\"btn btn-success\" id=\""+cod+"\">Desactivar</button></td>");
 		}
-			
+
 
 		out.println("    <script type=\"text/javascript\">");
 		out.println("          $(document).ready(function() {");
@@ -294,10 +319,10 @@ public class servletPreguntas extends HttpServlet{
 
 	}
 
-	
-	
-	
-	
+
+
+
+
 
 	private void finTabla(PrintWriter out)
 	{
@@ -321,12 +346,61 @@ public class servletPreguntas extends HttpServlet{
 		out.println("                        </div>");
 		out.println("</form>");
 	}
-	
-	
+
+
 	private void finTabla2(PrintWriter out)
 	{
 		out.println(" </table>");
 		out.println("                                </div>");
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	private void tablaInicioNueva(PrintWriter out)
+	{
+		out.println(" <script src=\"js/filtro.js\"></script>");
+		out.println(" <link rel=\"stylesheet\" href=\"css/filtro.css\">");
+
+		out.println("<div class=\"panel panel-primary filterable\">");
+		out.println("                                    <div class=\"panel-heading\">");
+		out.println("                                        <h3 class=\"panel-title\">Users</h3>");
+		out.println("                                        <div class=\"pull-right\">");
+		out.println("                                            <button class=\"btn btn-default btn-xs btn-filter\"><span class=\"glyphicon glyphicon-filter\"></span> Filter</button>");
+		out.println("                                        </div>");
+		out.println("                                    </div>");
+		out.println("                                    <table class=\"table\">");
+	}
+
+	private void cabeza(PrintWriter out,ArrayList<String> titulo)
+	{
+		out.println("<thead>");
+		out.println("                                            <tr class=\"filters\">");
+		for(int i = 0;i<titulo.size();i++)
+		{
+			out.println("                                                <th><input type=\"text\" class=\"form-control\" placeholder=\""+titulo.get(i)+"\" disabled></th>");
+		}
+		out.println("                                            </tr>");
+		out.println("                                        </thead>");
+	}
+
+	private void cuerpo(PrintWriter out,ArrayList<String> titulo)
+	{
+		out.println(" <tbody>");
+		out.println("                                            <tr>");
+		for(int i=0;i<titulo.size();i++)
+			out.println("                                                <td>"+titulo.get(i)+"</td>");
+		out.println("                                            </tr>");
+		out.println("                                        </tbody>");
 	}
 
 }
