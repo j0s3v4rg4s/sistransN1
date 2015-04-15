@@ -1170,7 +1170,7 @@ public class ConsultaDAO {
 
 	public ArrayList<String> darInfoPedidoPorId(String id)
 	{
-
+		//JUAN
 		PreparedStatement prepStmt = null;
 		String ans = "";
 		ArrayList<String> rta = new ArrayList<String>();
@@ -1197,7 +1197,7 @@ public class ConsultaDAO {
 
 	public ArrayList<String> darInfoPedidoPorIdProducto(String id)
 	{
-
+		//JUAN
 		PreparedStatement prepStmt = null;
 		String ans = "";
 		ArrayList<String> rta = new ArrayList<String>();
@@ -1224,7 +1224,7 @@ public class ConsultaDAO {
 
 	public ArrayList<String> darInfoPedidoPorIdCliente(String id) 
 	{
-
+		//JUAN
 		PreparedStatement prepStmt = null;
 		String ans = "";
 		ArrayList<String> rta = new ArrayList<String>();
@@ -1251,6 +1251,7 @@ public class ConsultaDAO {
 
 	public ArrayList<Solicitud> darSolicitudesPorUsuario(String idUser)
 	{
+		//JUAN
 		PreparedStatement prepStmt = null;
 		ArrayList<Solicitud> rta = new ArrayList<Solicitud>();
 		try {
@@ -1277,6 +1278,7 @@ public class ConsultaDAO {
 
 	public void cancelarPedidoProductos(String id)
 	{
+		//JUAN
 		PreparedStatement prepStmt = null;
 		try {
 			establecerConexion(cadenaConexion, usuario, clave);
