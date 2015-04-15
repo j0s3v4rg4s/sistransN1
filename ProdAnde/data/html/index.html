@@ -43,10 +43,6 @@
                   
                   $("#tablaRF12").load('RF12.htm',{accion: 'actualizar'}); 
                });
-               $("#req13").click(function(event){
-                   
-                   $("#tablaRF13").load('RF13.htm',{accion: 'actualizar'}); 
-                });
                $("#req14").click(function(event){
             
                  $("#tablaRF14").load('RF14.htm',{accion: 'actualizar'}); 
@@ -55,14 +51,14 @@
             	  
                  $("#tabla2").load('pregunta.htm',{accion: 'actualizarReq2'}); 
               });
-               $("#reqFC5").click(function(event){
-             	  
-                   $("#tablaRFC5").load('RFC5.htm',{accion: 'actualizar'}); 
-                });
                $("#reqFC2").click(function(event){
             	 
                  $("#tablaRFC2").load('RFC2.htm',{accion: 'actualizar'}); 
               });
+               
+               $("#req17").click(function(event){
+                 $("#contenidorf17").load('pregunta.htm',{accion:'rf17'});
+               });
                
           });
     </script>
@@ -199,7 +195,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal6" class="portfolio-link"  id="reqFC2" data-toggle="modal">
+                    <a href="#portfolioModal6" class="portfolio-link"  id="reqFC2"data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -212,7 +208,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal7" class="portfolio-link" id="req13" data-toggle="modal">
+                    <a href="#portfolioModal7" class="portfolio-link" id="req11" data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -236,7 +232,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal9" class="portfolio-link"  id="reqFC5" data-toggle="modal">
+                    <a href="#portfolioModal9" class="portfolio-link" data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -936,50 +932,6 @@
                                 <h3>Cancelar Pedido de productos</h3>
                                 <hr class="star-primary">
                                 <p>Cancela la operacion anterior, teniendo en cuenta todas las restricciones de coherencia correspondientes. Esta operacion es realizada por un usuario cliente de la empresa que realizo el pedido que se quiere cancelar </p>
-                                <div id="tablaRF13">
-                                    
-          		</div>
-
-                    
-                                <ul class="list-inline item-details">
-
-                                    <li>Client:
-                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                        </strong>
-                                    </li>
-                                    <li>Date:
-                                        <strong><a href="http://startbootstrap.com">April 2014</a>
-                                        </strong>
-                                    </li>
-                                    <li>Service:
-                                        <strong><a href="http://startbootstrap.com">Web Development</a>
-                                        </strong>
-                                    </li>
-                                </ul>
-                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-		
-		<div class="portfolio-modal modal fade" id="portfolioModal8" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 col-lg-offset-2">
-                            <div class="modal-body">
-                                <h2>Requerimiento funcional numero 7</h2>
-                                <h3>Reportar cambio de estado de una estacion de produccion</h3>
-                                <hr class="star-primary">
-                                <p>Dada una estacion de produccion y el cambio de estado deseado, se modifica la informacion existente para reflejar ese cambio. Si la estacion estaba activa y se quiere desactivar, todas las etapas de produccion que le estaban asignadas deben ser asignadas a las otras estaciones de produccion de manera que el trabajo total quede lo mas uniformemente repartido entre las estaciones activas (esta operación se llama balanceo de carga). De la misma manera, cuando una estación de producción se activa, se le asignan algunas de las etapas que ya están vigentes en el sistema, nuevamente tratando que la distribucion sea uniforme. Esta operacion es realizada por un usuario gerente de producción de la empresa. </p>
                                 <div id="tablaRFC2">
                                     
           		</div>
@@ -1007,6 +959,61 @@
                 </div>
             </div>
         </div>
+		
+
+
+
+
+		<div class="portfolio-modal modal fade" id="portfolioModal8" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <h2>Requerimiento funcional numero 17</h2>
+                                <h3>Reportar cambio de estado de una estacion de produccion</h3>
+                                <hr class="star-primary">
+                                <div id="contenidorf17">
+                                    
+          		                </div>
+
+                    
+                                <ul class="list-inline item-details">
+
+                                    <li>Client:
+                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
+                                        </strong>
+                                    </li>
+                                    <li>Date:
+                                        <strong><a href="http://startbootstrap.com">April 2014</a>
+                                        </strong>
+                                    </li>
+                                    <li>Service:
+                                        <strong><a href="http://startbootstrap.com">Web Development</a>
+                                        </strong>
+                                    </li>
+                                </ul>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
 	
 	<div class="portfolio-modal modal fade" id="portfolioModal9" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-content">
@@ -1024,9 +1031,9 @@
                                 <h3>Consultar pedidos</h3>
                                 <hr class="star-primary">
                                 <p>Muestra la información de los pedidos y su estado actual. Esta consulta puede ser filtrada por diferentes conceptos y se espera como resultado: cliente, productos, cantidades, costos, fechas, materiales requeridos para satisfacer el pedido, ….Esta operación es realizada por el encargado de ProdAndes. </p>
-                                <div id="tablaRFC5">
-                                <div id="tablaRFC52">
-                                </div>
+                                <div id="tablaRFC2">
+                                    
+          		</div>
 
                     
                                 <ul class="list-inline item-details">
@@ -1067,10 +1074,85 @@
                                 <h2>Requerimiento funcional de consulta numero 6</h2>
                                 <h3>Consultar clientes</h3>
                                 <hr class="star-primary">
-                                <p>Muestra la información de los clientes. Esta consulta puede ser filtrada por diferentes conceptos y se espera como resultado: información general, los pedidos, … . Esta operación es realizada por el encargado de ProdAndes. </p>
-                                <div id="tablaRFC2">
+                                
+                                <form class="form-horizontal">
+                                        <fieldset>
+
+                                            <!-- Form Name -->
+                                            <legend>FiltrosSELECT * FROM CLIENTE;</legend>
+
+                                            <!-- Select Basic -->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="selectbasic">Ordenar por</label>
+                                                <div class="col-md-5">
+                                                    <select id="ordenCliente" name="selectbasic" class="form-control">
+                                                        <option value="0">-None-</option>
+                                                        <option value="Nombre">Nombre</option>
+                                                        <option value="direccion">Drecci&oacute;n</option>
+                                                        <option value="nombre_representante">Nombre representante</option>
+                                                        <option value="numero_registro">Numero registro</option>
+                                                        <option value="Telefono">Telefono</option>
+                                                        <option value="Ciudad">Ciudad</option>
+                                                        <option value="direccion_electronica">Correo</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!-- Button -->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="buscar"></label>
+                                                <div class="col-md-4">
+                                                    <button id="buscarCliente" name="buscar" class="btn btn-primary">Buscar</button>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Text input-->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="fecha">Correo cliente</label>  
+                                                <div class="col-md-5">
+                                                    <input id="corrrrr" name="fecha" placeholder="exaple@example.com" class="form-control input-md" type="text">
+
+                                                </div>
+                                            </div>
+
+                                            <!-- Button -->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="buscar"></label>
+                                                <div class="col-md-4">
+                                                    <button id="buscarClientedireccion" name="buscar" class="btn btn-primary">Buscar solicitudes</button>
+                                                </div>
+                                            </div>
+
+                                            
+
+                                        </fieldset>
+                                </form>
+
+
+                                
+
+
+                                <div id="nuevovalorrr">
+
+                                </div>
+
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+                                        $("#buscarCliente").click(function (event) {
+                                            var ordenar = document.getElementById("ordenCliente").value;
+                                            $("#nuevovalorrr").load('pregunta.htm', {accion: 'filtroCliente', param: ordenar});
+                                        });
+
+                                        $("#buscarClientedireccion").click(function (event) {
+                                            var correo = document.getElementById("corrrrr").value;
+                                            $("#nuevovalorrr").load('pregunta.htm', {accion: 'filtroSolicitud', param: correo});
+                                        });
+
+
+
+                                    });
+                                </script>
                                     
-          		</div>
+          		                
 
                     
                                 <ul class="list-inline item-details">
@@ -1111,10 +1193,77 @@
                                 <h2>Requerimiento funcional de consulta numero 17</h2>
                                 <h3>Consultar proveedores</h3>
                                 <hr class="star-primary">
-                                <p>Muestra la información de los proveedores. Esta consulta puede ser filtrada por diferentes conceptos y se espera como resultado: información general, los materiales que provee, los productos que dependen de él, pedidos pendientes, … Esta operación es realizada por el encargado de ProdAndes.</p>
-                                <div id="tablaRFC2">
+
+                                <form class="form-horizontal">
+                                        <fieldset>
+
+                                            <!-- Form Name -->
+                                            <legend>FiltrosSELECT * FROM PROVEEDOR;</legend>
+
+                                            <!-- Select Basic -->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="selectbasic">Ordenar por</label>
+                                                <div class="col-md-5">
+                                                    <select id="ordenProveedor" name="selectbasic" class="form-control">
+                                                        <option value="0">-None-</option>
+                                                        <option value="Nombre">Nombre</option>
+                                                        <option value="direccion">Drecci&oacute;n</option>
+                                                        <option value="nombre_representante">Nombre representante</option>
+                                                        <option value="insumos">insumos</option>
+                                                        <option value="Cantidad">Cantidad</option>
+                                                        <option value="Ciudad">Ciudad</option>
+                                                        <option value="direccion_electronica">Correo</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!-- Button -->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="buscar"></label>
+                                                <div class="col-md-4">
+                                                    <button id="buscarProveedor" name="buscar" class="btn btn-primary">Buscar</button>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Text input-->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="fecha">Correo proveedor</label>  
+                                                <div class="col-md-5">
+                                                    <input id="proveedorfinalInsumo" name="fecha" placeholder="exaple@example.com" class="form-control input-md" type="text">
+
+                                                </div>
+                                            </div>
+
+                                            <!-- Button -->
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label" for="buscar"></label>
+                                                <div class="col-md-4">
+                                                    <button id="buscarinsumos" name="buscar" class="btn btn-primary">Buscar solicitudes</button>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                </form>
+
+
+                                <div id="final">
                                     
-          		</div>
+          		                </div>
+
+                                <script type="text/javascript">
+                                $(document).ready(function() {
+                                    $("#buscarProveedor").click(function (event) {
+                                        var ordenar = document.getElementById("ordenProveedor").value;
+                                        $("#final").load('pregunta.htm', {accion: 'filtroProveedor', param: ordenar});
+                                    });
+
+                                    $("#buscarinsumos").click(function (event) {
+                                        var correo = document.getElementById("proveedorfinalInsumo").value;
+                                        $("#final").load('pregunta.htm', {accion: 'filtroInsumo', param: correo});
+                                    });
+
+
+
+                                });
+                                </script>
 
                     
                                 <ul class="list-inline item-details">

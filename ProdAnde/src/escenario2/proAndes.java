@@ -402,20 +402,14 @@ public class proAndes {
 		// JUAN PABLO 
 		return conexion.realizarBusquedaProducto();
 	}
-	
-	public ArrayList darSolicitudesPorId(String id)
-	{
-		// JUAN PABLO 
-		return conexion.realizarBusquedaSolicitudesPorIdCliente(id);
-	}
 
 	public ArrayList darSolicitudes()
 	{
 		// JUAN PABLO 
 		return conexion.realizarBusquedaSolicitudes();
 	}
-	
-	
+
+
 	/************************************ jose ite 3 *****************/
 
 	public void apagarEstacion(String id)
@@ -537,6 +531,60 @@ public class proAndes {
 
 	}
 	
+	public ArrayList<ArrayList<String>> darProvedor(String ordenado)
+	{
+		String query = "";
+		try {
+			if(ordenado.equals("0"))
+				query = "SELECT * FROM PROVEEDOR";
+			else
+				query = "SELECT * FROM PROVEEDOR ORDER BY "+ordenado;
+			
+			return conexion2.realizarBusqueda(query);
+		} catch (SQLException e) {
+			conexion2.terminarTransaccion();
+		}
+		finally
+		{
+			conexion2.terminarTransaccion();
+		}
+		return null;
+
+	}
+	
+	public ArrayList<ArrayList<String>> darInfluenciaProveedor(String correo)
+	{
+		String query="";
+		try {
+			query = "SELECT i.NOMBRE insumo, i.UNIDAD_MEDIDA, i.TIPO tipo FROM INSUMOS i inner join PROVEEDOR p on p.ID_INSUMO=i.id WHERE p.DIRECCION_ELECTRONICA = '"+correo+"'";
+			return conexion2.realizarBusqueda(query);
+		} catch (Exception e) {
+			conexion2.terminarTransaccion();
+		}
+		finally
+		{
+			conexion2.terminarTransaccion();
+		}
+		
+		return null;
+	}
+	
+	public ArrayList<ArrayList<String>> darProductosInfluencia(String correo)
+	{
+		String query = "";
+		try {
+			query = "SELECT producto.id, producto.nombre, PRoducto.COSTO, PRoducto.ESTADO,PRoducto.ID_BODEGA  FROM (SELECT e.ID_PRODUCTO FROM (SELECT i.ID, i.NOMBRE insumo, i.UNIDAD_MEDIDA, i.TIPO tipo FROM INSUMOS i inner join PROVEEDOR p on p.ID_INSUMO=i.id WHERE p.DIRECCION_ELECTRONICA = '"+correo+"') t inner join ETAPA_PRODUCCION e on t.id = e.ID_INSUMO_G) pp inner join  PRoducto on pp.ID_PRODUCTO=PROducto.id";
+			return conexion2.realizarBusqueda(query);
+		} catch (Exception e) {
+			conexion2.terminarTransaccion();
+		}
+		finally
+		{
+			conexion2.terminarTransaccion();
+		}
+		return null;
+	}
+	
 	public ArrayList<ArrayList<String>> darsolicitudCliente(String correo)
 	{
 		String query="";
@@ -553,7 +601,7 @@ public class proAndes {
 
 	/*****************************************************************/
 
-	/************************************ Juan Pablo iteracion 3 *****************/
+	/************************************ Juan Pablo iteraci�n 3 *****************/
 
 	public ArrayList<String> informacionPedido(String solicitud,String id)
 	{

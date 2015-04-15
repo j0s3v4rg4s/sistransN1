@@ -86,37 +86,42 @@ public class ServletRF13 extends HttpServlet
 
 		if (accion.equals("actualizar"))
 		{
-			System.out.println("000000!!!");
-			darId(out);
+			cargarInformacion(out);
 		}  	
-		
-		if (accion.equals("id"))
-		{
-			System.out.println("aaaaaa!!");
-			String id = request.getParameter("cliente");
-			cargarInformacion(out, id);
-		}  	
-		
-		
 
 		if (accion.equals("registrar"))
 		{
-			System.out.println("eeeeee!!");
 			String id = request.getParameter("parametro");
-			pro.cancelarPedido(id);
-			String idC = request.getParameter("cliente");
-			cargarInformacion(out, idC);
+			int cant = Integer.parseInt(request.getParameter("cantidad"));
+			String fechi = request.getParameter("fecha");
+			String cl = request.getParameter("cliente");
+			String[]fe = fechi.split("-");
+			int y= Integer.parseInt(fe[0]);
+			int d=Integer.parseInt(fe[1]);
+			int m = Integer.parseInt(fe[2]);
+			DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
+			Date date = formatter.parse(m+"/"+d+"/"+y);
+			Date t = pro.registrarPedidoProducto(date, id, cant, cl);
+
+			darRta(out, cl, t, cant, id);;
 		}
 	}
-	
-	private void cargarInformacion(PrintWriter out,String id) {
-		ArrayList l = pro.darSolicitudesPorId(id);
+	private void darRta(PrintWriter out,String client, Date fech, int cant, String idProd )
+	{
+		out.println("<div>");
+		out.println("<h4>Su solicitud de producto fue realizada correctamente</h4>");
+		out.println("<h6>Pedido solicitado por: "+ client + "</h6>");
+		out.println("<h6>Producto solicitado: "+ idProd+ "</h6>");
+		out.println("<h6>Cantidad: "+ cant + "</h6>");
+		out.println("<h6>Fecha estimada de entrega: "+ fech.toString() + "</h6>");
+		out.println("</div>");
+	}
+	private void cargarInformacion(PrintWriter out) {
+		ArrayList l = pro.darProductos();
 		ArrayList<String> titulo = new ArrayList<String>();
-		titulo.add("ID Producto");
-		titulo.add("Cantidad");
-		titulo.add("Fecha");
-		titulo.add("ID Solicitud");
-		
+		titulo.add("ID");
+		titulo.add("Nombre producto");
+		titulo.add("Costo");
 
 		inicioTabla(out);
 		imprimirFilaTitulo(out,titulo);
@@ -150,19 +155,22 @@ public class ServletRF13 extends HttpServlet
 	private void imprimirFila(PrintWriter out, ArrayList<String> titulo)
 	{
 		out.println("<tr>");
-		for (int i=0;i<4;i++)
+		for (int i=0;i<3;i++)
 		{
 			out.println("   	<td>"+titulo.get(i)+"</td>");
 		}
 
-		String cod = titulo.get(3);
-		out.println(" <td><button type=\"button\" class=\"btn btn-success\" id=\""+cod+"\">Cancelar</button></td>");
+		String cod = titulo.get(0);
+		out.println(" <td><button type=\"button\" class=\"btn btn-success\" id=\""+cod+"\">Registar</button></td>");
 
 
 		out.println("    <script type=\"text/javascript\">");
 		out.println("          $(document).ready(function() {");
 		out.println("               $(\"#"+cod+"\").click(function(event){");
-		out.println("                  $(\"#tablaRF13\").load('RF13.htm',{accion: 'registrar', parametro: '"+cod+"'}); ");
+		out.println("                  var cant = document.getElementById(\"cantidad\").value;");
+		out.println("                  var fech = document.getElementById(\"fecha\").value;");
+		out.println("                  var idclient = document.getElementById(\"cliente\").value;");
+		out.println("                  $(\"#tablaRF12\").load('RF12.htm',{accion: 'registrar', parametro: '"+cod+"',cantidad: cant,fecha: fech, cliente:idclient }); ");
 		out.println("               });");
 		out.println("          });");
 		out.println("    </script>");
@@ -176,19 +184,14 @@ public class ServletRF13 extends HttpServlet
 		out.println(" </table>");
 		out.println("                                </div>");
 
-	}
-	private void darId(PrintWriter out)
-	{
-		
 		out.println("<form name=\"sentMessage\" id=\"contactForm\" novalidate>");
-		out.println("    <script type=\"text/javascript\">");
-		out.println("          $(document).ready(function() {");
-		out.println("               $(\"#subm\").click(function(event){");
-		out.println("                  var idclient = document.getElementById(\"cliente\").value;");
-		out.println("                  $(\"#tablaRF13\").load('RF13.htm',{accion: 'id', parametro: 'subm',cliente:idclient }); ");
-		out.println("               });");
-		out.println("          });");
-		out.println("    </script>");
+		out.println("                        <div class=\"row control-group\">");
+		out.println("                            <div class=\"form-group col-xs-12 floating-label-form-group controls\">");
+		out.println("                                <label>Cantidad</label>");
+		out.println("                                <input type=\"number\" class=\"form-control\" placeholder=\"Ingrese la cantidad\" id=\"cantidad\" required data-validation-required-message=\"Complete el campo\">");
+		out.println("                                <p class=\"help-block text-danger\"></p>");
+		out.println("                            </div>");
+		out.println("                        </div>");
 		out.println("                        <div class=\"row control-group\">");
 		out.println("                            <div class=\"form-group col-xs-12 floating-label-form-group controls\">");
 		out.println("                                <label>Id Cliente</label>");
@@ -196,9 +199,14 @@ public class ServletRF13 extends HttpServlet
 		out.println("                                <p class=\"help-block text-danger\"></p>");
 		out.println("                            </div>");
 		out.println("                        </div>");
-		out.println(" <div><button type=\"button\" class=\"btn btn-success\" id=\"subm\">Registar</button></div>");
+		out.println("                        <div class=\"row control-group\">");
+		out.println("                            <div class=\"form-group col-xs-12 floating-label-form-group controls\">");
+		out.println("                                <label>Tiempo terminacion</label>");
+		out.println("                                <input type=\"date\" class=\"form-control\" placeholder=\"Ingrese la fecha\" id=\"fecha\" required data-validation-required-message=\"Complete el campo\">");
+		out.println("                                <p class=\"help-block text-danger\"></p>");
+		out.println("                            </div>");
+		out.println("                        </div>");
 		out.println("</form>");
-
 	}
 	
 }
