@@ -83,7 +83,7 @@ public class ConsultaDAO {
 		try
 		{
 			conexion = DriverManager.getConnection(url,usuario,clave);
-			conexion.setAutoCommit(false);
+			conexion.setAutoCommit(true);
 		}
 		catch( SQLException exception )
 		{
@@ -293,7 +293,6 @@ public class ConsultaDAO {
 		try 
 		{
 			establecerConexion(cadenaConexion, usuario, clave);
-			System.out.println(conexion.getAutoCommit());
 			prepStmt = conexion.prepareStatement(query);
 			ResultSet rs = prepStmt.executeQuery();
 			rs2 = rs;
@@ -1074,6 +1073,30 @@ public class ConsultaDAO {
 		return queryA;
 
 	}
+	
+	public ArrayList realizarBusquedaSolicitudesPorIdCliente(String id)
+	{
+		String query = "SELECT ID_PRODUCTO,CANTIDAD,FECHA,ID FROM SOLICITUDES WHERE ID_CLIENTE = '"+id+"'";
+		ResultSet rs = ejecutarPregunta(query);
+		ArrayList<ArrayList<String>> queryA = new ArrayList<ArrayList<String>>();
+		try {
+			while(rs.next())
+			{
+				ArrayList<String> l = new ArrayList<String>();
+				l.add(rs.getString(1));
+				l.add(rs.getString(2));
+				l.add(rs.getString(3));
+				l.add(rs.getString(4));
+				queryA.add(l);
+			}
+			rs.close();
+			closeConnection(conexion);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return queryA;
+
+	}
 
 	/**
 	 * realiza una pregunta de actualizacion a la base de datos 
@@ -1147,7 +1170,7 @@ public class ConsultaDAO {
 
 	public ArrayList<String> darInfoPedidoPorId(String id)
 	{
-
+		//JUAN
 		PreparedStatement prepStmt = null;
 		String ans = "";
 		ArrayList<String> rta = new ArrayList<String>();
@@ -1174,7 +1197,7 @@ public class ConsultaDAO {
 
 	public ArrayList<String> darInfoPedidoPorIdProducto(String id)
 	{
-
+		//JUAN
 		PreparedStatement prepStmt = null;
 		String ans = "";
 		ArrayList<String> rta = new ArrayList<String>();
@@ -1201,7 +1224,7 @@ public class ConsultaDAO {
 
 	public ArrayList<String> darInfoPedidoPorIdCliente(String id) 
 	{
-
+		//JUAN
 		PreparedStatement prepStmt = null;
 		String ans = "";
 		ArrayList<String> rta = new ArrayList<String>();
@@ -1228,6 +1251,7 @@ public class ConsultaDAO {
 
 	public ArrayList<Solicitud> darSolicitudesPorUsuario(String idUser)
 	{
+		//JUAN
 		PreparedStatement prepStmt = null;
 		ArrayList<Solicitud> rta = new ArrayList<Solicitud>();
 		try {
@@ -1254,6 +1278,7 @@ public class ConsultaDAO {
 
 	public void cancelarPedidoProductos(String id)
 	{
+		//JUAN
 		PreparedStatement prepStmt = null;
 		try {
 			establecerConexion(cadenaConexion, usuario, clave);

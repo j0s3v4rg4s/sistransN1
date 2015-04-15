@@ -402,14 +402,20 @@ public class proAndes {
 		// JUAN PABLO 
 		return conexion.realizarBusquedaProducto();
 	}
+	
+	public ArrayList darSolicitudesPorId(String id)
+	{
+		// JUAN PABLO 
+		return conexion.realizarBusquedaSolicitudesPorIdCliente(id);
+	}
 
 	public ArrayList darSolicitudes()
 	{
 		// JUAN PABLO 
 		return conexion.realizarBusquedaSolicitudes();
 	}
-
-
+	
+	
 	/************************************ jose ite 3 *****************/
 
 	public void apagarEstacion(String id)
@@ -547,7 +553,7 @@ public class proAndes {
 
 	/*****************************************************************/
 
-	/************************************ Juan Pablo iteraci�n 3 *****************/
+	/************************************ Juan Pablo iteracion 3 *****************/
 
 	public ArrayList<String> informacionPedido(String solicitud,String id)
 	{
