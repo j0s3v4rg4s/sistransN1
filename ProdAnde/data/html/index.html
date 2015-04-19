@@ -12,8 +12,7 @@
     <title>Prodandes</title>
     
     <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
-    <link href ="css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/filtro.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="css/freelancer.css" rel="stylesheet">
@@ -31,7 +30,6 @@
     <![endif]-->
     <script src="./js/jquery-1.11.1.min.js"></script>
     <script src="js/script.js"></script>
-    <script src="js/filtro.js"></script>
 
     
     <script type="text/javascript">
@@ -47,18 +45,27 @@
             
                  $("#tablaRF14").load('RF14.htm',{accion: 'actualizar'}); 
               });
+               $("#req13").click(function(event){
+                   
+                   $("#tablaRF13").load('RF13.htm',{accion: 'actualizar'}); 
+                });
+              
                $("#req11").click(function(event){
             	  
                  $("#tabla2").load('pregunta.htm',{accion: 'actualizarReq2'}); 
               });
+               $("#reqFC5").click(function(event){
+             	  
+                   $("#tablaRFC5").load('RFC5.htm',{accion: 'actualizar'}); 
+                });
                $("#reqFC2").click(function(event){
             	 
                  $("#tablaRFC2").load('RFC2.htm',{accion: 'actualizar'}); 
               });
-               
+
                $("#req17").click(function(event){
-                 $("#contenidorf17").load('pregunta.htm',{accion:'rf17'});
-               });
+                   $("#contenidorf17").load('pregunta.htm',{accion:'rf17'});
+                 });
                
           });
     </script>
@@ -195,7 +202,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal6" class="portfolio-link"  id="reqFC2"data-toggle="modal">
+                    <a href="#portfolioModal6" class="portfolio-link"  id="reqFC2" data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -208,7 +215,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal7" class="portfolio-link" id="req11" data-toggle="modal">
+                    <a href="#portfolioModal7" class="portfolio-link" id="req13" data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -232,7 +239,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal9" class="portfolio-link" data-toggle="modal">
+                    <a href="#portfolioModal9" class="portfolio-link"  id="reqFC5" data-toggle="modal">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -290,9 +297,7 @@
                     <p>Se basa principalmente en la pagina web de una fabrica de produccion, encargada del desarrollo de productos a traves de solicitudes por parte de un cliente, en estos casos el uso de las bases de datos es vital para el desarrollo de esta p�gina</p>
                 </div>
                 <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <a href="#" class="btn btn-lg btn-outline">
-                        <i class="fa fa-download"></i> Download Theme
-                    </a>
+                    
                 </div>
             </div>
         </div>
@@ -887,8 +892,34 @@
                                 <hr class="star-primary">
                                 <p>Responde toda la informacion de un material (materia prima, componente, etapa de producto, producto), incluyendo su tipo, su nombre, los materiales que lo componen, los materiales que compone, las etapas de produccion en las que participa, las unidades producidas, las unidades en produccion, los pedidos de cliente en los que esta involucrado (para los productos), los pedidos de compra en los que esta involucrado (para materias primas y componentes). Los resultados deben poder ser filtrados por tipo de material, volumen, rango de fechas y costo. Se debe mostrar la fecha, los productos y cantidades solicitadas y el costo. Debe ofrecerse la posibilidad de agrupamiento y ordenamiento de las respuestas segun los intereses del usuario que consulta. </p>
                                 <div id="tablaRFC2">
-                                    
           		</div>
+                                        <script type="text/javascript">
+		          $(document).ready(function() {
+		               $("#suc2").click(function(event){
+		   var seleccion = document.getElementById("sela").value;
+		   var mat = document.getElementById("material").value;
+		   $("#tablaRFC2").load('RFC2.htm',{accion: 'registrar',material: mat,sela: seleccion}); 
+		               });
+		          });
+		    </script>
+		<form name="sentMessage" id="contactForm" novalidate>
+		<label>Seleccion</label>                                        
+		<select class="form-control" id="sela">
+		<option value="MateriaPrima">Materia Prima </option>
+		<option value="Componente">Componente</option>
+		<option value="EtapaDeProducto">Etapa de produccion</option>
+		<option value="Producto">Producto</option>
+		     </select>
+		                        <div class="row control-group">
+		                            <div class="form-group col-xs-12 floating-label-form-group controls">
+		                                <label>Id Material</label>
+		                 <input type="text" class="form-control" placeholder="Ingrese el id del material" id="material" required data-validation-required-message="Complete el campo">
+		                                <p class="help-block text-danger"></p>
+		                            </div>
+		                        </div>
+		<button type="button" class="btn btn-success" id="suc2">Dar informacion</button>
+		</form>
+                                    
 
                     
                                 <ul class="list-inline item-details">
@@ -932,9 +963,9 @@
                                 <h3>Cancelar Pedido de productos</h3>
                                 <hr class="star-primary">
                                 <p>Cancela la operacion anterior, teniendo en cuenta todas las restricciones de coherencia correspondientes. Esta operacion es realizada por un usuario cliente de la empresa que realizo el pedido que se quiere cancelar </p>
-                                <div id="tablaRFC2">
+                                <div id="tablaRF13">
                                     
-          		</div>
+          						</div>
 
                     
                                 <ul class="list-inline item-details">
@@ -960,10 +991,6 @@
             </div>
         </div>
 		
-
-
-
-
 		<div class="portfolio-modal modal fade" id="portfolioModal8" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-content">
                 <div class="close-modal" data-dismiss="modal">
@@ -979,59 +1006,8 @@
                                 <h2>Requerimiento funcional numero 17</h2>
                                 <h3>Reportar cambio de estado de una estacion de produccion</h3>
                                 <hr class="star-primary">
+                                <p>Dada una estacion de produccion y el cambio de estado deseado, se modifica la informacion existente para reflejar ese cambio. Si la estacion estaba activa y se quiere desactivar, todas las etapas de produccion que le estaban asignadas deben ser asignadas a las otras estaciones de produccion de manera que el trabajo total quede lo mas uniformemente repartido entre las estaciones activas (esta operación se llama balanceo de carga). De la misma manera, cuando una estación de producción se activa, se le asignan algunas de las etapas que ya están vigentes en el sistema, nuevamente tratando que la distribucion sea uniforme. Esta operacion es realizada por un usuario gerente de producción de la empresa. </p>
                                 <div id="contenidorf17">
-                                    
-          		                </div>
-
-                    
-                                <ul class="list-inline item-details">
-
-                                    <li>Client:
-                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                        </strong>
-                                    </li>
-                                    <li>Date:
-                                        <strong><a href="http://startbootstrap.com">April 2014</a>
-                                        </strong>
-                                    </li>
-                                    <li>Service:
-                                        <strong><a href="http://startbootstrap.com">Web Development</a>
-                                        </strong>
-                                    </li>
-                                </ul>
-                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-
-
-
-
-
-	
-	<div class="portfolio-modal modal fade" id="portfolioModal9" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 col-lg-offset-2">
-                            <div class="modal-body">
-                                <h2>Requerimiento funcional de consulta numero 5</h2>
-                                <h3>Consultar pedidos</h3>
-                                <hr class="star-primary">
-                                <p>Muestra la información de los pedidos y su estado actual. Esta consulta puede ser filtrada por diferentes conceptos y se espera como resultado: cliente, productos, cantidades, costos, fechas, materiales requeridos para satisfacer el pedido, ….Esta operación es realizada por el encargado de ProdAndes. </p>
-                                <div id="tablaRFC2">
                                     
           		</div>
 
@@ -1058,7 +1034,81 @@
                 </div>
             </div>
         </div>
-        
+	
+	<div class="portfolio-modal modal fade" id="portfolioModal9" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <h2>Requerimiento funcional de consulta numero 5</h2>
+                                <h3>Consultar pedidos</h3>
+                                <hr class="star-primary">
+                                <p>Muestra la información de los pedidos y su estado actual. Esta consulta puede ser filtrada por diferentes conceptos y se espera como resultado: cliente, productos, cantidades, costos, fechas, materiales requeridos para satisfacer el pedido, ….Esta operación es realizada por el encargado de ProdAndes. </p>
+                                <div id="tablaRFC5">
+                                </div>
+                                    <script type="text/javascript">
+		          				$(document).ready(function() {
+		               			$("#suc5").click(function(event){
+							   	var seleccion = document.getElementById("sela5").value;
+		   						var  idSeleccion= document.getElementById("idSel5").value;
+								console.log(seleccion)
+								console.log(idSeleccion)
+		   							$("#tablaRFC5").load('RFC5.htm',{accion:'darInform5', idSel5:idSeleccion, sela5:seleccion}); 
+								               });
+		          						});
+		    						</script>
+		
+                                <form name="sentMessage" id="contactForm" novalidate>
+										<h3>Seleccione el filtro de busqueda</h3>
+										<label>Seleccion</label>                                        
+									 <select class="form-control" id="sela5">
+										<option value="Id Pedido">Pedido </option>
+										<option value="Id Producto">Producto</option>
+										<option value="Id Cliente">Cliente</option>
+		    						 </select>
+		  					           <div class="row control-group">
+		                 				<div class="form-group col-xs-12 floating-label-form-group controls">
+		                   		             <label>Id</label>
+		                 					 <input type="text" class="form-control" placeholder="Ingrese su id de busqueda (id del producto, id del pedido, id del cliente)" id="idSel5" required data-validation-required-message=\"Complete el campo\">
+		                                	 <p class="help-block text-danger"></p>
+		                 				</div>
+		            				   </div>
+										<button type="button" class="btn btn-success" id="suc5">Dar informacion</button>
+							   </form>
+		
+                                
+
+                    
+                                <ul class="list-inline item-details">
+
+                                    <li>Client:
+                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
+                                        </strong>
+                                    </li>
+                                    <li>Date:
+                                        <strong><a href="http://startbootstrap.com">April 2014</a>
+                                        </strong>
+                                    </li>
+                                    <li>Service:
+                                        <strong><a href="http://startbootstrap.com">Web Development</a>
+                                        </strong>
+                                    </li>
+                                </ul>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       </div>
         <div class="portfolio-modal modal fade" id="portfolioModal10" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-content">
                 <div class="close-modal" data-dismiss="modal">
@@ -1141,14 +1191,10 @@
                                             var ordenar = document.getElementById("ordenCliente").value;
                                             $("#nuevovalorrr").load('pregunta.htm', {accion: 'filtroCliente', param: ordenar});
                                         });
-
                                         $("#buscarClientedireccion").click(function (event) {
                                             var correo = document.getElementById("corrrrr").value;
                                             $("#nuevovalorrr").load('pregunta.htm', {accion: 'filtroSolicitud', param: correo});
                                         });
-
-
-
                                     });
                                 </script>
                                     
@@ -1190,7 +1236,7 @@
                     <div class="row">
                         <div class="col-lg-8 col-lg-offset-2">
                             <div class="modal-body">
-                                <h2>Requerimiento funcional de consulta numero 17</h2>
+                                <h2>Requerimiento funcional de consulta numero 7</h2>
                                 <h3>Consultar proveedores</h3>
                                 <hr class="star-primary">
 
@@ -1254,14 +1300,10 @@
                                         var ordenar = document.getElementById("ordenProveedor").value;
                                         $("#final").load('pregunta.htm', {accion: 'filtroProveedor', param: ordenar});
                                     });
-
                                     $("#buscarinsumos").click(function (event) {
                                         var correo = document.getElementById("proveedorfinalInsumo").value;
                                         $("#final").load('pregunta.htm', {accion: 'filtroInsumo', param: correo});
                                     });
-
-
-
                                 });
                                 </script>
 

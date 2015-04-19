@@ -84,84 +84,52 @@ public class ServletRFC5 extends HttpServlet
 
 		if (accion.equals("actualizar"))
 		{
-			
-			imprimirOpciones(out);;
-		System.out.println("Hey!");
+			System.out.println("Hey!");
 		}  	
 
-		if (accion.equals("registrar"))
+		if (accion.equals("darInform5"))
 		{
-			System.out.println("AAA");
-			String ida = request.getParameter("parametro");
-			String fechi = request.getParameter("seleccion");
-			String id = request.getParameter("mat");
-			System.out.println(fechi);
+			String sel = request.getParameter("sela5");
+			String id = request.getParameter("idSel5");
+			System.out.println(sel);
 			System.out.println(id);
-			ArrayList<String> arr = pro.informacionMaterial(fechi, id );
+			ArrayList<ArrayList<String>> arr = pro.informacionPedido(sel, id);
 			imprimirRta(out, arr);
 		}
 	}
 
-	private void imprimirOpciones(PrintWriter out)
-	{
-
-		out.println("    <script type=\"text/javascript\">");
-		out.println("          $(document).ready(function() {");
-		out.println("               $(\"#suc\").click(function(event){");
-		out.println("   var seleccion = document.getElementById(\"sela\").value;");
-		out.println("   var mat = document.getElementById(\"material\").value;");
-		out.println("   $(\"#tablaRFC2\").load('RFC2.htm',{accion: 'registrar',mat: material,seleccion: sela}); ");
-		out.println("               });");
-		out.println("          });");
-		out.println("    </script>");
-		out.println("<form name=\"sentMessage\" id=\"contactForm\" novalidate>");
-		out.println("<label>Seleccion</label>                                        ");
-		out.println("<select class=\"form-control\" id=\"sela\">");
-		out.println("<option id=\"Materia Prima\">Materia Prima </option>");
-		out.println("<option id=\"Componente\">Componente</option>");
-		out.println("<option id=\"Etapa de produccion\">Etapa de produccion</option>");
-		out.println("<option id=\"Producto\">Producto</option>");
-		out.println("     </select>");
-		out.println("                        <div class=\"row control-group\">");
-		out.println("                            <div class=\"form-group col-xs-12 floating-label-form-group controls\">");
-		out.println("                                <label>Id Material</label>");
-		out.println("                 <input type=\"text\" class=\"form-control\" placeholder=\"Ingrese el id del material\" id=\"material\" required data-validation-required-message=\"Complete el campo\">");
-		out.println("                                <p class=\"help-block text-danger\"></p>");
-		out.println("                            </div>");
-		out.println("                        </div>");
-		out.println("<button type=\"button\" class=\"btn btn-success\" id=\"suc\">Dar informacion</button>");
-		out.println("</form>");
-
-		
-	
-	}
-	
-	private void imprimirRta(PrintWriter out, ArrayList<String> arr)
+	private void imprimirRta(PrintWriter out, ArrayList<ArrayList<String>> arr)
 	{
 
 		out.println("<h3> INFORMACION </h3>");
-		for (int i=0; i<arr.size(); i++)
+		out.println("<div class=\"table-responsive\">");
+		out.println("<table class=\"table table-condensed table-bordered table-hover\">");
+		out.println("<tr>");
+		ArrayList<String> arrin = arr.get(0);
+		for(int j = 0; j < arrin.size(); j++)
 		{
-			out.println("<h3> Material "+i +  " </h3>");
-			out.println("<h5>"+arr.get(i)+"</h5>");
+			System.out.println(arrin.get(j));
+			out.println("<th>"+arrin.get(j)+"</th>");
+		}				
+		out.println("</tr>");
+		for (int i=1; i<arr.size(); i++)
+		{
+			out.println("<tr>");
+			arrin = arr.get(i);
+
+			for(int j = 0; j < arrin.size(); j++)
+			{
+				System.out.println(arrin.get(j));
+				out.println("<td>"+arrin.get(j)+"</td>");
+			}				
+			out.println("</tr>");
 		}
-		
-		out.println("<label>Seleccion</label>                                        ");
-		out.println("                                        <select class=\"form-control\" id=\"sela\">");
-		out.println("<option value=\"Materia Prima\">Materia Prima </option>");
-		out.println("<option value=\"Componente\">Componente</option>");
-		out.println("<option value=\"Etapa de produccion\">Etapa de produccion</option>");
-		out.println("<option value=\"Producto\">Producto</option>");
-		out.println("     </select>");
-		out.println("    <script type=\"text/javascript\">");
-		out.println("   var seleccion = document.getElementById(\"sela\").value;");
-		out.println("  console.log(seleccion); ");
-		out.println("    </script>");
-		
-		
-//		{accion: 'registrar', parametro: '"+cod+"',cantidad: cant,fecha: fech, cliente:idclient }
-		
+		out.println("</table> </div>");
+
+
+		//		{accion: 'registrar', parametro: '"+cod+"',cantidad: cant,fecha: fech, cliente:idclient }
+
 
 	}
-	
+
 }

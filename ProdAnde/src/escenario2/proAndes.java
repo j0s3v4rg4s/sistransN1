@@ -213,21 +213,42 @@ public class proAndes {
 		}
 		return ans;
 	}
-	public ArrayList<String> informacionMaterial(String tipo,String id)
+	@SuppressWarnings("unchecked")
+	public ArrayList<ArrayList<String>> informacionMaterial(String tipo,String id)
 	{
 		// JUANPABLO 
-		ArrayList<String> ans = new ArrayList<String>();
-		if (tipo.equals("Materia Prima"))
-			ans = conexion.darInfoMateriaPrima(id);
-		if (tipo.equals("Componente"))
-			ans =conexion.darInfoComponente(id);
-		if (tipo.equals("Etapa de producto"))
+		ArrayList<ArrayList<String>> ans = new ArrayList<ArrayList<String>>();
+		String sent = ""; 
+		try
 		{
-			int num = Integer.parseInt(id);
-			ans =conexion.darInfoEtapaDeProduccion(num);
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			if (tipo.equals("MateriaPrima"))
+			{
+				sent = "SELECT INSUMOS.NOMBRE AS NOMBRE_INSUMOS, BODEGA.CANTIDAD AS EXISTENCIAS_EN_BODEGA, ETAPA_PRODUCCION.CANTIDAD_G AS CANTIDAD_GASTADA,ETAPA_PRODUCCION.NUMERO AS NUMERO_ETAPA_PRODUCCION,PRODUCTO.NOMBRE AS NOMBRE_PRODUCTO, SOLICITUDES.ID AS ID_SOLICITUDES FROM ((((ETAPA_PRODUCCION INNER JOIN INSUMOS ON ETAPA_PRODUCCION.ID_INSUMO_G = INSUMOS.ID)INNER JOIN BODEGA ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN PRODUCTO ON ETAPA_PRODUCCION.ID_PRODUCTO = PRODUCTO.ID)INNER JOIN SOLICITUDES ON SOLICITUDES.ID_PRODUCTO = PRODUCTO.ID) WHERE INSUMOS.TIPO= 'materia prima' AND INSUMOS.ID = '"+id+"'";
+			}
+			if (tipo.equals("Componente"))
+			{
+
+				sent = "SELECT INSUMOS.NOMBRE AS NOMBRE_INSUMOS, BODEGA.CANTIDAD AS EXISTENCIAS_EN_BODEGA, ETAPA_PRODUCCION.CANTIDAD_G AS CANTIDAD_GASTADA,ETAPA_PRODUCCION.NUMERO AS NUMERO_ETAPA_PRODUCCION,PRODUCTO.NOMBRE AS NOMBRE_PRODUCTO, SOLICITUDES.ID AS IDS FROM ((((ETAPA_PRODUCCION INNER JOIN INSUMOS ON ETAPA_PRODUCCION.ID_INSUMO_G = INSUMOS.ID)INNER JOIN BODEGA ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN PRODUCTO ON ETAPA_PRODUCCION.ID_PRODUCTO = PRODUCTO.ID)INNER JOIN SOLICITUDES ON SOLICITUDES.ID_PRODUCTO = PRODUCTO.ID) WHERE INSUMOS.TIPO= 'componente' AND INSUMOS.ID = '"+id+"'";
+			}
+			if (tipo.equals("EtapaDeProducto"))
+			{
+				int num = Integer.parseInt(id);
+				sent="SELECT * FROM ETAPA_PRODUCCION WHERE ETAPA_PRODUCCION.NUMERO = "+num;
+			}
+			if (tipo.equals("Producto"))
+			{
+				sent = "SELECT BODEGA.CANTIDAD AS EXISTENCIAS_BODEGA, ETAPA_PRODUCCION.CANTIDAD_G AS CANTIDAD_GASTADA,ETAPA_PRODUCCION.NUMERO AS NUMERO_ETAPA_PRODUCCION,PRODUCTO.NOMBRE AS NOMBRE_PRODUCTO, SOLICITUDES.ID AS ID_SOLICITUDES FROM (((ETAPA_PRODUCCION INNER JOIN PRODUCTO ON ETAPA_PRODUCCION.ID_PRODUCTO = PRODUCTO.ID) INNER JOIN BODEGA ON BODEGA.ID = PRODUCTO.ID_BODEGA)INNER JOIN SOLICITUDES ON SOLICITUDES.ID_PRODUCTO = PRODUCTO.ID) WHERE PRODUCTO.ID = '"+id+"'";
+			}
+
+			ans = conexion2.realizarBusqueda(sent);
+			conexion2.terminarTransaccion();
 		}
-		if (tipo.equals("Producto"))
-			ans =conexion.darInfoProducto(id);
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+			conexion2.terminarTransaccion();
+		}
 		return ans;
 	}
 
@@ -401,6 +422,12 @@ public class proAndes {
 	{
 		// JUAN PABLO 
 		return conexion.realizarBusquedaProducto();
+	}
+
+	public ArrayList darSolicitudesPorId(String id)
+	{
+		// JUAN PABLO 
+		return conexion.realizarBusquedaSolicitudesPorIdCliente(id);
 	}
 
 	public ArrayList darSolicitudes()
@@ -598,30 +625,54 @@ public class proAndes {
 		
 	}
 
-
 	/*****************************************************************/
 
-	/************************************ Juan Pablo iteraci�n 3 *****************/
+	/************************************ Juan Pablo iteracion 3 *****************/
 
-	public ArrayList<String> informacionPedido(String solicitud,String id)
+	@SuppressWarnings("unchecked")
+	public ArrayList<ArrayList<String>> informacionPedido(String solicitud,String id)
 	{
 		// JUANPABLO 
-		ArrayList<String> ans = new ArrayList<String>();
-		if (solicitud.equals("Id Pedido"))
-			ans = conexion.darInfoPedidoPorId(id);
-		if (solicitud.equals("Id Producto"))
-			ans =conexion.darInfoPedidoPorIdProducto(id);
-		if (solicitud.equals("Id Cliente"))
+		ArrayList<ArrayList<String>> ans = new ArrayList<ArrayList<String>>();
+		try {
+			System.out.println("ll");
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			System.out.println("ll1");
+			String queryIdpedido = "SELECT SOLICITUDES.ID_CLIENTE AS ID_CLIENTE, PRODUCTO.ESTADO, CLIENTE.NOMBRE AS NOMBRE_CLIENTE,SOLICITUDES.ID_PRODUCTO AS ID_PRODUCTO,PRODUCTO.NOMBRE AS NOMBRE_PRODUCTO, SOLICITUDES.FECHA, SOLICITUDES.CANTIDAD, PRODUCTO.COSTO AS COSTO_UNITARIO,INSUMOS.NOMBRE FROM ((((SOLICITUDES INNER JOIN CLIENTE ON SOLICITUDES.ID_CLIENTE = CLIENTE.DIRECCION_ELECTRONICA) INNER JOIN PRODUCTO ON SOLICITUDES.ID_PRODUCTO= PRODUCTO.ID)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO) INNER JOIN INSUMOS ON (INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_G)) WHERE SOLICITUDES.ID = '"+id+"'";
+			String queryIdproducto = "SELECT SOLICITUDES.ID_CLIENTE AS ID_CLIENTE, PRODUCTO.ESTADO, CLIENTE.NOMBRE AS NOMBRE_CLIENTE,SOLICITUDES.ID AS ID_PEDIDO,PRODUCTO.NOMBRE AS NOMBRE_PRODUCTO, SOLICITUDES.FECHA, SOLICITUDES.CANTIDAD, PRODUCTO.COSTO AS COSTO_UNITARIO,INSUMOS.NOMBRE FROM ((((SOLICITUDES INNER JOIN CLIENTE ON SOLICITUDES.ID_CLIENTE = CLIENTE.DIRECCION_ELECTRONICA) INNER JOIN PRODUCTO ON SOLICITUDES.ID_PRODUCTO= PRODUCTO.ID)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO) INNER JOIN INSUMOS ON (INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_G )) WHERE SOLICITUDES.ID_PRODUCTO = '"+id+"'";
+			String queryIdCliente = "SELECT SOLICITUDES.ID_PRODUCTO AS ID_PRODUCTO, PRODUCTO.ESTADO, CLIENTE.NOMBRE AS NOMBRE_CLIENTE,SOLICITUDES.ID AS ID_PEDIDO,PRODUCTO.NOMBRE AS NOMBRE_PRODUCTO, SOLICITUDES.FECHA, SOLICITUDES.CANTIDAD, PRODUCTO.COSTO AS COSTO_UNITARIO,INSUMOS.NOMBRE FROM ((((SOLICITUDES INNER JOIN CLIENTE ON SOLICITUDES.ID_CLIENTE = CLIENTE.DIRECCION_ELECTRONICA) INNER JOIN PRODUCTO ON SOLICITUDES.ID_PRODUCTO= PRODUCTO.ID)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO) INNER JOIN INSUMOS ON (INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_G )) WHERE SOLICITUDES.ID_CLIENTE = '"+id+"'";
+			if (solicitud.equals("Id Pedido"))
+				ans = conexion2.realizarBusqueda(queryIdpedido);
+			if (solicitud.equals("Id Producto"))
+				ans =conexion2.realizarBusqueda(queryIdproducto);
+			if (solicitud.equals("Id Cliente"))
+				ans =conexion2.realizarBusqueda(queryIdCliente);
+			conexion2.terminarTransaccion();
+		} 
+		catch (SQLException e)
 		{
-			ans =conexion.darInfoPedidoPorIdCliente(id);
+			// TODO Auto-generated catch block
+			conexion2.terminarTransaccion();
 		}
 		return ans;
+
 	}
 
 	public void cancelarPedido(String id)
 	{
 		// JUANPABLO 
-		conexion.cancelarPedidoProductos(id);
+
+		try 
+		{
+			conexion2.setIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+			String query = "DELETE FROM SOLICITUDES WHERE ID = '" + id + "'";
+			conexion2.preguntador(query);
+			conexion2.terminarTransaccion();
+		} 
+		catch (SQLException e)
+		{
+			conexion2.terminarTransaccion();
+		}
 	}
 	/*****************************************************************/
 
