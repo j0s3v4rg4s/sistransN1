@@ -103,8 +103,9 @@ public class ServletRF13 extends HttpServlet
 		{
 			System.out.println("eeeeee!!");
 			String id = request.getParameter("parametro");
-			pro.cancelarPedido(id);
 			String idC = request.getParameter("cliente");
+			System.out.println(id);
+			pro.cancelarPedido(id);
 			cargarInformacion(out, idC);
 		}
 	}
@@ -120,7 +121,7 @@ public class ServletRF13 extends HttpServlet
 
 		inicioTabla(out);
 		imprimirFilaTitulo(out,titulo);
-		for (int i=0;i<l.size();i++)
+		for (int i=1;i<l.size();i++)
 		{
 			imprimirFila(out, (ArrayList<String>)l.get(i));
 

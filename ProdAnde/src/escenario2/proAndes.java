@@ -2,6 +2,8 @@ package escenario2;
 
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -171,6 +173,351 @@ public class proAndes {
 		c = CalendarUtil.addDays(c, 21);
 		return c.getTime(); 
 	}
+
+	public int buscarCantidadProductoEnBodega(String idProd)
+	{
+		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
+		ArrayList<String> arry = new ArrayList<String>();
+		int ans = 0;
+		// JUAN PABLO 
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "SELECT BODEGA.CANTIDAD FROM (BODEGA INNER JOIN PRODUCTO ON PRODUCTO.ID_BODEGA = BODEGA.ID)   WHERE PRODUCTO.ID = "+"'"+idProd+"'";
+			arr = conexion2.realizarBusqueda(query);	
+			System.out.println(query);
+			arry = arr.get(1);
+			System.out.println(arry);
+			String anss = arry.get(0);
+			System.out.println(anss);
+			ans = Integer.parseInt(anss);
+			conexion2.getConexion().commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally
+		{
+			
+			conexion2.terminarTransaccion();
+		}
+		return ans;
+
+	}
+
+	public void reservarCantidadProductoEnBodega(int cantidad, String id)
+	{
+		// JUAN PABLO 
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "UPDATE BODEGA SET RESERVA = (RESERVA +"+cantidad+"), CANTIDAD = (CANTIDAD-"+cantidad+") WHERE ID= '"+ id +"'";
+			conexion2.preguntador(query);	
+			conexion2.getConexion().commit();
+		} catch (SQLException e) {
+			conexion2.terminarTransaccion();
+			e.printStackTrace();
+		}
+		
+		finally
+		{
+			
+			conexion2.terminarTransaccion();
+		}
+	}
+
+	public ArrayList<Bodega> cargarBodegaEnLista()
+	{
+		ArrayList<ArrayList<String>> arr= new ArrayList<ArrayList<String>>(); 
+		ArrayList<Bodega> bodeg = new ArrayList<Bodega>();
+		ArrayList<String> arry = new ArrayList<String>();
+		// JUAN PABLO 
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "SELECT * FROM BODEGA";
+			arr = conexion2.realizarBusqueda(query);	
+			for (int i = 0; i<arr.size(); i++)
+			{
+				if (i!=0)
+				{
+					arry = arr.get(i);
+					String cant = arry.get(1);
+					int cantidad = Integer.parseInt(cant);
+					Bodega bod = new Bodega(arry.get(0),cantidad);
+					bodeg.add(bod);
+
+				}
+			}
+			conexion2.getConexion().commit();
+		} catch (SQLException e) {
+			conexion2.terminarTransaccion();
+			e.printStackTrace();
+		}
+		
+		finally
+		{
+			
+			conexion2.terminarTransaccion();
+		}
+		return bodeg;
+	}
+
+	public void actualizarEstado (String idCliente,String estado)
+	{
+		// JUAN PABLO 
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "UPDATE PRODUCTO SET ESTADO = '"+estado+"' WHERE (SELECT SOLICITUDES.ID_CLIENTE FROM (PRODUCTO INNER JOIN SOLICITUDES ON SOLICITUDES.ID_PRODUCTO = PRODUCTO.ID)) = '"+ idCliente+"'";
+			conexion2.preguntador(query);	
+			conexion2.getConexion().commit();
+		} catch (SQLException e) {
+			conexion2.terminarTransaccion();
+			e.printStackTrace();
+		}
+		
+		finally
+		{
+			
+			conexion2.terminarTransaccion();
+		}
+	}
+
+	public void ReservarCantidadEnBodega(String idProd)
+	{
+		boolean a = false;
+		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
+		ArrayList<String> arry = new ArrayList<String>();
+		int rta = 0;
+		String anss = "";
+		// JUAN PABLO 
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "SELECT BODEGA.ID, ETAPA_PRODUCCION.CANTIDAD_G AS CANTIDAD_GASTADA FROM((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_INSUMO_G = INSUMOS.ID)WHERE ETAPA_PRODUCCION.ID_INSUMO_G = '" + idProd+"'";
+			arr = conexion2.realizarBusqueda(query);			
+			conexion2.getConexion().commit();
+			for (int i=0;i<arr.size(); i++)
+			{
+				if (i!= 0)
+				{
+					arry = arr.get(i);
+					String bod = arry.get(0);
+					String cantidadGast = arry.get(1);
+					int cant = Integer.parseInt(cantidadGast);
+					reservarCantidadGastada(cant,bod);
+					a =true;
+
+				}
+			}
+
+		} catch (SQLException e) {
+			conexion2.terminarTransaccion();
+			e.printStackTrace();
+		}
+		
+		finally
+		{
+			
+			conexion2.terminarTransaccion();
+		}
+	}
+
+	public void reservarCantidadGastada(int ans, String id)
+	{
+		// JUAN PABLO 
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "UPDATE BODEGA SET RESERVA = (RESERVA + " + ans +"), CANTIDAD = (CANTIDAD-" + ans+ ") WHERE ID= '"+ id +"'";
+			conexion2.preguntador(query);	
+			conexion2.getConexion().commit();
+		} catch (SQLException e) {
+			conexion2.terminarTransaccion();
+			e.printStackTrace();
+		}
+		
+		finally
+		{
+			
+			conexion2.terminarTransaccion();
+		}
+	}
+
+	public int darCantidadProducida(String idProd)
+	{
+		//JUANPABLO
+
+		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
+		ArrayList<String> arry = new ArrayList<String>();
+		int rta = 0;
+		String anss = "";
+		// JUAN PABLO 
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "SELECT   ETAPA_PRODUCCION.CANTIDAD_P AS CANTIDAD_PRODUCIDA FROM(((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_INSUMO_P = INSUMOS.ID)INNER JOIN PRODUCTO ON ETAPA_PRODUCCION.ID_PRODUCTO = PRODUCTO.ID) WHERE PRODUCTO.ID = '" + idProd +"'";
+			arr = conexion2.realizarBusqueda(query);			
+			conexion2.getConexion().commit();
+			arry = arr.get(1);
+			anss = arry.get(0);
+			rta = Integer.parseInt(anss);
+
+		} catch (SQLException e) {
+			conexion2.terminarTransaccion();
+			e.printStackTrace();
+		}
+		
+		finally
+		{
+			
+			conexion2.terminarTransaccion();
+		}
+		return rta;
+
+	}
+
+	public Bodega darBp(String idProd)
+	{
+		//JUANPABLO
+
+		ArrayList<Bodega> bodeg = cargarBodegaEnLista();
+		Bodega bP = null;
+
+
+		bP = buscarElementoArray(darIdBodegaPorIdInsumoP(idProd), bodeg);
+
+		return bP;
+
+	}
+
+	public String darIdBodegaPorIdInsumoP(String idInsumoP)
+	{
+		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
+		ArrayList<String> arry = new ArrayList<String>();
+		String anss = "";
+		// JUAN PABLO 
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "SELECT BODEGA.ID FROM((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_INSUMO_P = INSUMOS.ID)WHERE ETAPA_PRODUCCION.ID_INSUMO_P='"+idInsumoP+"'";
+			arr = conexion2.realizarBusqueda(query);			
+			conexion2.getConexion().commit();
+			arry = arr.get(1);
+			anss = arry.get(0);
+
+		} catch (SQLException e) {
+			conexion2.terminarTransaccion();
+			e.printStackTrace();
+		}
+		finally
+		{
+			
+			conexion2.terminarTransaccion();
+		}
+		return anss;
+	} 
+	public Bodega darGp(String idProd)
+	{
+		//JUANPABLO
+		ArrayList<Bodega> bodeg = cargarBodegaEnLista();
+		Bodega bG = null;
+
+		bG = buscarElementoArray(darIdBodegaPorIdInsumoG(idProd), bodeg);
+		return bG;
+		
+	}
+
+	public Bodega buscarElementoArray(String id, ArrayList<Bodega> bodeg)
+	{	
+		Bodega bod = null;
+		for (int i=0; i<bodeg.size(); i++)
+		{
+			Bodega temp = bodeg.get(i);
+			if (temp.getId().equals(id))
+				bod= temp;
+		}
+		return bod;
+	}
+
+	public String darIdBodegaPorIdInsumoG(String idInsumoG)
+	{	
+		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
+		ArrayList<String> arry = new ArrayList<String>();
+		String anss = "";
+		// JUAN PABLO 
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "SELECT BODEGA.ID FROM((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_INSUMO_G = INSUMOS.ID)WHERE ETAPA_PRODUCCION.ID_INSUMO_G='"+idInsumoG+"'";
+			arr = conexion2.realizarBusqueda(query);			
+			conexion2.getConexion().commit();
+			arry = arr.get(1);
+			anss = arry.get(0);
+
+		} catch (SQLException e) {
+			conexion2.terminarTransaccion();
+			e.printStackTrace();
+		}
+		finally
+		{
+			
+			conexion2.terminarTransaccion();
+		}
+		return anss;
+
+	}
+
+	public ArrayList<Bodega> CantidadEnBodegaVSCantidad(String idProd, String idCliente)
+	{
+		//JUANPABLO
+		ArrayList<ArrayList<String>> arr= new ArrayList<ArrayList<String>>(); 
+		boolean ans = false;
+		String cant = "";
+		PreparedStatement prepStmt = null;
+		ArrayList<Bodega> productosAPedir= new ArrayList<Bodega>();
+		ArrayList<String> arry = new ArrayList<String>();
+		ArrayList<Bodega> bodeg = cargarBodegaEnLista();
+		String rta = "Error";
+		boolean sale = false;
+
+		try {
+			String query = "SELECT BODEGA.ID,ETAPA_PRODUCCION.ID_PRODUCTO AS IDPROD,BODEGA.CANTIDAD AS CANTIDAD_EN_BODEGA, ETAPA_PRODUCCION.ID_INSUMO_G,  ETAPA_PRODUCCION.CANTIDAD_P, ETAPA_PRODUCCION.ID_INSUMO_P,  ETAPA_PRODUCCION.CANTIDAD_G AS CANTIDAD_GASTADA FROM(((BODEGA INNER JOIN INSUMOS ON BODEGA.ID = INSUMOS.ID_BODEGA)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_INSUMO_G = INSUMOS.ID)INNER JOIN PRODUCTO ON ETAPA_PRODUCCION.ID_PRODUCTO = PRODUCTO.ID) WHERE PRODUCTO.ID = '" + idProd +"'";
+			arr = conexion2.realizarBusqueda(query);	
+			for (int i = 0; i<arr.size(); i++)
+			{
+				if (i!=0)
+				{
+					arry = arr.get(i);
+					actualizarEstado(idCliente,Producto.PRODUCIOENDO);
+					Bodega bG = darGp(arry.get(3));
+					Bodega bP = darBp(arry.get(5));
+					String canti = arry.get(6);
+					int cantidad = Integer.parseInt(canti);
+					bG.setCantidad(bG.getCantidad()-cantidad);
+					if (bG.getCantidad() < 0)
+					{
+						productosAPedir.add(bG);
+						sale = true;
+					}
+
+					if (sale == false)
+					{
+						System.out.println("entra");
+						ReservarCantidadEnBodega(bG.getId());
+
+					}
+					bP.setCantidad(bP.getCantidad() + darCantidadProducida(idProd));	
+				}
+			}
+			conexion2.getConexion().commit();
+		}
+		catch (SQLException e) {
+			conexion2.terminarTransaccion();
+			e.printStackTrace();
+		}
+		
+		finally
+		{
+			
+			conexion2.terminarTransaccion();
+		}
+
+
+		return productosAPedir;
+	}
+
 	/**
 	 * metodo que registra un pedido dado 
 	 */
@@ -181,29 +528,29 @@ public class proAndes {
 
 		Date ans = fecha;
 
-		int cant = conexion.buscarCantidadProductoEnBodega(idProducto);
+		int cant = buscarCantidadProductoEnBodega(idProducto);
 
 		if (cant > cantidad)
 		{
-			conexion.reservarCantidadProductoEnBodega(cantidad, idProducto);
+			reservarCantidadProductoEnBodega(cantidad, idProducto);
 
 			ans = addDays(ans, 2);
 		}
 		else 
 		{
-			if (conexion.CantidadEnBodegaVSCantidad(idProducto, idCliente)== null)
+			if (CantidadEnBodegaVSCantidad(idProducto, idCliente)== null)
 			{
 				ans = addDays(ans, 5);
 			}
 			else
 			{
-				ArrayList<Bodega> aPedir = conexion.CantidadEnBodegaVSCantidad(idProducto, idCliente);
+				ArrayList<Bodega> aPedir = CantidadEnBodegaVSCantidad(idProducto, idCliente);
 
 
 				for (int i = 0;i<aPedir.size(); i++)
 				{
 					Bodega b = aPedir.get(i);
-					conexion.actualizarEstado(idCliente, Producto.PENDIENTE);
+					actualizarEstado(idCliente, Producto.PENDIENTE);
 				}
 
 
@@ -242,11 +589,17 @@ public class proAndes {
 			}
 
 			ans = conexion2.realizarBusqueda(sent);
-			conexion2.terminarTransaccion();
+			conexion2.getConexion().commit();
 		}
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
+			conexion2.terminarTransaccion();
+		}
+		
+		finally
+		{
+			
 			conexion2.terminarTransaccion();
 		}
 		return ans;
@@ -255,9 +608,69 @@ public class proAndes {
 
 	public boolean RegistrarEntregaDePedidoDeProductosACliente(String idCliente, String idprod, int cant)
 	{
-		// JUANPABLO 
-		boolean ans = conexion.EntregaDeProductos(idCliente, idprod, cant);
+		// JUAN PABLO 
+		String a = darIdBodegaPorIdProducto(idprod);
+		boolean ans = false;
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "UPDATE BODEGA SET RESERVA = (RESERVA -"+cant+") WHERE ID= '"+ a +"'";
+			conexion2.preguntador(query);	
+			conexion2.getConexion().commit();
+			conexion2.terminarTransaccion();
+			borrarSolicitud(idCliente, idprod, cant);
+			ans = true;
+		} catch (SQLException e) {
+			conexion2.terminarTransaccion();
+			e.printStackTrace();
+		}
+		
+
 		return ans;
+	}
+
+	private String darIdBodegaPorIdProducto(String idProd) 
+	{
+
+
+		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
+		ArrayList<String> arry = new ArrayList<String>();
+		String ans = "";
+		// JUAN PABLO 
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "SELECT BODEGA.ID FROM(BODEGA INNER JOIN PRODUCTO ON BODEGA.ID = PRODUCTO.ID_BODEGA)WHERE PRODUCTO.ID='"+idProd+"'";
+			arr = conexion2.realizarBusqueda(query);			
+			conexion2.getConexion().commit();
+			arry = arr.get(1);
+			ans = arry.get(0);
+		} catch (SQLException e) {
+			conexion2.terminarTransaccion();
+			e.printStackTrace();
+		}
+		
+		finally
+		{
+			
+			conexion2.terminarTransaccion();
+		}
+		return ans;
+
+
+	}
+
+	public void borrarSolicitud(String idCliente, String idProd, int cant)
+	{
+		// JUAN PABLO 
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "DELETE FROM SOLICITUDES WHERE (ID_CLIENTE= '"+ idCliente +"' AND ID_PRODUCTO = '"+ idProd + "' AND CANTIDAD = "+ cant + ")" ;
+			conexion2.preguntador(query);	
+			conexion2.terminarTransaccion();
+		} catch (SQLException e) {
+			conexion2.terminarTransaccion();
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
@@ -420,20 +833,73 @@ public class proAndes {
 
 	public ArrayList darProductos()
 	{
+		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
 		// JUAN PABLO 
-		return conexion.realizarBusquedaProducto();
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "SELECT ID,NOMBRE,COSTO,ESTADO,ID_BODEGA FROM PRODUCTO";
+			arr = conexion2.realizarBusqueda(query);			
+			conexion2.getConexion().commit();
+			return arr;
+		} catch (SQLException e) {
+			conexion2.terminarTransaccion();
+			e.printStackTrace();
+		}
+		
+		finally
+		{
+			
+			conexion2.terminarTransaccion();
+		}
+		return arr;
+
 	}
 
 	public ArrayList darSolicitudesPorId(String id)
 	{
+		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
 		// JUAN PABLO 
-		return conexion.realizarBusquedaSolicitudesPorIdCliente(id);
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "SELECT ID_PRODUCTO,CANTIDAD,FECHA,ID FROM SOLICITUDES WHERE ID_CLIENTE = '"+id+"'";
+			arr = conexion2.realizarBusqueda(query);			
+			conexion2.getConexion().commit();
+			return arr;
+		} catch (SQLException e) {
+			conexion2.terminarTransaccion();
+			e.printStackTrace();
+		}
+		
+		finally
+		{
+			
+			conexion2.terminarTransaccion();
+		}
+		return arr;
 	}
 
 	public ArrayList darSolicitudes()
 	{
+		ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>();
 		// JUAN PABLO 
-		return conexion.realizarBusquedaSolicitudes();
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "SELECT ID_CLIENTE,ID_PRODUCTO,CANTIDAD,FECHA,ID FROM SOLICITUDES";
+			arr = conexion2.realizarBusqueda(query);			
+			conexion2.getConexion().commit();
+			return arr;
+		} catch (SQLException e) {
+			conexion2.terminarTransaccion();
+			e.printStackTrace();
+		}
+		
+		finally
+		{
+			
+			conexion2.terminarTransaccion();
+		}
+		return arr;
+
 	}
 
 
@@ -493,7 +959,7 @@ public class proAndes {
 			String estacion = etMAyor.get(1).get(0);
 			String maximo = etMAyor.get(1).get(1);
 			int actual = 0;
-			
+
 			if(Integer.parseInt(maximo)==1)
 			{
 				System.out.println("ENTRE");
@@ -520,7 +986,7 @@ public class proAndes {
 				}
 				conexion2.getConexion().commit();
 			}
-				
+
 		} catch (SQLException e) {
 			try {
 				conexion2.getConexion().rollback();
@@ -540,7 +1006,7 @@ public class proAndes {
 		String query = "SELECT ESTACION_PRODUCCION.CODIGO, ESTACION_PRODUCCION.CAPACIDAD,r.numero_etapas, ESTACION_PRODUCCION.ESTADO FROM ESTACION_PRODUCCION LEFT join (SELECT ESTACION_ID estacion,COUNT(ETAPA_PRODUCTO) numero_etapas FROM ESTACIONes GROUP BY ESTACION_ID) r on ESTACION_PRODUCCION.CODIGO=r.estacion";
 		return conexion.realizarBusqueda2(query);
 	}
-	
+
 	public ArrayList<ArrayList<String>> darClientes(String ordenado)
 	{
 		String query = "";
@@ -549,7 +1015,7 @@ public class proAndes {
 				query = "SELECT * FROM CLIENTE";
 			else
 				query = "SELECT * FROM CLIENTE ORDER BY "+ordenado;
-			
+
 			return conexion2.realizarBusqueda(query);
 		} catch (SQLException e) {
 			conexion2.terminarTransaccion();
@@ -557,7 +1023,7 @@ public class proAndes {
 		return null;
 
 	}
-	
+
 	public ArrayList<ArrayList<String>> darProvedor(String ordenado)
 	{
 		String query = "";
@@ -566,7 +1032,7 @@ public class proAndes {
 				query = "SELECT * FROM PROVEEDOR";
 			else
 				query = "SELECT * FROM PROVEEDOR ORDER BY "+ordenado;
-			
+
 			return conexion2.realizarBusqueda(query);
 		} catch (SQLException e) {
 			conexion2.terminarTransaccion();
@@ -578,7 +1044,7 @@ public class proAndes {
 		return null;
 
 	}
-	
+
 	public ArrayList<ArrayList<String>> darInfluenciaProveedor(String correo)
 	{
 		String query="";
@@ -592,10 +1058,10 @@ public class proAndes {
 		{
 			conexion2.terminarTransaccion();
 		}
-		
+
 		return null;
 	}
-	
+
 	public ArrayList<ArrayList<String>> darProductosInfluencia(String correo)
 	{
 		String query = "";
@@ -611,7 +1077,7 @@ public class proAndes {
 		}
 		return null;
 	}
-	
+
 	public ArrayList<ArrayList<String>> darsolicitudCliente(String correo)
 	{
 		String query="";
@@ -622,7 +1088,7 @@ public class proAndes {
 			conexion2.terminarTransaccion();
 		}
 		return null;
-		
+
 	}
 
 	/*****************************************************************/
@@ -641,17 +1107,26 @@ public class proAndes {
 			String queryIdpedido = "SELECT SOLICITUDES.ID_CLIENTE AS ID_CLIENTE, PRODUCTO.ESTADO, CLIENTE.NOMBRE AS NOMBRE_CLIENTE,SOLICITUDES.ID_PRODUCTO AS ID_PRODUCTO,PRODUCTO.NOMBRE AS NOMBRE_PRODUCTO, SOLICITUDES.FECHA, SOLICITUDES.CANTIDAD, PRODUCTO.COSTO AS COSTO_UNITARIO,INSUMOS.NOMBRE FROM ((((SOLICITUDES INNER JOIN CLIENTE ON SOLICITUDES.ID_CLIENTE = CLIENTE.DIRECCION_ELECTRONICA) INNER JOIN PRODUCTO ON SOLICITUDES.ID_PRODUCTO= PRODUCTO.ID)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO) INNER JOIN INSUMOS ON (INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_G)) WHERE SOLICITUDES.ID = '"+id+"'";
 			String queryIdproducto = "SELECT SOLICITUDES.ID_CLIENTE AS ID_CLIENTE, PRODUCTO.ESTADO, CLIENTE.NOMBRE AS NOMBRE_CLIENTE,SOLICITUDES.ID AS ID_PEDIDO,PRODUCTO.NOMBRE AS NOMBRE_PRODUCTO, SOLICITUDES.FECHA, SOLICITUDES.CANTIDAD, PRODUCTO.COSTO AS COSTO_UNITARIO,INSUMOS.NOMBRE FROM ((((SOLICITUDES INNER JOIN CLIENTE ON SOLICITUDES.ID_CLIENTE = CLIENTE.DIRECCION_ELECTRONICA) INNER JOIN PRODUCTO ON SOLICITUDES.ID_PRODUCTO= PRODUCTO.ID)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO) INNER JOIN INSUMOS ON (INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_G )) WHERE SOLICITUDES.ID_PRODUCTO = '"+id+"'";
 			String queryIdCliente = "SELECT SOLICITUDES.ID_PRODUCTO AS ID_PRODUCTO, PRODUCTO.ESTADO, CLIENTE.NOMBRE AS NOMBRE_CLIENTE,SOLICITUDES.ID AS ID_PEDIDO,PRODUCTO.NOMBRE AS NOMBRE_PRODUCTO, SOLICITUDES.FECHA, SOLICITUDES.CANTIDAD, PRODUCTO.COSTO AS COSTO_UNITARIO,INSUMOS.NOMBRE FROM ((((SOLICITUDES INNER JOIN CLIENTE ON SOLICITUDES.ID_CLIENTE = CLIENTE.DIRECCION_ELECTRONICA) INNER JOIN PRODUCTO ON SOLICITUDES.ID_PRODUCTO= PRODUCTO.ID)INNER JOIN ETAPA_PRODUCCION ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO) INNER JOIN INSUMOS ON (INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_G )) WHERE SOLICITUDES.ID_CLIENTE = '"+id+"'";
+			System.out.println(queryIdpedido);
+			System.out.println(queryIdproducto);
+			System.out.println(queryIdCliente);
 			if (solicitud.equals("Id Pedido"))
 				ans = conexion2.realizarBusqueda(queryIdpedido);
 			if (solicitud.equals("Id Producto"))
 				ans =conexion2.realizarBusqueda(queryIdproducto);
 			if (solicitud.equals("Id Cliente"))
 				ans =conexion2.realizarBusqueda(queryIdCliente);
-			conexion2.terminarTransaccion();
+			conexion2.getConexion().commit();
 		} 
 		catch (SQLException e)
 		{
 			// TODO Auto-generated catch block
+			conexion2.terminarTransaccion();
+		}
+		
+		finally
+		{
+			
 			conexion2.terminarTransaccion();
 		}
 		return ans;
@@ -664,15 +1139,20 @@ public class proAndes {
 
 		try 
 		{
-			conexion2.setIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 			String query = "DELETE FROM SOLICITUDES WHERE ID = '" + id + "'";
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			System.out.println("QUERY! "+query);
 			conexion2.preguntador(query);
+			System.out.println("El id es "+id);
+			conexion2.getConexion().commit();
 			conexion2.terminarTransaccion();
 		} 
+		
 		catch (SQLException e)
 		{
 			conexion2.terminarTransaccion();
 		}
+		
 	}
 	/*****************************************************************/
 
