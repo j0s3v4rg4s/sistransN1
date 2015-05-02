@@ -125,7 +125,7 @@ public class ServletRF12 extends HttpServlet{
 
 		inicioTabla(out);
 		imprimirFilaTitulo(out,titulo);
-		for (int i=0;i<l.size();i++)
+		for (int i=1;i<l.size();i++)
 		{
 			imprimirFila(out, (ArrayList<String>)l.get(i));
 
