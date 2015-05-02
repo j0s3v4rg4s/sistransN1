@@ -1,0 +1,3 @@
+Para ejecutar el proyecto abra eclipse, importe el proyecto a travez de file-> import-> General-> existing proyects 
+into workspace, coloca next, la ruta del archivo en select root directory y finish. en package explorer se encuentra
+el proyecto. Una vez con el proyecto cargado, ir al directorio builder y dar click derecho sobre el archivo build.xml. Se abrira un menu desplegable en el cual se busca la opción run as y seleccionamos ant. Prendemos el servidor de aplicaciones e ingresamos a la dirección: http://localhost:8080/proAndes/
