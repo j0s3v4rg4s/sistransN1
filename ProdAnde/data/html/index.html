@@ -68,8 +68,21 @@
         });
         
         // iteracion 4 jose
+        
         $("#fc11").click(function (event){
             $("#idfc11").load('pregunta.htm',{accion:'fc11'});
+        });
+        
+     // iteracion 4 Juan Pablo
+
+        $("#reqFC8").click(function(event){
+
+            $("#tablaRFC8").load('RFC8.htm',{accion: 'actualizar'}); 
+        });
+
+        $("#reqFC9").click(function(event){
+
+            $("#tablaRFC9").load('RFC9.htm',{accion: 'actualizar'}); 
         });
            
        });
@@ -380,7 +393,7 @@
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Direcci�n electronica</label>
-                                <input type="email" class="form-control" placeholder="Direcci�n electronica" id="DIRECCION_ELECTRONICA" required data-validation-required-message="Porfavor ingrese su direccion electronica.">
+                                <input type="email" class="form-control" placeholder="Direccion electronica" id="DIRECCION_ELECTRONICA" required data-validation-required-message="Porfavor ingrese su direccion electronica.">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -443,15 +456,15 @@
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Tipo de usuario</label>
-                                <input type="text" class="form-control" placeholder="Tipo de usuario (Proveedor, Cliente, Operario) " id="NUMERO_DOCUMENTO" required data-validation-required-message="Porfavor ingrese su numero de documento">
+                                <input type="text" class="form-control" placeholder="Tipo de usuario (Proveedor, Cliente, Operario) " id="tipoUser" required data-validation-required-message="Porfavor ingrese su numero de documento">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Contrase�a</label>
-                                <input type="text" class="form-control" placeholder="Tipo de usuario (Proveedor, Cliente, Operario) " id="NUMERO_DOCUMENTO" required data-validation-required-message="Porfavor ingrese su numero de documento">
+                                <label>Password</label>
+                                <input type="text" class="form-control" placeholder="Password " id="PW" required data-validation-required-message="Porfavor ingrese su numero de documento">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -479,8 +492,8 @@
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Contrase�a</label>
-                                <input type="text" class="form-control" placeholder="Contrase�a" id="CONTRASE�A" required data-validation-required-message="Porfavor ingrese su contrase�a">
+                                <label>Password</label>
+                                <input type="text" class="form-control" placeholder="Password" id="pw" required data-validation-required-message="Porfavor ingrese su contrasena">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -1400,10 +1413,50 @@
                         <h3>CONSULTAR EJECUCIÓN DE ETAPAS DE PRODUCCIÓN 1</h3>
                         <hr class="star-primary">
                         <p>Mostrar las etapas de producción ejecutadas en un rango de tiempo (dado por el usuario), que correspondan a un criterio de búsqueda asociado con la ejecución de dicha etapa (material, tipo de material, pedido, cantidades, …), también dado por el usuario. </p>
-                        <div id="tablaRF13">
-
+							<div id="tablaRFC8">
                         </div>
+                        <script type="text/javascript">
+                        $(document).ready(function() {
+                            $("#suc8").click(function(event){
+                             var seleccion8 = document.getElementById("sela8").value;
+                             var  idSeleccion8= document.getElementById("idSel8").value;
+                             var  fechiSeleccion8= document.getElementById("fechiSel8").value;
+                             var  fechfSeleccion8= document.getElementById("fechfSel8").value;
+                             console.log(seleccion)
+                             console.log(idSeleccion)
+                             $("#tablaRFC8").load('RFC8.htm',{accion:'darInform8', idSel8:idSeleccion8,fechiSel8:fechiSeleccion8,fechfSel8:fechfSeleccion8, sela8:seleccion8}); 
+                         });
+                        });
+                        </script>
 
+                        <form name="sentMessage" id="contactForm" novalidate>
+                          <h3>Seleccione el filtro de busqueda</h3>
+                          <label>Seleccion</label>                                        
+                          <select class="form-control" id="sela8">
+                              <option value="Id Pedido">Pedido </option>
+                              <option value="Id Producto">Producto</option>
+                              <option value="Id Cliente">Cliente</option>
+                          </select>
+                          <div class="row control-group">
+                             <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Id</label>
+                                <input type="text" class="form-control" placeholder="Ingrese su id de busqueda (id del producto, id del pedido, id del cliente)" id="idSel8" required data-validation-required-message=\"Complete el campo\">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Fecha Inicial</label>
+                                <input type="date" class="form-control" placeholder="dd/mm/aa" id="fechiSel8" required data-validation-required-message=\"Complete el campo\">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Fecha Final</label>
+                                <input type="date" class="form-control" placeholder="dd/mm/aa" id="fechfSel8" required data-validation-required-message=\"Complete el campo\">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            
+                        </div>
+                        <button type="button" class="btn btn-success" id="suc8">Dar informacion</button>
+                    </form>
 
                         <ul class="list-inline item-details">
 
@@ -1444,10 +1497,50 @@
                         <h3>CONSULTAR EJECUCIÓN DE ETAPAS DE PRODUCCIÓN 2</h3>
                         <hr class="star-primary">
                         <p>Mostrar las etapas de producción ejecutadas en un rango de tiempo (dado por el usuario), que NO correspondan a un criterio de búsqueda asociado con la ejecución de dicha etapa (material, tipo de material, pedido, cantidades, …), también dado por el usuario. </p>
-                        <div id="tablaRF13">
-
+                        	<div id="tablaRFC9">
                         </div>
+                        <script type="text/javascript">
+                        $(document).ready(function() {
+                            $("#suc8").click(function(event){
+                             var seleccion9 = document.getElementById("sela9").value;
+                             var  idSeleccion9= document.getElementById("idSel9").value;
+                             var  fechiSeleccion9= document.getElementById("fechiSel9").value;
+                             var  fechfSeleccion9= document.getElementById("fechfSel9").value;
+                             console.log(seleccion)
+                             console.log(idSeleccion)
+                             $("#tablaRFC9").load('RFC9.htm',{accion:'darInform9', idSel9:idSeleccion9,fechiSel9:fechiSeleccion9,fechfSel9:fechfSeleccion9, sela9:seleccion9}); 
+                         });
+                        });
+                        </script>
 
+                        <form name="sentMessage" id="contactForm" novalidate>
+                          <h3>Seleccione el filtro de busqueda</h3>
+                          <label>Seleccion</label>                                        
+                          <select class="form-control" id="sela9">
+                              <option value="Id Pedido">Pedido </option>
+                              <option value="Id Producto">Producto</option>
+                              <option value="Id Cliente">Cliente</option>
+                          </select>
+                          <div class="row control-group">
+                             <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Id</label>
+                                <input type="text" class="form-control" placeholder="Ingrese su id de busqueda (id del producto, id del pedido, id del cliente)" id="idSel9" required data-validation-required-message=\"Complete el campo\">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Fecha Inicial</label>
+                                <input type="date" class="form-control" placeholder="dd/mm/aa" id="fechiSel9" required data-validation-required-message=\"Complete el campo\">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Fecha Final</label>
+                                <input type="date" class="form-control" placeholder="dd/mm/aa" id="fechfSel9" required data-validation-required-message=\"Complete el campo\">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            
+                        </div>
+                        <button type="button" class="btn btn-success" id="suc9">Dar informacion</button>
+                    </form>
 
                         <ul class="list-inline item-details">
 

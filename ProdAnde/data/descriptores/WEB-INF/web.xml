@@ -36,6 +36,14 @@
 		<servlet-name>servletRF13</servlet-name>
 		<servlet-class>servlet.ServletRF13</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>servletRFC8</servlet-name>
+		<servlet-class>servlet.ServletRFC8</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>servletRFC9</servlet-name>
+		<servlet-class>servlet.ServletRFC9</servlet-class>
+	</servlet>
 
 	<!-- MAPPING -->
 	
@@ -47,7 +55,15 @@
 	<servlet-mapping>
 		<servlet-name>servletRFC5</servlet-name>
 		<url-pattern>/RFC5.htm</url-pattern>
-	</servlet-mapping>	
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>servletRFC8</servlet-name>
+		<url-pattern>/RFC8.htm</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>servletRFC8</servlet-name>
+		<url-pattern>/RFC9.htm</url-pattern>
+	</servlet-mapping>		
 	<servlet-mapping>
 		<servlet-name>servletRF13</servlet-name>
 		<url-pattern>/RF13.htm</url-pattern>
