@@ -70,6 +70,16 @@ public class servletPreguntas extends HttpServlet{
 
 		String accion = request.getParameter("accion");    
 		System.out.println(accion);
+		
+		if(accion.equals("fc11"))
+		{
+			ArrayList<ArrayList<String>> info = pro.buscarMateriales();
+			inicioTabla(out);
+			imprimirFilaTitulo(out, info.get(0));
+			for (int i = 1; i < info.size(); i++) {
+				imprimirFilaInfo(out, info.get(i));
+			}
+		}
 
 		if(accion.equals("filtroInsumo"))
 		{

@@ -196,7 +196,7 @@ public class proAndes {
 		}
 		finally
 		{
-			
+
 			conexion2.terminarTransaccion();
 		}
 		return ans;
@@ -215,10 +215,10 @@ public class proAndes {
 			conexion2.terminarTransaccion();
 			e.printStackTrace();
 		}
-		
+
 		finally
 		{
-			
+
 			conexion2.terminarTransaccion();
 		}
 	}
@@ -250,10 +250,10 @@ public class proAndes {
 			conexion2.terminarTransaccion();
 			e.printStackTrace();
 		}
-		
+
 		finally
 		{
-			
+
 			conexion2.terminarTransaccion();
 		}
 		return bodeg;
@@ -271,10 +271,10 @@ public class proAndes {
 			conexion2.terminarTransaccion();
 			e.printStackTrace();
 		}
-		
+
 		finally
 		{
-			
+
 			conexion2.terminarTransaccion();
 		}
 	}
@@ -310,10 +310,10 @@ public class proAndes {
 			conexion2.terminarTransaccion();
 			e.printStackTrace();
 		}
-		
+
 		finally
 		{
-			
+
 			conexion2.terminarTransaccion();
 		}
 	}
@@ -330,10 +330,10 @@ public class proAndes {
 			conexion2.terminarTransaccion();
 			e.printStackTrace();
 		}
-		
+
 		finally
 		{
-			
+
 			conexion2.terminarTransaccion();
 		}
 	}
@@ -360,10 +360,10 @@ public class proAndes {
 			conexion2.terminarTransaccion();
 			e.printStackTrace();
 		}
-		
+
 		finally
 		{
-			
+
 			conexion2.terminarTransaccion();
 		}
 		return rta;
@@ -404,7 +404,7 @@ public class proAndes {
 		}
 		finally
 		{
-			
+
 			conexion2.terminarTransaccion();
 		}
 		return anss;
@@ -417,7 +417,7 @@ public class proAndes {
 
 		bG = buscarElementoArray(darIdBodegaPorIdInsumoG(idProd), bodeg);
 		return bG;
-		
+
 	}
 
 	public Bodega buscarElementoArray(String id, ArrayList<Bodega> bodeg)
@@ -452,7 +452,7 @@ public class proAndes {
 		}
 		finally
 		{
-			
+
 			conexion2.terminarTransaccion();
 		}
 		return anss;
@@ -507,10 +507,10 @@ public class proAndes {
 			conexion2.terminarTransaccion();
 			e.printStackTrace();
 		}
-		
+
 		finally
 		{
-			
+
 			conexion2.terminarTransaccion();
 		}
 
@@ -596,10 +596,10 @@ public class proAndes {
 			e.printStackTrace();
 			conexion2.terminarTransaccion();
 		}
-		
+
 		finally
 		{
-			
+
 			conexion2.terminarTransaccion();
 		}
 		return ans;
@@ -623,7 +623,7 @@ public class proAndes {
 			conexion2.terminarTransaccion();
 			e.printStackTrace();
 		}
-		
+
 
 		return ans;
 	}
@@ -647,10 +647,10 @@ public class proAndes {
 			conexion2.terminarTransaccion();
 			e.printStackTrace();
 		}
-		
+
 		finally
 		{
-			
+
 			conexion2.terminarTransaccion();
 		}
 		return ans;
@@ -670,7 +670,7 @@ public class proAndes {
 			conexion2.terminarTransaccion();
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	/**
@@ -845,10 +845,10 @@ public class proAndes {
 			conexion2.terminarTransaccion();
 			e.printStackTrace();
 		}
-		
+
 		finally
 		{
-			
+
 			conexion2.terminarTransaccion();
 		}
 		return arr;
@@ -869,10 +869,10 @@ public class proAndes {
 			conexion2.terminarTransaccion();
 			e.printStackTrace();
 		}
-		
+
 		finally
 		{
-			
+
 			conexion2.terminarTransaccion();
 		}
 		return arr;
@@ -892,10 +892,10 @@ public class proAndes {
 			conexion2.terminarTransaccion();
 			e.printStackTrace();
 		}
-		
+
 		finally
 		{
-			
+
 			conexion2.terminarTransaccion();
 		}
 		return arr;
@@ -1123,10 +1123,10 @@ public class proAndes {
 			// TODO Auto-generated catch block
 			conexion2.terminarTransaccion();
 		}
-		
+
 		finally
 		{
-			
+
 			conexion2.terminarTransaccion();
 		}
 		return ans;
@@ -1147,13 +1147,48 @@ public class proAndes {
 			conexion2.getConexion().commit();
 			conexion2.terminarTransaccion();
 		} 
-		
+
 		catch (SQLException e)
 		{
 			conexion2.terminarTransaccion();
 		}
-		
+
 	}
+	/*****************************************************************/
+
+
+
+	/***************            iteracion 4 jose       
+	 * @return ***************/
+
+	public ArrayList buscarMateriales()
+	{
+		String query = "select * from insumos";
+		try 
+		{
+			return conexion2.realizarBusqueda(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally
+		{
+			conexion2.terminarTransaccion();
+		}
+		return null;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
 	/*****************************************************************/
 
 }
