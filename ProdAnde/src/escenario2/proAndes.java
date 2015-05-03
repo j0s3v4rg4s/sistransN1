@@ -1186,7 +1186,7 @@ public class proAndes {
 			conexion2.preguntador(query);
 			query = "create index j on SOLICITUDES(ID_PRODUCTO)";
 			conexion2.preguntador(query);
-			query = "SELECT s.* FROM (SELECT ID_PRODUCTO FROM ETAPA_PRODUCCION WHERE ID_INSUMO_G='idinsu 11') e inner join (SELECT * FROM SOLICITUDES) s on e.ID_PRODUCTO= s.id_producto";
+			query = "SELECT s.* FROM (SELECT ID_PRODUCTO FROM ETAPA_PRODUCCION WHERE ID_INSUMO_G='"+param+"') e inner join (SELECT * FROM SOLICITUDES) s on e.ID_PRODUCTO= s.id_producto";
 			ArrayList<ArrayList<String>> p = conexion2.realizarBusqueda(query);
 			query = "drop INDEX i";
 			conexion2.preguntador(query);
