@@ -89,13 +89,16 @@ public class ServletRFC9 extends HttpServlet
 
 		if (accion.equals("darInform9"))
 		{
+			System.out.println("LLEGAMOS AL 9");
 			String sel = request.getParameter("sela9");
 			String id = request.getParameter("idSel9");
 			String fechain = request.getParameter("fechiSel9");
 			String fechafi = request.getParameter("fechfSel9");
+			int in = Integer.parseInt(fechain);
+			int fina = Integer.parseInt(fechafi);
 			System.out.println(sel);
 			System.out.println(id);
-			ArrayList<ArrayList<String>> arr = pro.informacionEjecEtapasProd2(sel, id, fechain, fechafi);
+			ArrayList<ArrayList<String>> arr = pro.informacionEjecEtapasProd2(sel, id, in, fina);
 			imprimirRta(out, arr);
 		}
 	}

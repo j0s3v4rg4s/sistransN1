@@ -1422,8 +1422,10 @@
                              var  idSeleccion8= document.getElementById("idSel8").value;
                              var  fechiSeleccion8= document.getElementById("fechiSel8").value;
                              var  fechfSeleccion8= document.getElementById("fechfSel8").value;
-                             console.log(seleccion)
-                             console.log(idSeleccion)
+                             console.log(seleccion8)
+                             console.log(idSeleccion8)
+                             console.log(fechiSeleccion8)
+                             console.log(fechfSeleccion8)
                              $("#tablaRFC8").load('RFC8.htm',{accion:'darInform8', idSel8:idSeleccion8,fechiSel8:fechiSeleccion8,fechfSel8:fechfSeleccion8, sela8:seleccion8}); 
                          });
                         });
@@ -1433,24 +1435,26 @@
                           <h3>Seleccione el filtro de busqueda</h3>
                           <label>Seleccion</label>                                        
                           <select class="form-control" id="sela8">
+                             <option value="Id insumo producido">Insumo Producido </option>
+                              <option value="Id insumo gastado">Insumo Gastado</option>
                               <option value="Id Pedido">Pedido </option>
-                              <option value="Id Producto">Producto</option>
-                              <option value="Id Cliente">Cliente</option>
+                              <option value="Tipo de material">Tipo de material producido</option>
+                              <option value="Cantidad">Cantidad solicitada</option>
                           </select>
                           <div class="row control-group">
                              <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Id</label>
-                                <input type="text" class="form-control" placeholder="Ingrese su id de busqueda (id del producto, id del pedido, id del cliente)" id="idSel8" required data-validation-required-message=\"Complete el campo\">
+                                <input type="text" class="form-control" placeholder="Ingrese su id de busqueda o cantidad " id="idSel8" required data-validation-required-message=\"Complete el campo\">
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Fecha Inicial</label>
-                                <input type="date" class="form-control" placeholder="dd/mm/aa" id="fechiSel8" required data-validation-required-message=\"Complete el campo\">
+                                <input type="number" class="form-control" placeholder="Tiempo inicial (dias,minimo 0)" id="fechiSel8" required data-validation-required-message=\"Complete el campo\">
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Fecha Final</label>
-                                <input type="date" class="form-control" placeholder="dd/mm/aa" id="fechfSel8" required data-validation-required-message=\"Complete el campo\">
+                                <input type="number" class="form-control" placeholder="Tiempo final (dias, maximo 10)" id="fechfSel8" required data-validation-required-message=\"Complete el campo\">
                                 <p class="help-block text-danger"></p>
                             </div>
                             
@@ -1501,13 +1505,15 @@
                         </div>
                         <script type="text/javascript">
                         $(document).ready(function() {
-                            $("#suc8").click(function(event){
-                             var seleccion9 = document.getElementById("sela9").value;
+                            $("#suc9").click(function(event){
+                             var  seleccion9 = document.getElementById("sela9").value;
                              var  idSeleccion9= document.getElementById("idSel9").value;
                              var  fechiSeleccion9= document.getElementById("fechiSel9").value;
                              var  fechfSeleccion9= document.getElementById("fechfSel9").value;
-                             console.log(seleccion)
-                             console.log(idSeleccion)
+                             console.log(seleccion9)
+                             console.log(idSeleccion9)
+                             console.log(fechiSeleccion9)
+                             console.log(fechfSeleccion9)
                              $("#tablaRFC9").load('RFC9.htm',{accion:'darInform9', idSel9:idSeleccion9,fechiSel9:fechiSeleccion9,fechfSel9:fechfSeleccion9, sela9:seleccion9}); 
                          });
                         });
@@ -1517,9 +1523,11 @@
                           <h3>Seleccione el filtro de busqueda</h3>
                           <label>Seleccion</label>                                        
                           <select class="form-control" id="sela9">
+                              <option value="Id insumo producido">Insumo Producido </option>
+                              <option value="Id insumo gastado">Insumo Gastado</option>
                               <option value="Id Pedido">Pedido </option>
-                              <option value="Id Producto">Producto</option>
-                              <option value="Id Cliente">Cliente</option>
+                              <option value="Tipo de material">Tipo de material producido</option>
+                              <option value="Cantidad">Cantidad solicitada</option>
                           </select>
                           <div class="row control-group">
                              <div class="form-group col-xs-12 floating-label-form-group controls">
@@ -1529,12 +1537,12 @@
                             </div>
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Fecha Inicial</label>
-                                <input type="date" class="form-control" placeholder="dd/mm/aa" id="fechiSel9" required data-validation-required-message=\"Complete el campo\">
+                                <input type="number" class="form-control" placeholder="Tiempo inicial (dias,minimo 0)" id="fechiSel9" required data-validation-required-message=\"Complete el campo\">
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Fecha Final</label>
-                                <input type="date" class="form-control" placeholder="dd/mm/aa" id="fechfSel9" required data-validation-required-message=\"Complete el campo\">
+                                <input type="number" class="form-control" placeholder="Tiempo final (dias, maximo 10)" id="fechfSel9" required data-validation-required-message=\"Complete el campo\">
                                 <p class="help-block text-danger"></p>
                             </div>
                             
