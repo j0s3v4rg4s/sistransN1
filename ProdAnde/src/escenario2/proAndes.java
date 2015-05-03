@@ -1163,7 +1163,7 @@ public class proAndes {
 
 	public ArrayList buscarMateriales()
 	{
-		String query = "select * from insumos";
+		String query = "SELECT * FROM INSUMOS";
 		try 
 		{
 			return conexion2.realizarBusqueda(query);
@@ -1177,6 +1177,32 @@ public class proAndes {
 		return null;
 	}
 
+
+	
+	public ArrayList<ArrayList<String>> buscarEtapaMaterial(String param) {
+		try 
+		{
+			//conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "create index i on ETAPA_PRODUCCION (ID_INSUMO_G,ID_PRODUCTO)";
+			conexion2.preguntador(query);
+			query = "create index j on SOLICITUDES(ID_PRODUCTO)";
+			conexion2.preguntador(query);
+			query = "SELECT s.* FROM (SELECT ID_PRODUCTO FROM ETAPA_PRODUCCION WHERE ID_INSUMO_G='"+param+"') e inner join (SELECT * FROM SOLICITUDES) s on e.ID_PRODUCTO= s.id_producto";
+			ArrayList<ArrayList<String>> p = conexion2.realizarBusqueda(query);
+			query = "drop INDEX i";
+			conexion2.preguntador(query);
+			query = "drop INDEX j";
+			conexion2.preguntador(query);
+			conexion2.terminarTransaccion();
+			return p;
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 
 
 
@@ -1308,6 +1334,8 @@ public class proAndes {
 		return ans;
 
 	}
+
+	
 
 	/*****************************************************************/
 
