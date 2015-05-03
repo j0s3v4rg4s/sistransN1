@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import org.omg.CORBA.TRANSACTION_MODE;
 
@@ -1157,10 +1158,29 @@ public class proAndes {
 	/*****************************************************************/
 
 
+	
+	
+	/***************            iteracion 4 jose       ****************/
 
-	/***************            iteracion 4 jose       
-	 * @return ***************/
-
+	public ArrayList<ArrayList<String>> darEtapaVAlorCantidad(String tipo, String valor)
+	{
+		try {
+			String query = "CREATE BITMAP index tipo on INSUMOS(TIPO)";
+			conexion2.preguntador(query);
+			query = "SELECT * FROM INSUMOS WHERE TIPO = '"+tipo+"' and VALOR >="+valor;
+			ArrayList<ArrayList<String>> p = conexion2.realizarBusqueda(query);
+			query = "drop index tipo";
+			conexion2.preguntador(query);
+			conexion2.getConexion().commit();
+			conexion2.terminarTransaccion();
+			return p;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 	public ArrayList buscarMateriales()
 	{
 		String query = "SELECT * FROM INSUMOS";

@@ -1588,8 +1588,56 @@
                         <h2>Requerimiento funcional de consulta numero 10</h2>
                         <h3>CONSULTAR PEDIDOS 2</h3>
                         <hr class="star-primary">
-                        <p>Mostrar todos los pedidos que usan materiales de un tipo X con costo valor mayor a Y. Los valores de X y Y son dados por el usuario </p>
-                        <div id="tablaRF13">
+                        
+                        <form class="form-horizontal">
+                            <fieldset>
+
+                                <!-- Select Basic -->
+                                <div class="form-group">
+                                  <label class="col-md-4 control-label" for="tipoInsumo">Seleccione tipo</label>
+                                  <div class="col-md-5">
+                                    <select id="tipoInsumo" name="tipoInsumo" class="form-control">
+                                      <option value="componente">componente</option>
+                                      <option value="materia prima">materia prima</option>
+                                  </select>
+                              </div>
+                          </div>
+
+                          <!-- Text input-->
+                          <div class="form-group">
+                              <label class="col-md-4 control-label" for="valory">Valor</label>  
+                              <div class="col-md-5">
+                                  <input id="valory" name="valory" placeholder="" class="form-control input-md" type="text">
+
+                              </div>
+                          </div>
+
+                          <!-- Button -->
+                          <div class="form-group">
+                              <label class="col-md-4 control-label" for="botonf10"></label>
+                              <div class="col-md-4">
+                                <button id="botonf10" name="botonf10" class="btn btn-primary">Buscar</button>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+
+
+                         <script type="text/javascript">
+                        $(document).ready(function() {
+                            $("#botonf10").click(function(event){
+                             var  materialBuscado = document.getElementById("tipoInsumo").value;
+                             var valor = document.getElementById("valory").value;
+                             console.log(materialBuscado);
+                             console.log(valor);
+                             $("#divreqf10").load('pregunta.htm',{accion:'resultadof10', param:materialBuscado,param2: valor}); 
+                         });
+                        });
+                        </script>
+
+
+                        <div id="divreqf10">
 
                         </div>
 
