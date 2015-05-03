@@ -1633,6 +1633,39 @@
                         <h3>CONSULTAR MATERIAL 2</h3>
                         <hr class="star-primary">
 
+                        <form class="form-horizontal">
+                            <fieldset>
+
+                                <!-- Text input-->
+                                <div class="form-group">
+                                  <label class="col-md-4 control-label" for="id_material">Id material</label>  
+                                  <div class="col-md-5">
+                                      <input id="id_material" name="id_material" placeholder="material" class="form-control input-md" type="text">
+
+                                  </div>
+                                </div>
+
+                                <!-- Button -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label"></label>
+                                    <div class="col-md-4">
+                                    <button id="botonMaterial" name="botonMaterial" class="btn btn-default">Buscar
+                                    </button>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </form>
+                         <script type="text/javascript">
+                        $(document).ready(function() {
+                            $("#botonMaterial").click(function(event){
+                             var  materialBuscado = document.getElementById("id_material").value;
+                             console.log(materialBuscado)
+                             $("#idfc11").load('pregunta.htm',{accion:'resultadof11', param:materialBuscado}); 
+                         });
+                        });
+                        </script>
+
                         <div id="idfc11">
 
                         </div>
