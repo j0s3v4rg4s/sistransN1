@@ -61,7 +61,7 @@
 		<url-pattern>/RFC8.htm</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>servletRFC8</servlet-name>
+		<servlet-name>servletRFC9</servlet-name>
 		<url-pattern>/RFC9.htm</url-pattern>
 	</servlet-mapping>		
 	<servlet-mapping>
