@@ -117,11 +117,11 @@ public class ServletRFC9 extends HttpServlet
 
 		if (accion.equals("darInform9"))
 		{
-			System.out.println("LLEGAMOS AL 8");
-			String sel = request.getParameter("sela8");
-			String id = request.getParameter("idSel8");
-			String in = request.getParameter("fechiSel8");
-			String fina = request.getParameter("fechfSel8");
+			System.out.println("LLEGAMOS AL 9");
+			String sel = request.getParameter("sela9");
+			String id = request.getParameter("idSel9");
+			String in = request.getParameter("fechiSel9");
+			String fina = request.getParameter("fechfSel9");
 //			2015-05-20
 			String rtain[]=in.split("-");
 			String rtafin[]=fina.split("-");

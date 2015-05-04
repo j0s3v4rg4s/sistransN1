@@ -127,66 +127,72 @@ public class ConsultaDAO2 {
 	public void llenarTablas()
 	{
 
-		try {
-			int n=0;
-			int a=0;
-			for (int i = 0; i<1000;i++)
-			{
-				Calendar cal = Calendar.getInstance();
-				cal.add(Calendar.YEAR, -1); // today minus one year
-				Date dMin = cal.getTime();
-				cal.add(Calendar.YEAR, 2); // today plus one year
-				Date dMax = cal.getTime();
-				RandomDateGenerator rand=new RandomDateGenerator(dMin, dMax);
-				Date fecha = rand.generate();
-				System.out.println(dMin+"//////"+ dMax);
-				System.out.println(fecha);
-				String mes = fecha.toGMTString();
-				String casimes=mes.replace(" ", "-");
-				String[] ajames= casimes.split("-");
-				String mesvdd = ajames[1];
-				String dia = ajames[0];
-				String ano = ajames[2];
-				String mes2 = fecha.toGMTString();
-				String casimes2=mes2.replace(" ", "-");
-				String[] ajames2= casimes2.split("-");
-				String mesvdd2 = ajames2[1];
-				String dia2 = ajames2[0];
-				String ano2 = ajames2[2];
-				System.out.println(mesvdd);
-				System.out.println(dia);
-				System.out.println(ano);
-				//				
-				//				preguntador("INSERT INTO USUARIO (TIPO_DOCUMENTO, DEPARTAMENTO, DIRECCION_FISICA, CODIGO_POSTAL, DIRECCION_ELECTRONICA,NOMBRE,NUMERO_DOCUMENTO,NACIONALIDAD,TELEFONO,CIUDAD, TIPO) VALUES ('CC','Departamento "+i+ "','dirfisica "+i+"',"+Math.random()*1000+",'dirElectron "+i+"','nombre " +i+"',"+ Math.random()*1000000000+ ",'nacionalidad "+i+"',"+ Math.random()*10000000 + ",'Ciudad "+i+"', 'Cliente')");
-				//				if(i<2333)
-				//					preguntador("INSERT INTO CLIENTE (NOMBRE,DIRECCION,NOMBRE_REPRESENTANTE,ID_REPRESENTANTE,NUMERO_REGISTRO,TELEFONO,CIUDAD,DIRECCION_ELECTRONICA)VALUES ('nombre "+i+"','direccion "+i+"','nomrep " +i+"', 'idRep"+i+"',"+ Math.random()*100 + ","+Math.random()*1000000+",'Ciudad "+i+"', 'dirElectron "+ i+"')");
-				//				if(i>2333 && i<=2666)
-				//					preguntador("INSERT INTO PROVEEDOR (NOMBRE,CIUDAD,DIRECCION,TELEFONO ,NOMBRE_REPRESENTANTE,ID_REPRESENTANTE,ID_INSUMO,CANTIDAD,DIRECCION_ELECTRONICA)VALUES ('nombre "+i+"','ciud "+i+"','dir " +i+"',"+ Math.random()*100000 + ",'nomrep "+i+ "','idrep "+i+ "','idins "+i+"'," +Math.random()*100 + ", 'dirElectron "+ i+"')");
-				//				if (i>2666)
-				//					preguntador("INSERT INTO OPERARIO (DIRECCION_ELECTRONICA,ETAPA_PRODUCCION)VALUES ('dirElectron "+ i+"','etap"+i+"')");
-				//				preguntador("INSERT INTO BODEGA (ID,CANTIDAD,RESERVA)VALUES ('idbodeg "+i+"',"+ Math.random()*100 + ","+Math.random()*100+")");
-				//				if (i<1000)
-				//				preguntador("INSERT INTO INSUMOS (ID,NOMBRE, UNIDAD_MEDIDA, TIPO,ID_BODEGA,CANTIDAD_INICIAL)VALUES ('idinsu "+i+"',"+"'nombre "+i+"',"+"'una unidad'"+ ",'componente',"+"'idbodeg "+i+"',"+ Math.random()*100 +")");
-				//				if (i>1000)		
-				//				preguntador("INSERT INTO INSUMOS (ID,NOMBRE, UNIDAD_MEDIDA, TIPO,ID_BODEGA,CANTIDAD_INICIAL)VALUES ('idinsu "+i+"',"+"'nombre "+i+"',"+"'Kg'"+ ",'materia prima',"+"'idbodeg "+i+"',"+ Math.random()*100 +")");
-				//				preguntador("INSERT INTO PRODUCTO (ID,NOMBRE, COSTO, ESTADO,ID_BODEGA)VALUES ('idprodu "+i+"',"+"'nombre "+i+"',"+Math.random()*100+ ",'en espera',"+"'idbodeg "+i+"')");
-				//				preguntador("INSERT INTO REGISTRO_LLEGADA (ID_INSUMO,FECHA, CANTIDAD)VALUES ('idinsu "+i+"',"+"'30-MAR-18',"+Math.random()*100+")");
-				//				preguntador("INSERT INTO SOLICITUDES (ID_CLIENTE,ID_PRODUCTO, CANTIDAD,FECHA,ID)VALUES ('dirElectron "+i+"',"+"'idprodu "+(i+666)+"',"+Math.random()*100+",'12-MAR-16','idSol"+i+"')");
-				System.out.println("INSERT INTO ETAPA_PRODUCCION (NUMERO, ID_PRODUCTO, NOMBRE, T_INICIO,T_FINAL, ESTADO, ID_INSUMO_P,CANTIDAD_P,ID_INSUMO_G,CANTIDAD_G)VALUES("+i+",'idprodu "+(2000+a)+"',' etapaProd" +i+"','"+dia+"-"+mesvdd+"-"+ano+","+dia2+"-"+mesvdd2+"-"+ano2+"','espera','idinsu "+i+"',"+Math.random()*100+",'idinsu "+(i+1)+"',"+Math.random()*100+" )");
-				preguntador("INSERT INTO ETAPA_PRODUCCION (NUMERO, ID_PRODUCTO, NOMBRE, T_INICIO,T_FINAL, ESTADO, ID_INSUMO_P,CANTIDAD_P,ID_INSUMO_G,CANTIDAD_G)VALUES("+i+",'idprodu "+(2000+a)+"',' etapaProd" +i+"','"+dia+"-"+mesvdd+"-"+ano+","+dia2+"-"+mesvdd2+"-"+ano2+"','espera','idinsu "+i+"',"+Math.random()*100+",'idinsu "+(i+1)+"',"+Math.random()*100+" )");
-				//				preguntador("INSERT INTO ESTACIONES (ETAPA_NUMERO, ETAPA_PRODUCTO, ESTACION_ID)VALUES("+i+",'idprodu "+(2000+a)+"',"+i+" )");
-				if (n==10)
-				{
-					a++;
-					n=0;
-				}
-				n++;
-				System.out.println(i);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//		try {
+		//			int n=0;
+		//			int a=0;
+		//			for (int i = 501; i<1000;i++)
+		//			{
+		//				Calendar cal = Calendar.getInstance();
+		//				cal.add(Calendar.YEAR, -1); // today minus one year
+		//				Date dMin = cal.getTime();
+		//				cal.add(Calendar.YEAR, 2); // today plus one year
+		//				Date dMax = cal.getTime();
+		//				RandomDateGenerator rand=new RandomDateGenerator(dMin, dMax);
+		//				Date fecha = rand.generate();
+		//				Date fecha2 = rand.generate();
+		//				if (fecha2.before(fecha))
+		//					{
+		//						Date temp = fecha;
+		//						fecha = fecha2;
+		//						fecha2= temp;
+		//					}
+		//					
+		//				System.out.println(dMin+"//////"+ dMax);
+		//				System.out.println(fecha);
+		//				String mes = fecha.toGMTString();
+		//				String casimes=mes.replace(" ", "-");
+		//				String[] ajames= casimes.split("-");
+		//				String mesvdd = ajames[1];
+		//				String dia = ajames[0];
+		//				String ano = ajames[2];
+		//				String mes2 = fecha2.toGMTString();
+		//				String casimes2=mes2.replace(" ", "-");
+		//				String[] ajames2= casimes2.split("-");
+		//				String mesvdd2 = ajames2[1];
+		//				String dia2 = ajames2[0];
+		//				String ano2 = ajames2[2];
+		//				
+		//				preguntador("INSERT INTO USUARIO (TIPO_DOCUMENTO, DEPARTAMENTO, DIRECCION_FISICA, CODIGO_POSTAL, DIRECCION_ELECTRONICA,NOMBRE,NUMERO_DOCUMENTO,NACIONALIDAD,TELEFONO,CIUDAD, TIPO) VALUES ('CC','Departamento "+i+ "','dirfisica "+i+"',"+Math.random()*1000+",'dirElectron "+i+"','nombre " +i+"',"+ Math.random()*1000000000+ ",'nacionalidad "+i+"',"+ Math.random()*10000000 + ",'Ciudad "+i+"', 'Cliente')");
+		//				if(i<2333)
+		//					preguntador("INSERT INTO CLIENTE (NOMBRE,DIRECCION,NOMBRE_REPRESENTANTE,ID_REPRESENTANTE,NUMERO_REGISTRO,TELEFONO,CIUDAD,DIRECCION_ELECTRONICA)VALUES ('nombre "+i+"','direccion "+i+"','nomrep " +i+"', 'idRep"+i+"',"+ Math.random()*100 + ","+Math.random()*1000000+",'Ciudad "+i+"', 'dirElectron "+ i+"')");
+		//				if(i>2333 && i<=2666)
+		//					preguntador("INSERT INTO PROVEEDOR (NOMBRE,CIUDAD,DIRECCION,TELEFONO ,NOMBRE_REPRESENTANTE,ID_REPRESENTANTE,ID_INSUMO,CANTIDAD,DIRECCION_ELECTRONICA)VALUES ('nombre "+i+"','ciud "+i+"','dir " +i+"',"+ Math.random()*100000 + ",'nomrep "+i+ "','idrep "+i+ "','idins "+i+"'," +Math.random()*100 + ", 'dirElectron "+ i+"')");
+		//				if (i>2666)
+		//					preguntador("INSERT INTO OPERARIO (DIRECCION_ELECTRONICA,ETAPA_PRODUCCION)VALUES ('dirElectron "+ i+"','etap"+i+"')");
+		//				preguntador("INSERT INTO BODEGA (ID,CANTIDAD,RESERVA)VALUES ('idbodeg "+i+"',"+ Math.random()*100 + ","+Math.random()*100+")");
+		//				if (i<1000)
+		//				preguntador("INSERT INTO INSUMOS (ID,NOMBRE, UNIDAD_MEDIDA, TIPO,ID_BODEGA,CANTIDAD_INICIAL)VALUES ('idinsu "+i+"',"+"'nombre "+i+"',"+"'una unidad'"+ ",'componente',"+"'idbodeg "+i+"',"+ Math.random()*100 +")");
+		//				if (i>1000)		
+		//				preguntador("INSERT INTO INSUMOS (ID,NOMBRE, UNIDAD_MEDIDA, TIPO,ID_BODEGA,CANTIDAD_INICIAL)VALUES ('idinsu "+i+"',"+"'nombre "+i+"',"+"'Kg'"+ ",'materia prima',"+"'idbodeg "+i+"',"+ Math.random()*100 +")");
+		//				preguntador("INSERT INTO PRODUCTO (ID,NOMBRE, COSTO, ESTADO,ID_BODEGA)VALUES ('idprodu "+i+"',"+"'nombre "+i+"',"+Math.random()*100+ ",'en espera',"+"'idbodeg "+i+"')");
+		//				preguntador("INSERT INTO REGISTRO_LLEGADA (ID_INSUMO,FECHA, CANTIDAD)VALUES ('idinsu "+i+"',"+"'30-MAR-18',"+Math.random()*100+")");
+		//				preguntador("INSERT INTO SOLICITUDES (ID_CLIENTE,ID_PRODUCTO, CANTIDAD,FECHA,ID)VALUES ('dirElectron "+i+"',"+"'idprodu "+(i+666)+"',"+Math.random()*100+",'12-MAR-16','idSol"+i+"')");
+		//				System.out.println("INSERT INTO ETAPA_PRODUCCION (NUMERO, ID_PRODUCTO, NOMBRE, T_INICIO,T_FINAL, ESTADO, ID_INSUMO_P,CANTIDAD_P,ID_INSUMO_G,CANTIDAD_G)VALUES("+i+",'idprodu "+(2000+a)+"',' etapaProd" +i+"','"+dia+"-"+mesvdd+"-"+ano+"','"+dia2+"-"+mesvdd2+"-"+ano2+"','espera','idinsu "+i+"',"+Math.random()*100+",'idinsu "+(i+1)+"',"+Math.random()*100+" )");
+		//				preguntador("INSERT INTO ETAPA_PRODUCCION (NUMERO, ID_PRODUCTO, NOMBRE, T_INICIO,T_FINAL, ESTADO, ID_INSUMO_P,CANTIDAD_P,ID_INSUMO_G,CANTIDAD_G)VALUES("+i+",'idprodu "+(2000+a)+"',' etapaProd" +i+"','"+dia+"-"+mesvdd+"-"+ano+"','"+dia2+"-"+mesvdd2+"-"+ano2+"','espera','idinsu "+i+"',"+Math.random()*100+",'idinsu "+(i+1)+"',"+Math.random()*100+" )");
+		//				System.out.println("INSERT INTO ESTACIONES (ETAPA_NUMERO, ETAPA_PRODUCTO, ESTACION_ID)VALUES("+(i)+",'idprodu "+(2000+a)+"',"+(i+10)+" )");				
+		//				preguntador("INSERT INTO ESTACIONES (ETAPA_NUMERO, ETAPA_PRODUCTO, ESTACION_ID)VALUES("+(i)+",'idprodu "+(2000+a)+"',"+(i+10)+" )");
+		//				if (n==10)
+		//				{
+		//					a++;
+		//					n=0;
+		//				}
+		//				n++;
+		//				System.out.println(i);
+		//			}
+		//		} catch (SQLException e) {
+		//			// TODO Auto-generated catch block
+		//			e.printStackTrace();
+		//		}
 
 	}
 
