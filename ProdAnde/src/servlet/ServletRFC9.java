@@ -73,7 +73,35 @@ public class ServletRFC9 extends HttpServlet
 		}
 	}
 
-
+	private String darMes(int mes)
+	{
+		String ans = "";
+		if (mes== 1)
+			ans ="JAN";
+		if (mes== 2)
+			ans ="FEB";
+		if (mes== 3)
+			ans ="MAR";
+		if (mes== 4)
+			ans ="APR";
+		if (mes== 5)
+			ans ="MAY";
+		if (mes== 6)
+			ans ="JUN";
+		if (mes== 7)
+			ans ="JUL";
+		if (mes== 8)
+			ans ="AUG";
+		if (mes== 9)
+			ans ="SEP";
+		if (mes== 10)
+			ans ="OCT";
+		if (mes== 11)
+			ans ="NOV";
+		if (mes== 12)
+			ans ="DEC";
+		return ans;
+	}
 
 	@SuppressWarnings("deprecation")
 	private void procesarSolicitud(HttpServletRequest request,
@@ -89,16 +117,20 @@ public class ServletRFC9 extends HttpServlet
 
 		if (accion.equals("darInform9"))
 		{
-			System.out.println("LLEGAMOS AL 9");
-			String sel = request.getParameter("sela9");
-			String id = request.getParameter("idSel9");
-			String fechain = request.getParameter("fechiSel9");
-			String fechafi = request.getParameter("fechfSel9");
-			int in = Integer.parseInt(fechain);
-			int fina = Integer.parseInt(fechafi);
-			System.out.println(sel);
-			System.out.println(id);
-			ArrayList<ArrayList<String>> arr = pro.informacionEjecEtapasProd2(sel, id, in, fina);
+			System.out.println("LLEGAMOS AL 8");
+			String sel = request.getParameter("sela8");
+			String id = request.getParameter("idSel8");
+			String in = request.getParameter("fechiSel8");
+			String fina = request.getParameter("fechfSel8");
+//			2015-05-20
+			String rtain[]=in.split("-");
+			String rtafin[]=fina.split("-");
+			int mesin = Integer.parseInt(rtain[1]);
+			int mesfin = Integer.parseInt(rtafin[1]);
+			String in1 = rtain[2]+"-"+darMes(mesin)+"-"+rtain[0];
+			String fina1 = rtafin[2]+"-"+darMes(mesfin)+"-"+rtafin[0];
+			System.out.println(in1 +" ------- "+ fina1);
+			ArrayList<ArrayList<String>> arr = pro.informacionEjecEtapasProd2(sel, id, in1, fina1);
 			imprimirRta(out, arr);
 		}
 	}
