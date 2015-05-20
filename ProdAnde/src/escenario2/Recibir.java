@@ -21,8 +21,9 @@ public class Recibir implements MessageListener{
 	private Session s;
 	private Destination d;
 	private MessageConsumer mc;
+	private proAndes principal;
 
-	public Recibir() throws JMSException, NamingException {
+	public Recibir(proAndes proAndes) throws JMSException, NamingException {
 		InitialContext init = new InitialContext();
 		this.cf = (ConnectionFactory) init.lookup("RemoteConnectionFactory");
 		this.d = (Destination) init.lookup("queue/PlayQueue");
@@ -31,6 +32,7 @@ public class Recibir implements MessageListener{
 		this.s = ((javax.jms.Connection) this.c).createSession(false, Session.AUTO_ACKNOWLEDGE);
 		mc = s.createConsumer(d);
 		this.mc.setMessageListener(this);
+		this.principal = proAndes;
 	}
 
 	public String receive() throws JMSException {
@@ -46,13 +48,22 @@ public class Recibir implements MessageListener{
 	public void onMessage(Message message) {
 		try {
 			TextMessage text = (TextMessage) message;
-			System.out.println("El mensaje de pacho fue: "+text.getText());
+			String mens = text.getText();
+			System.out.println("El mensaje de pacho fue: "+mens);
+			
+			if(mens.equals("pj-pe"))
+			{
+				principal.darListaEstaciones();
+			}
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 	}
+
+	
 
 
 //	public static void main(String[] args) {

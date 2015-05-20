@@ -52,7 +52,7 @@ public class proAndes {
 		conexion2 = new ConsultaDAO2();
 		
 		try {
-			Recibir r = new Recibir();
+			Recibir r = new Recibir(this);
 		} catch (JMSException | NamingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -916,6 +916,11 @@ public class proAndes {
 
 	/************************************ jose ite 3 *****************/
 
+	
+	/**
+	 * Apaga una estacion
+	 * @param id. id de la estacion
+	 */
 	public void apagarEstacion(String id)
 	{
 		try {
@@ -957,6 +962,10 @@ public class proAndes {
 
 	}
 
+	/**
+	 * Prender estacion
+	 * @param id
+	 */
 	public void prenderEstacion(String id)
 	{
 
@@ -1380,9 +1389,23 @@ public class proAndes {
 		return ans;
 
 	}
-
-	
-
 	/*****************************************************************/
+	
+	
+	
+	
+	
+	/*
+	 *  ******************************** iteracion 5 jose ***************
+	 */
+	
+	public void darListaEstaciones() {
+		
+		
+	}
+	
+	/*
+	 * ******************************************************************
+	 */
 
 }
