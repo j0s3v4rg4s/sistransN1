@@ -10,6 +10,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
+import javax.jms.JMSException;
+import javax.naming.NamingException;
+
 import org.omg.CORBA.TRANSACTION_MODE;
 
 import consulta.ConsultaDAO;
@@ -47,6 +50,13 @@ public class proAndes {
 	public proAndes(){
 		conexion = new ConsultaDAO();
 		conexion2 = new ConsultaDAO2();
+		
+		try {
+			Recibir r = new Recibir();
+		} catch (JMSException | NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 
 	}

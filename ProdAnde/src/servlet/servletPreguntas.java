@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import escenario2.Recibir;
+import escenario2.Send;
 import escenario2.insumos;
 import escenario2.proAndes;
 
@@ -70,7 +72,18 @@ public class servletPreguntas extends HttpServlet{
 
 		String accion = request.getParameter("accion");    
 		System.out.println(accion);
-		
+		if(accion.equals("probadorCola"))
+		{
+			try {
+				Send s = new Send();
+				s.enviar("esto es una prueba");
+				s.close();
+				out.println("correcto");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
 		if(accion.equals("resultadof10"))
 		{
 			String param = request.getParameter("param");
@@ -83,7 +96,7 @@ public class servletPreguntas extends HttpServlet{
 				imprimirFilaInfo(out, info.get(i));
 			}
 		}
-		
+
 		if(accion.equals("resultadof11"))
 		{
 			String param = request.getParameter("param");
@@ -94,7 +107,7 @@ public class servletPreguntas extends HttpServlet{
 				imprimirFilaInfo(out, info.get(i));
 			}
 		}
-		
+
 		if(accion.equals("fc11"))
 		{
 			ArrayList<ArrayList<String>> info = pro.buscarMateriales();
@@ -108,8 +121,8 @@ public class servletPreguntas extends HttpServlet{
 		if(accion.equals("filtroInsumo"))
 		{
 			String param = request.getParameter("param");
-			
-			
+
+
 			String correo = request.getParameter("param");
 			ArrayList<ArrayList<String>> cli = pro.darInfluenciaProveedor(correo);
 			tablaInicioNueva(out);
@@ -118,7 +131,7 @@ public class servletPreguntas extends HttpServlet{
 				cuerpo(out, cli.get(i));
 			}
 			finTabla2(out);
-			
+
 			cli = pro.darProductosInfluencia(correo);
 			tablaInicioNueva(out);
 			cabeza(out, cli.get(0));
@@ -127,7 +140,7 @@ public class servletPreguntas extends HttpServlet{
 			}
 			finTabla2(out);
 		}
-		
+
 		if(accion.equals("filtroProveedor"))
 		{
 			String param = request.getParameter("param");
@@ -139,7 +152,7 @@ public class servletPreguntas extends HttpServlet{
 			}
 			finTabla2(out);
 		}
-		
+
 		if(accion.equals("filtroSolicitud"))
 		{
 			String correo = request.getParameter("param");
@@ -151,10 +164,10 @@ public class servletPreguntas extends HttpServlet{
 			}
 			finTabla2(out);
 		}
-		
+
 		if(accion.equals("filtroCliente"))
 		{
-			
+
 			String param = request.getParameter("param");
 			ArrayList<ArrayList<String>> cli = pro.darClientes(param);
 			tablaInicioNueva(out);
@@ -163,7 +176,7 @@ public class servletPreguntas extends HttpServlet{
 				cuerpo(out, cli.get(i));
 			}
 			finTabla2(out);
-			
+
 		}
 		if(accion.equals("hacerr17"))
 		{
