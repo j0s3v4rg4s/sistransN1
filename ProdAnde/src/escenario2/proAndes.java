@@ -1415,13 +1415,62 @@ public class proAndes {
 			Send s = new Send();
 			s.enviar("jp-r:"+g.toJSONString());
 			s.close();
-			System.out.println("mensaje enviado");
+			conexion2.getConexion().commit();
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			try {
+				conexion2.getConexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		finally{
+			conexion2.terminarTransaccion();
 		}
 		
 	}
+
+	public void darlistaEtapa() {
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "SELECT NUMERO, ID_PRODUCTO FROM ETAPA_PRODUCCION";
+			ArrayList<ArrayList<String>> etapas = conexion2.realizarBusqueda(query);
+			JSONArray a = new JSONArray();
+			for (int i = 1; i < etapas.size(); i++) {
+				JSONObject o = new JSONObject();
+				o.put("numero", etapas.get(i).get(0));
+				o.put("id_producto", etapas.get(i).get(1));
+				a.add(o);
+			}
+			Send s = new Send();
+			s.enviar("jp-ret:"+a.toJSONString());
+			s.close();
+			conexion2.terminarTransaccion();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	public void eliminar() {
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			String query = "DELETE FROM ESTACIONES";
+			conexion2.preguntador(query);
+			conexion2.getConexion().commit();
+			conexion2.terminarTransaccion();
+		} catch (Exception e) {
+			try {
+				conexion2.getConexion().rollback();
+				conexion2.terminarTransaccion();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+	}
+	
+	
 	
 	/*
 	 * ******************************************************************

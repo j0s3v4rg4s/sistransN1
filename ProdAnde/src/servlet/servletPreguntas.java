@@ -74,6 +74,7 @@ public class servletPreguntas extends HttpServlet{
 		if(accion.equals("probadorCola"))
 		{
 			pro.darListaEstaciones();
+			pro.darlistaEtapa();
 
 		}
 		if(accion.equals("resultadof10"))

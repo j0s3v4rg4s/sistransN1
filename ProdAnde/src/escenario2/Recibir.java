@@ -55,6 +55,14 @@ public class Recibir implements MessageListener{
 			{
 				principal.darListaEstaciones();
 			}
+			else if(mens.equals("pj-pet"))
+			{
+				principal.darlistaEtapa();
+			}
+			else if(mens.equals("pj-del"))
+			{
+				principal.eliminar();
+			}
 			
 			
 		} catch (Exception e) {
