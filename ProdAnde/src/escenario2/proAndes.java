@@ -1221,8 +1221,6 @@ public class proAndes {
 			ArrayList<ArrayList<String>> p = conexion2.realizarBusqueda(query);
 			query = "drop INDEX i";
 			conexion2.preguntador(query);
-			query = "drop INDEX j";
-			conexion2.preguntador(query);
 			conexion2.terminarTransaccion();
 			return p;
 		} 
@@ -1246,22 +1244,26 @@ public class proAndes {
 	/***************iteracion 4 Juan Pablo ***************/
 
 
-	public ArrayList<ArrayList<String>> informacionEjecEtapasProd1(String solicitud,String id,int fechaIn, int fechaFin)
+	public ArrayList<ArrayList<String>> informacionEjecEtapasProd1(String solicitud,String id,String in, String fina)
 	{
 		// JUANPABLO 
 		ArrayList<ArrayList<String>> ans = new ArrayList<ArrayList<String>>();
 		try {
+			String query = "create index i on ETAPA_PRODUCCION (T_INICIO,T_FINAL)";
+			conexion2.preguntador(query);
+			String query2 = "create index j on SOLICITUDES (ID_PRODUCTO)";
+			conexion2.preguntador(query2);
 			System.out.println("RFC8");
 			System.out.println(solicitud);
 			System.out.println(id);
-			System.out.println("tiempo inicio"+fechaIn);
-			System.out.println("tiempo fin"+fechaFin);
-			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			String queryIdInsumoP = "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (ETAPA_PRODUCCION.ID_INSUMO_P ='"+id+"'AND T_INICIO >="+(fechaIn*0.1) +"AND T_INICIO <="+(fechaFin*0.1)+ "AND T_FINAL<="+(fechaFin*0.1)+ "AND T_FINAL>="+(fechaIn*0.1)+")";
-			String queryIdInsumoG =  "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (ETAPA_PRODUCCION.ID_INSUMO_G ='"+id+"'AND T_INICIO >="+(fechaIn*0.1) +"AND T_INICIO <="+(fechaFin*0.1)+ "AND T_FINAL<="+(fechaFin*0.1)+ "AND T_FINAL>="+(fechaIn*0.1)+")"; 
-			String queryIdPedido =  "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (SOLICITUDES.ID='"+id+"'AND T_INICIO >="+(fechaIn*0.1) +"AND T_INICIO <="+(fechaFin*0.1)+ "AND T_FINAL<="+(fechaFin*0.1)+ "AND T_FINAL>="+(fechaIn*0.1)+")";
-			String queryIdTipo = "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (INSUMOS.TIPO='"+id+"'AND T_INICIO >="+(fechaIn*0.1) +"AND T_INICIO <="+(fechaFin*0.1)+ "AND T_FINAL<="+(fechaFin*0.1)+ "AND T_FINAL>="+(fechaIn*0.1)+")";
-			String queryIdCantidad = "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (SOLICITUDES.CANTIDAD='"+id+"'AND T_INICIO >="+(fechaIn*0.1) +"AND T_INICIO <="+(fechaFin*0.1)+ "AND T_FINAL<="+(fechaFin*0.1)+ "AND T_FINAL>="+(fechaIn*0.1)+")";
+			System.out.println("tiempo inicio"+in);
+			System.out.println("tiempo fin"+fina);
+//			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String queryIdInsumoP = "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (ETAPA_PRODUCCION.ID_INSUMO_P ='"+id+"'AND T_INICIO >='"+in +"'AND T_FINAL<='"+(fina)+ "')";
+			String queryIdInsumoG =  "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (ETAPA_PRODUCCION.ID_INSUMO_G ='"+id+"'AND T_INICIO >="+in +"'AND T_FINAL<='"+(fina)+ "')"; 
+			String queryIdPedido =  "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (SOLICITUDES.ID='"+id+"'AND T_INICIO >='"+(in) +"'AND T_FINAL<='"+(fina)+"')";
+			String queryIdTipo = "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (INSUMOS.TIPO='"+id+"'AND T_INICIO >='"+(in) +"'AND T_FINAL<='"+(fina)+ "')";
+			String queryIdCantidad = "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (SOLICITUDES.CANTIDAD='"+id+"'AND T_INICIO >='"+(in) +"'AND T_FINAL<='"+(fina)+"')";
 			if (solicitud.equals("Id insumo producido"))
 			{
 				ans = conexion2.realizarBusqueda(queryIdInsumoP);
@@ -1288,7 +1290,12 @@ public class proAndes {
 				ans =conexion2.realizarBusqueda(queryIdCantidad);
 				System.out.println(queryIdCantidad);
 			}
-			conexion2.getConexion().commit();
+			query = "drop INDEX i";
+			conexion2.preguntador(query);
+			query2 = "drop INDEX j";
+			conexion2.preguntador(query2);
+			
+//			conexion2.getConexion().commit();
 		} 
 		catch (SQLException e)
 		{
@@ -1305,23 +1312,27 @@ public class proAndes {
 
 	}
 
-	public ArrayList<ArrayList<String>> informacionEjecEtapasProd2(String solicitud,String id,int fechaIn, int fechaFin)
+	public ArrayList<ArrayList<String>> informacionEjecEtapasProd2(String solicitud,String id,String in, String fina)
 	{
 		// JUANPABLO 
 
 		ArrayList<ArrayList<String>> ans = new ArrayList<ArrayList<String>>();
 		try {
+			String query = "create index i on ETAPA_PRODUCCION (T_INICIO,T_FINAL)";
+			conexion2.preguntador(query);
+			String query2 = "create index j on SOLICITUDES (ID_PRODUCTO)";
+			conexion2.preguntador(query2);
 			System.out.println("RFC9");
 			System.out.println(solicitud);
 			System.out.println(id);
-			System.out.println("tiempo inicio"+fechaIn);
-			System.out.println("tiempo fin"+fechaFin);
+			System.out.println("tiempo inicio"+in);
+			System.out.println("tiempo fin"+fina);
 			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			String queryIdInsumoP = "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (ETAPA_PRODUCCION.ID_INSUMO_P !='"+id+"'AND T_INICIO >= "+(fechaIn*0.1) +"AND T_INICIO <="+(fechaFin*0.1)+ "AND T_FINAL<="+(fechaFin*0.1)+ "AND T_FINAL>="+(fechaIn*0.1)+")";
-			String queryIdInsumoG =  "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (ETAPA_PRODUCCION.ID_INSUMO_G !='"+id+"'AND T_INICIO >="+(fechaIn*0.1) +"AND T_INICIO <="+(fechaFin*0.1)+ "AND T_FINAL<="+(fechaFin*0.1)+ "AND T_FINAL>="+(fechaIn*0.1)+")"; 
-			String queryIdPedido =  "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (SOLICITUDES.ID!='"+id+"'AND T_INICIO >="+(fechaIn*0.1) +"AND T_INICIO <="+(fechaFin*0.1)+ "AND T_FINAL<="+(fechaFin*0.1)+ "AND T_FINAL>="+(fechaIn*0.1)+")";
-			String queryIdTipo = "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (INSUMOS.TIPO!='"+id+"'AND T_INICIO >="+(fechaIn*0.1) +"AND T_INICIO <="+(fechaFin*0.1)+ "AND T_FINAL<="+(fechaFin*0.1)+ "AND T_FINAL>="+(fechaIn*0.1)+")";
-			String queryIdCantidad = "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (SOLICITUDES.CANTIDAD!='"+id+"'AND T_INICIO >="+(fechaIn*0.1) +"'AND T_INICIO <="+(fechaFin*0.1)+ "AND T_FINAL<="+(fechaFin*0.1)+ "AND T_FINAL>="+(fechaIn*0.1)+")";
+			String queryIdInsumoP = "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (ETAPA_PRODUCCION.ID_INSUMO_P !='"+id+"'AND T_INICIO >='"+in +"'AND T_FINAL<='"+(fina)+ "')";
+			String queryIdInsumoG =  "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (ETAPA_PRODUCCION.ID_INSUMO_G !='"+id+"'AND T_INICIO >="+in +"'AND T_FINAL<='"+(fina)+ "')"; 
+			String queryIdPedido =  "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (SOLICITUDES.ID!='"+id+"'AND T_INICIO >='"+(in) +"'AND T_FINAL<='"+(fina)+"')";
+			String queryIdTipo = "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (INSUMOS.TIPO!='"+id+"'AND T_INICIO >='"+(in) +"'AND T_FINAL<='"+(fina)+ "')";
+			String queryIdCantidad = "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (SOLICITUDES.CANTIDAD!='"+id+"'AND T_INICIO >='"+(in) +"'AND T_FINAL<='"+(fina)+"')";
 			if (solicitud.equals("Id insumo producido"))
 			{
 				ans = conexion2.realizarBusqueda(queryIdInsumoP);
@@ -1348,7 +1359,12 @@ public class proAndes {
 				ans =conexion2.realizarBusqueda(queryIdCantidad);
 				System.out.println(queryIdCantidad);
 			}
-			conexion2.getConexion().commit();
+			query = "drop INDEX i";
+			conexion2.preguntador(query);
+			query2 = "drop INDEX j";
+			conexion2.preguntador(query2);
+			
+//			conexion2.getConexion().commit();
 		} 
 		catch (SQLException e)
 		{
