@@ -36,7 +36,7 @@ public class proAndes {
 	// Variables
 	//-----------------------------------------------------------------
 	public Bodega m_Bodega;
-
+	public String rec;
 
 	/**
 	 * Variable que respresenta la conexion a la base de datos 
@@ -52,7 +52,7 @@ public class proAndes {
 	public proAndes(){
 		conexion = new ConsultaDAO();
 		conexion2 = new ConsultaDAO2();
-		
+		rec = "";
 		try {
 			Recibir r = new Recibir(this);
 		} catch (JMSException | NamingException e) {
@@ -68,6 +68,14 @@ public class proAndes {
 	//-----------------------------------------------------------------
 
 
+	public String darRec()
+	{
+		return rec;
+	}
+	public void modRec(String rec2)
+	{
+		rec=rec2;
+	}
 
 	/**
 	 * @param material
@@ -531,29 +539,79 @@ public class proAndes {
 		return productosAPedir;
 	}
 
-	/**
-	 * metodo que registra un pedido dado 
-	 */
 
-	public Date registrarPedidoProducto(Date fecha, String idProducto, int cantidad, String idCliente)
+	public String registrarPedidoProducto2(Date fecha, String idProducto, int cantidad, String idCliente)
 	{
 		// JUANPABLO 
 
 		Date ans = fecha;
+		String idSol = "idSolicitud"+Math.floor(Math.random());
+		String newAns = "RF18R-"+idSol+"-";
 
 		int cant = buscarCantidadProductoEnBodega(idProducto);
 
 		if (cant > cantidad)
 		{
 			reservarCantidadProductoEnBodega(cantidad, idProducto);
-
 			ans = addDays(ans, 2);
+			newAns = "RF18R-"+idSol+"-"+Producto.PRODUCIOENDO;  
+			crearSolicitud(idCliente, idProducto, cantidad, fecha, idSol);		
 		}
 		else 
 		{
 			if (CantidadEnBodegaVSCantidad(idProducto, idCliente)== null)
 			{
 				ans = addDays(ans, 5);
+				newAns = "RF18R-"+idSol+"-"+Producto.PRODUCIOENDO;
+				crearSolicitud(idCliente, idProducto, cantidad, fecha, idSol);
+			}
+			else
+			{
+				ArrayList<Bodega> aPedir = CantidadEnBodegaVSCantidad(idProducto, idCliente);
+
+
+				for (int i = 0;i<aPedir.size(); i++)
+				{
+					Bodega b = aPedir.get(i);
+					crearSolicitud(idCliente, idProducto, cantidad, fecha, idSol);
+					actualizarEstado(idCliente, Producto.PENDIENTE);
+				}
+				
+				newAns = "RF18R-"+idSol+"-"+Producto.PENDIENTE;
+
+
+				ans = addDays(ans, 15);
+
+			}
+		}
+		return newAns;
+	}
+
+	/**
+	 * metodo que registra un pedido dado 
+	 */
+
+	public String registrarPedidoProducto(Date fecha, String idProducto, int cantidad, String idCliente)
+	{
+		// JUANPABLO 
+
+		Date ans = fecha;
+		String idSol = "idSolicitud"+Math.floor(Math.random());
+
+		int cant = buscarCantidadProductoEnBodega(idProducto);
+
+		if (cant > cantidad)
+		{
+			reservarCantidadProductoEnBodega(cantidad, idProducto);
+			ans = addDays(ans, 2);
+			crearSolicitud(idCliente, idProducto, cantidad, fecha, idSol);		
+		}
+		else 
+		{
+			if (CantidadEnBodegaVSCantidad(idProducto, idCliente)== null)
+			{
+				ans = addDays(ans, 5);
+				crearSolicitud(idCliente, idProducto, cantidad, fecha, idSol);
 			}
 			else
 			{
@@ -564,6 +622,17 @@ public class proAndes {
 				{
 					Bodega b = aPedir.get(i);
 					actualizarEstado(idCliente, Producto.PENDIENTE);
+					try {
+						Send env = new Send();
+						env.enviar("RF18-"+fecha+"-"+idProducto+"-"+cantidad+"-"+idCliente);
+						
+					} catch (NamingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (JMSException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 
 
@@ -571,7 +640,26 @@ public class proAndes {
 
 			}
 		}
-		return ans;
+		return rec;
+	}
+	private void crearSolicitud(String idCliente, String idProducto, int cantidad, Date fecha,String id) 
+	{
+		{
+			// JUAN PABLO 
+			try {
+				conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+				String query = "INSERT INTO SOLICITUDES VALUES('"+ idCliente+"','"+idProducto+"',"+cantidad+",'"+fecha+"','"+id+"')";
+				conexion2.preguntador(query);	
+				conexion2.getConexion().commit();
+				conexion2.terminarTransaccion();
+				
+			} catch (SQLException e) {
+				conexion2.terminarTransaccion();
+				e.printStackTrace();
+			}
+			
+		}
+		
 	}
 	@SuppressWarnings("unchecked")
 	public ArrayList<ArrayList<String>> informacionMaterial(String tipo,String id)

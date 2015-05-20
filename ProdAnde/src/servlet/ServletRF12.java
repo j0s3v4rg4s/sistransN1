@@ -101,19 +101,19 @@ public class ServletRF12 extends HttpServlet{
 			int m = Integer.parseInt(fe[2]);
 			DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
 			Date date = formatter.parse(m+"/"+d+"/"+y);
-			Date t = pro.registrarPedidoProducto(date, id, cant, cl);
+			String t = pro.registrarPedidoProducto(date, id, cant, cl);
 
 			darRta(out, cl, t, cant, id);;
 		}
 	}
-	private void darRta(PrintWriter out,String client, Date fech, int cant, String idProd )
+	private void darRta(PrintWriter out,String client, String fech, int cant, String idProd )
 	{
 		out.println("<div>");
 		out.println("<h4>Su solicitud de producto fue realizada correctamente</h4>");
 		out.println("<h6>Pedido solicitado por: "+ client + "</h6>");
 		out.println("<h6>Producto solicitado: "+ idProd+ "</h6>");
 		out.println("<h6>Cantidad: "+ cant + "</h6>");
-		out.println("<h6>Fecha estimada de entrega: "+ fech.toString() + "</h6>");
+		out.println("<h6>idSol y estado: "+ fech + "</h6>");
 		out.println("</div>");
 	}
 	private void cargarInformacion(PrintWriter out) {
