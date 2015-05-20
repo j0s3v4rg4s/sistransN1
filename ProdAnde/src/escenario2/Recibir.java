@@ -46,7 +46,7 @@ public class Recibir implements MessageListener{
 	public void onMessage(Message message) {
 		try {
 			TextMessage text = (TextMessage) message;
-			System.out.println("El mensaje recivido fue: "+text.getText());
+			System.out.println("El mensaje de pacho fue: "+text.getText());
 			
 		} catch (Exception e) {
 			e.printStackTrace();

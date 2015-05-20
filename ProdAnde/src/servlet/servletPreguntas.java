@@ -75,7 +75,7 @@ public class servletPreguntas extends HttpServlet{
 		{
 			try {
 				Send s = new Send();
-				s.enviar("esto es una prueba");
+				s.enviar("Envio de mensajeria al usuario 2");
 				s.close();
 				out.println("correcto");
 			} catch (Exception e) {

@@ -23,8 +23,9 @@ public class Send {
 	public Send() throws NamingException, JMSException {
 		InitialContext init = new InitialContext();
 		this.cf = (ConnectionFactory) init.lookup("RemoteConnectionFactory");
-		this.d = (Destination) init.lookup("queue/PlayQueue");
-		this.c = (Connection) this.cf.createConnection("joao", "pedro");
+		this.d = (Destination) init.lookup("queue/queue1");
+		this.c = (Connection) this.cf.createConnection("guest123", "guest");
+		//this.c = (Connection) this.cf.createConnection("joao", "pedro");
 		((javax.jms.Connection) this.c).start();
 		this.s = ((javax.jms.Connection) this.c).createSession(false, Session.AUTO_ACKNOWLEDGE);
 		this.mp = this.s.createProducer(this.d);
