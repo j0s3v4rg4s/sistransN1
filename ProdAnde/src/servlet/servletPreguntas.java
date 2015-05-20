@@ -73,14 +73,7 @@ public class servletPreguntas extends HttpServlet{
 		System.out.println(accion);
 		if(accion.equals("probadorCola"))
 		{
-			try {
-				Send s = new Send();
-				s.enviar("Envio de mensajeria al usuario 2");
-				s.close();
-				out.println("correcto");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			pro.darListaEstaciones();
 
 		}
 		if(accion.equals("resultadof10"))

@@ -13,6 +13,8 @@ import java.util.Random;
 import javax.jms.JMSException;
 import javax.naming.NamingException;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.omg.CORBA.TRANSACTION_MODE;
 
 import consulta.ConsultaDAO;
@@ -1400,7 +1402,24 @@ public class proAndes {
 	 */
 	
 	public void darListaEstaciones() {
-		
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			String query = "SELECT codigo FROM ESTACION_PRODUCCION where ESTADO='ACTIVADO'";
+			JSONArray g = new JSONArray();
+			ArrayList<ArrayList<String>> estaciones = conexion2.realizarBusqueda(query);
+			for (int i = 1; i < estaciones.size(); i++) {
+				JSONObject job = new JSONObject();
+				job.put("id", estaciones.get(i).get(0));
+				g.add(job);
+			}
+			Send s = new Send();
+			s.enviar("jp-r:"+g.toJSONString());
+			s.close();
+			System.out.println("mensaje enviado");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
