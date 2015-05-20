@@ -14,6 +14,11 @@ import javax.jms.TextMessage;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+
+
 public class Recibir implements MessageListener{
 
 	private ConnectionFactory cf;
@@ -49,39 +54,48 @@ public class Recibir implements MessageListener{
 		try {
 			TextMessage text = (TextMessage) message;
 			String mens = text.getText();
-			System.out.println("El mensaje de pacho fue: "+mens);
-			
-			if(mens.equals("pj-pe"))
+
+
+
+			if(mens.startsWith("pj-pe"))
 			{
 				principal.darListaEstaciones();
 			}
-			else if(mens.equals("pj-pet"))
+			else if(mens.startsWith("pj-pet"))
 			{
 				principal.darlistaEtapa();
 			}
-			else if(mens.equals("pj-del"))
+			else if(mens.startsWith("pj-del"))
 			{
 				principal.eliminar();
 			}
-			
-			
+			else if(mens.startsWith("pj-r"))
+			{
+				String[]res = mens.split(":");
+				JSONObject jsonObj = new JSONObject(res[1]);
+				JSONArray array = jsonObj.getJSONArray("arreglo");
+				System.out.println("se rescibio el json:"+array.toString());
+				
+			}
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
-	
 
 
-//	public static void main(String[] args) {
-//		try {
-//			Recibir r = new Recibir();
-//			String msg = r.receive();
-//			System.out.println("Mensagem: " + msg);
-//			r.close();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+
+	//	public static void main(String[] args) {
+	//		try {
+	//			Recibir r = new Recibir();
+	//			String msg = r.receive();
+	//			System.out.println("Mensagem: " + msg);
+	//			r.close();
+	//		} catch (Exception e) {
+	//			e.printStackTrace();
+	//		}
+	//	}
 }

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import javax.jms.JMSException;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -73,8 +75,17 @@ public class servletPreguntas extends HttpServlet{
 		System.out.println(accion);
 		if(accion.equals("probadorCola"))
 		{
-			pro.darListaEstaciones();
-			pro.darlistaEtapa();
+			//pro.darListaEstaciones();
+			//pro.darlistaEtapa();
+			try {
+				Send s = new Send();
+				s.enviar("jp-pe");
+				s.close();
+				out.println("exito");
+			} catch (NamingException | JMSException e) {
+				out.println("error");
+				e.printStackTrace();
+			}
 
 		}
 		if(accion.equals("resultadof10"))

@@ -13,8 +13,8 @@ import java.util.Random;
 import javax.jms.JMSException;
 import javax.naming.NamingException;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.omg.CORBA.TRANSACTION_MODE;
 
 import consulta.ConsultaDAO;
@@ -1410,10 +1410,12 @@ public class proAndes {
 			for (int i = 1; i < estaciones.size(); i++) {
 				JSONObject job = new JSONObject();
 				job.put("id", estaciones.get(i).get(0));
-				g.add(job);
+				g.put(job);
 			}
+			JSONObject nn = new JSONObject();
+			nn.put("arreglo", g);
 			Send s = new Send();
-			s.enviar("jp-r:"+g.toJSONString());
+			s.enviar("jp-r:"+nn.toString());
 			s.close();
 			conexion2.getConexion().commit();
 			
@@ -1440,11 +1442,14 @@ public class proAndes {
 				JSONObject o = new JSONObject();
 				o.put("numero", etapas.get(i).get(0));
 				o.put("id_producto", etapas.get(i).get(1));
-				a.add(o);
+				a.put(o);
 			}
+			JSONObject nn = new JSONObject();
+			nn.put("arreglo", a);
 			Send s = new Send();
-			s.enviar("jp-ret:"+a.toJSONString());
+			s.enviar("jp-ret:"+nn.toString());
 			s.close();
+			System.out.println("enviado");
 			conexion2.terminarTransaccion();
 			
 		} catch (Exception e) {
