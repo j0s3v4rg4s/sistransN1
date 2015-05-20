@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import escenario2.Recibir;
 import escenario2.Send;
 import escenario2.insumos;
 import escenario2.proAndes;
