@@ -111,13 +111,17 @@ public class ServletRF12 extends HttpServlet{
 	}
 	private void darRta(PrintWriter out,String client, String fech, int cant, String idProd )
 	{
+		System.out.println(fech);
+		String answ[] = fech.split("-");
 		out.println("<div>");
 		out.println("<h4>Su solicitud de producto fue realizada correctamente</h4>");
 		out.println("<h6>Pedido solicitado por: "+ client + "</h6>");
 		out.println("<h6>Producto solicitado: "+ idProd+ "</h6>");
 		out.println("<h6>Cantidad: "+ cant + "</h6>");
 		out.println("<h6>Id de solicitud y estado: "+ fech.split("-")[1] + "</h6>");
-		out.println("<h6>Estado de la solicitud: "+ fech.split("-")[2] + "</h6>");
+		if (answ.length<=2)
+			out.println("<h6>Estado de la solicitud: En espera del otro </h6>");
+		else out.println("<h6>Estado de la solicitud: "+ answ[2] + "</h6>");
 		
 		out.println("</div>");
 	}

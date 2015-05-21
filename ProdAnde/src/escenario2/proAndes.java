@@ -651,6 +651,7 @@ public class proAndes {
 					try {
 						Send env = new Send();
 						env.enviar("RF18-"+fecha+"-"+idProducto+"-"+cantidad+"-"+idCliente);
+						System.out.println("RF18-"+fecha+"-"+idProducto+"-"+cantidad+"-"+idCliente);
 
 					} catch (NamingException e) {
 						// TODO Auto-generated catch block
