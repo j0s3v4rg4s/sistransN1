@@ -4,6 +4,7 @@ package escenario2;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.jms.Connection;
@@ -100,7 +101,48 @@ public class Recibir implements MessageListener{
 				}
 				else if (mensajSplit[0].equals("RF18R"))
 				{
-					principal.modRec(mens);
+					System.out.println(mens);
+				}
+			}
+			
+			else if (mens.startsWith("RFC12"))
+			{
+				String[] mensajSplit = mens.split("-");
+				if (mens.startsWith("RFC12-"))
+				{
+					String[]fech1=mensajSplit[3].split("/");
+					int y1= Integer.parseInt(fech1[2]);
+					int d1=Integer.parseInt(fech1[1]);
+					int m1 = Integer.parseInt(fech1[0]);
+					DateFormat formatter1 = new SimpleDateFormat("dd/MM/yy");
+					Date fecha1 = formatter1.parse(m1+"/"+d1+"/"+y1);
+					String[]fech2=mensajSplit[4].split("/");
+					int y2= Integer.parseInt(fech1[2]);
+					int d2=Integer.parseInt(fech1[1]);
+					int m2 = Integer.parseInt(fech1[0]);
+					DateFormat formatter2 = new SimpleDateFormat("dd/MM/yy");
+					Date fecha2 = formatter1.parse(m1+"/"+d1+"/"+y1);
+					String solicitud = mensajSplit[1];
+					String id = mensajSplit[2];
+					ArrayList<ArrayList<String>> RRFC12 = principal.informacionEjecEtapasProd1(solicitud, id, fecha1, fecha2);
+					String ans="RFC12R$";
+					for (int i=0;i<RRFC12.size();i++)
+					{
+						ArrayList<String> arrin = RRFC12.get(i);
+						for (int j=0;j<arrin.size();j++)
+						{
+							String elin = arrin.get(j);
+							ans = ans+elin+"-";
+						}
+						ans = ans+"/";
+					}
+					Send envioRFC12 = new Send();
+					envioRFC12.enviar(ans);
+
+				}
+				else if (mens.startsWith("RFC12R$"))
+				{
+					System.out.println(mens);
 				}
 			}
 

@@ -2,8 +2,11 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -129,8 +132,13 @@ public class ServletRFC8 extends HttpServlet
 			int mesfin = Integer.parseInt(rtafin[1]);
 			String in1 = rtain[2]+"-"+darMes(mesin)+"-"+rtain[0];
 			String fina1 = rtafin[2]+"-"+darMes(mesfin)+"-"+rtafin[0];
+			DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
+			Date date1 = formatter.parse(rtain[2]+"/"+mesin+"/"+rtain[0]);
+			DateFormat formatter1 = new SimpleDateFormat("dd/MM/yy");
+			Date date2 = formatter1.parse(rtafin[2]+"/"+mesfin+"/"+rtafin[0]);
+			
 			System.out.println(in1 +" ------- "+ fina1);
-			ArrayList<ArrayList<String>> arr = pro.informacionEjecEtapasProd1(sel, id, in1, fina1);
+			ArrayList<ArrayList<String>> arr = pro.informacionEjecEtapasProd1(sel, id, date1, date2);
 			imprimirRta(out, arr);
 		}
 	}

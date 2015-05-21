@@ -3,7 +3,6 @@
 Universidad de los Andes (Bogotá - Colombia)
 Departamento de Ingeniería de Sistemas y Computación 
 Licenciado bajo el esquema Academic Free License version 2.1 
-
 Proyecto Cupi2 (http://cupi2.uniandes.edu.co)
 Ejercicio: n18_calculadoraWeb
 Autor: Pablo Barvo - Mayo 4/2006 
@@ -26,17 +25,14 @@ Autor: Jorge Villalobos - Noviembre 13/2006
 
 	<!-- Inicialización de las propiedades:  -->
 	
-	    <target name="init" description="Inicializa las propiedades">
+	<target name="init" description="Inicializa las propiedades">
 		<!-- Cambie esta línea según el punto en el que esté instalado JBboss -->
 		<property environment="env" />
 		<!--- <property name="jboss.home" value="${env.JBOSS_HOME}" /> -->
-
-		<property name="jboss.home" value="/home/jose/Documentos/jboos/jboss-as-7.1.1.Final" />
-		
-
+		<property name="jboss.home" value="C:\Users\JuanPablo\Documents\jboss-4.2.3.GA" />
 		
 		<!-- Definición de propiedades -->
-		<property name="server.path" value="standalone/deployments" />
+		<property name="server.path" value="server/default" />
 		<property name="source" value="./src" />
 		<property name="classes" value="./classes" />
 		<property name="data" value="./data" />

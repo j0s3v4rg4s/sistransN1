@@ -36,7 +36,6 @@ public class proAndes {
 	// Variables
 	//-----------------------------------------------------------------
 	public Bodega m_Bodega;
-	public String rec;
 
 	/**
 	 * Variable que respresenta la conexion a la base de datos 
@@ -52,7 +51,6 @@ public class proAndes {
 	public proAndes(){
 		conexion = new ConsultaDAO();
 		conexion2 = new ConsultaDAO2();
-		rec = "";
 		try {
 			Recibir r = new Recibir(this);
 		} catch (JMSException | NamingException e) {
@@ -68,13 +66,9 @@ public class proAndes {
 	//-----------------------------------------------------------------
 
 
-	public String darRec()
+	public String darRec(String rec)
 	{
 		return rec;
-	}
-	public void modRec(String rec2)
-	{
-		rec=rec2;
 	}
 
 	/**
@@ -543,6 +537,7 @@ public class proAndes {
 	public String registrarPedidoProducto2(Date fecha, String idProducto, int cantidad, String idCliente)
 	{
 		// JUANPABLO 
+		System.out.println("RegistrarPedidoProducto2 ("+ fecha+","+idProducto+","+cantidad+","+idCliente+")");
 
 		Date ans = fecha;
 		String idSol = "idSolicitud"+Math.floor(Math.random());
@@ -576,7 +571,7 @@ public class proAndes {
 					crearSolicitud(idCliente, idProducto, cantidad, fecha, idSol);
 					actualizarEstado(idCliente, Producto.PENDIENTE);
 				}
-				
+
 				newAns = "RF18R-"+idSol+"-"+Producto.PENDIENTE;
 
 
@@ -594,9 +589,10 @@ public class proAndes {
 	public String registrarPedidoProducto(Date fecha, String idProducto, int cantidad, String idCliente)
 	{
 		// JUANPABLO 
-
+		System.out.println("RegistrarPedidoProducto ("+ fecha+","+idProducto+","+cantidad+","+idCliente+")");
 		Date ans = fecha;
 		String idSol = "idSolicitud"+Math.floor(Math.random());
+		String newAns = "RF18R-"+idSol+"-";
 
 		int cant = buscarCantidadProductoEnBodega(idProducto);
 
@@ -604,7 +600,8 @@ public class proAndes {
 		{
 			reservarCantidadProductoEnBodega(cantidad, idProducto);
 			ans = addDays(ans, 2);
-			crearSolicitud(idCliente, idProducto, cantidad, fecha, idSol);		
+			crearSolicitud(idCliente, idProducto, cantidad, fecha, idSol);	
+			newAns = "RF18R-"+idSol+"-"+Producto.PRODUCIOENDO;  
 		}
 		else 
 		{
@@ -625,7 +622,7 @@ public class proAndes {
 					try {
 						Send env = new Send();
 						env.enviar("RF18-"+fecha+"-"+idProducto+"-"+cantidad+"-"+idCliente);
-						
+
 					} catch (NamingException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -640,7 +637,8 @@ public class proAndes {
 
 			}
 		}
-		return rec;
+		return newAns;
+
 	}
 	private void crearSolicitud(String idCliente, String idProducto, int cantidad, Date fecha,String id) 
 	{
@@ -652,14 +650,14 @@ public class proAndes {
 				conexion2.preguntador(query);	
 				conexion2.getConexion().commit();
 				conexion2.terminarTransaccion();
-				
+
 			} catch (SQLException e) {
 				conexion2.terminarTransaccion();
 				e.printStackTrace();
 			}
-			
+
 		}
-		
+
 	}
 	@SuppressWarnings("unchecked")
 	public ArrayList<ArrayList<String>> informacionMaterial(String tipo,String id)
@@ -1006,7 +1004,7 @@ public class proAndes {
 
 	/************************************ jose ite 3 *****************/
 
-	
+
 	/**
 	 * Apaga una estacion
 	 * @param id. id de la estacion
@@ -1267,8 +1265,8 @@ public class proAndes {
 	/*****************************************************************/
 
 
-	
-	
+
+
 	/***************            iteracion 4 jose       ****************/
 
 	public ArrayList<ArrayList<String>> darEtapaVAlorCantidad(String tipo, String valor)
@@ -1288,8 +1286,8 @@ public class proAndes {
 		}
 		return null;
 	}
-	
-	
+
+
 	public ArrayList buscarMateriales()
 	{
 		String query = "SELECT * FROM INSUMOS";
@@ -1307,7 +1305,7 @@ public class proAndes {
 	}
 
 
-	
+
 	public ArrayList<ArrayList<String>> buscarEtapaMaterial(String param) {
 		try 
 		{
@@ -1327,7 +1325,7 @@ public class proAndes {
 		{
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 
@@ -1343,7 +1341,7 @@ public class proAndes {
 	/***************iteracion 4 Juan Pablo ***************/
 
 
-	public ArrayList<ArrayList<String>> informacionEjecEtapasProd1(String solicitud,String id,String in, String fina)
+	public ArrayList<ArrayList<String>> informacionEjecEtapasProd1(String solicitud,String id,Date in, Date fina)
 	{
 		// JUANPABLO 
 		ArrayList<ArrayList<String>> ans = new ArrayList<ArrayList<String>>();
@@ -1357,7 +1355,7 @@ public class proAndes {
 			System.out.println(id);
 			System.out.println("tiempo inicio"+in);
 			System.out.println("tiempo fin"+fina);
-//			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			//			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			String queryIdInsumoP = "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (ETAPA_PRODUCCION.ID_INSUMO_P ='"+id+"'AND T_INICIO >='"+in +"'AND T_FINAL<='"+(fina)+ "')";
 			String queryIdInsumoG =  "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (ETAPA_PRODUCCION.ID_INSUMO_G ='"+id+"'AND T_INICIO >="+in +"'AND T_FINAL<='"+(fina)+ "')"; 
 			String queryIdPedido =  "SELECT * FROM ((ETAPA_PRODUCCION INNER JOIN SOLICITUDES ON ETAPA_PRODUCCION.ID_PRODUCTO = SOLICITUDES.ID_PRODUCTO)INNER JOIN INSUMOS ON INSUMOS.ID = ETAPA_PRODUCCION.ID_INSUMO_P ) WHERE (SOLICITUDES.ID='"+id+"'AND T_INICIO >='"+(in) +"'AND T_FINAL<='"+(fina)+"')";
@@ -1369,10 +1367,10 @@ public class proAndes {
 				System.out.println(queryIdInsumoP);
 			}
 			if (solicitud.equals("Id insumo gastado"))
-				{
-					ans =conexion2.realizarBusqueda(queryIdInsumoG);
-					System.out.println(queryIdInsumoG);
-				}
+			{
+				ans =conexion2.realizarBusqueda(queryIdInsumoG);
+				System.out.println(queryIdInsumoG);
+			}
 			if (solicitud.equals("Id Pedido"))
 			{
 				ans =conexion2.realizarBusqueda(queryIdPedido);
@@ -1393,8 +1391,8 @@ public class proAndes {
 			conexion2.preguntador(query);
 			query2 = "drop INDEX j";
 			conexion2.preguntador(query2);
-			
-//			conexion2.getConexion().commit();
+
+			//			conexion2.getConexion().commit();
 		} 
 		catch (SQLException e)
 		{
@@ -1438,10 +1436,10 @@ public class proAndes {
 				System.out.println(queryIdInsumoP);
 			}
 			if (solicitud.equals("Id insumo gastado"))
-				{
-					ans =conexion2.realizarBusqueda(queryIdInsumoG);
-					System.out.println(queryIdInsumoG);
-				}
+			{
+				ans =conexion2.realizarBusqueda(queryIdInsumoG);
+				System.out.println(queryIdInsumoG);
+			}
 			if (solicitud.equals("Id Pedido"))
 			{
 				ans =conexion2.realizarBusqueda(queryIdPedido);
@@ -1462,8 +1460,8 @@ public class proAndes {
 			conexion2.preguntador(query);
 			query2 = "drop INDEX j";
 			conexion2.preguntador(query2);
-			
-//			conexion2.getConexion().commit();
+
+			//			conexion2.getConexion().commit();
 		} 
 		catch (SQLException e)
 		{
@@ -1480,15 +1478,15 @@ public class proAndes {
 
 	}
 	/*****************************************************************/
-	
-	
-	
-	
-	
+
+
+
+
+
 	/*
 	 *  ******************************** iteracion 5 jose ***************
 	 */
-	
+
 	public void darListaEstaciones() {
 		try {
 			conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
@@ -1506,7 +1504,7 @@ public class proAndes {
 			s.enviar("jp-r::"+nn.toString());
 			s.close();
 			conexion2.getConexion().commit();
-			
+
 		} catch (Exception e) {
 			try {
 				conexion2.getConexion().rollback();
@@ -1517,7 +1515,7 @@ public class proAndes {
 		finally{
 			conexion2.terminarTransaccion();
 		}
-		
+
 	}
 
 	public void darlistaEtapa() {
@@ -1539,7 +1537,7 @@ public class proAndes {
 			s.close();
 			System.out.println("enviado");
 			conexion2.terminarTransaccion();
-			
+
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -1560,11 +1558,11 @@ public class proAndes {
 				e1.printStackTrace();
 			}
 		}
-		
+
 	}
-	
-	
-	
+
+
+
 	/*
 	 * ******************************************************************
 	 */

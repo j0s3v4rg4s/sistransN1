@@ -86,11 +86,13 @@ public class ServletRF12 extends HttpServlet{
 
 		if (accion.equals("actualizar"))
 		{
+			System.out.println("actualizar");
 			cargarInformacion(out);
 		}  	
 
 		if (accion.equals("registrar"))
 		{
+			System.out.println("Registrar");
 			String id = request.getParameter("parametro");
 			int cant = Integer.parseInt(request.getParameter("cantidad"));
 			String fechi = request.getParameter("fecha");
@@ -102,8 +104,7 @@ public class ServletRF12 extends HttpServlet{
 			DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
 			Date date = formatter.parse(m+"/"+d+"/"+y);
 			String t = pro.registrarPedidoProducto(date, id, cant, cl);
-
-			darRta(out, cl, t, cant, id);;
+			darRta(out, cl, t, cant, id);
 		}
 	}
 	private void darRta(PrintWriter out,String client, String fech, int cant, String idProd )
