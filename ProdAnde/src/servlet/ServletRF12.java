@@ -82,7 +82,7 @@ public class ServletRF12 extends HttpServlet{
 			HttpServletResponse response) throws IOException, ParseException {
 		PrintWriter out = response.getWriter( );
 		String accion = request.getParameter("accion");    	
-
+		System.out.println("Accion "+accion);
 
 		if (accion.equals("actualizar"))
 		{
@@ -90,10 +90,11 @@ public class ServletRF12 extends HttpServlet{
 			cargarInformacion(out);
 		}  	
 
-		if (accion.equals("registrar"))
+		if (accion.equals("registrar12"))
 		{
 			System.out.println("Registrar");
 			String id = request.getParameter("parametro");
+			id= id.replace('-', ' ');
 			int cant = Integer.parseInt(request.getParameter("cantidad"));
 			String fechi = request.getParameter("fecha");
 			String cl = request.getParameter("cliente");
@@ -126,10 +127,10 @@ public class ServletRF12 extends HttpServlet{
 
 		inicioTabla(out);
 		imprimirFilaTitulo(out,titulo);
-		for (int i=1;i<l.size();i++)
+		for (int i=1;i<3;i++)
 		{
 			imprimirFila(out, (ArrayList<String>)l.get(i));
-
+			
 		}
 		finTabla(out);
 
@@ -148,6 +149,7 @@ public class ServletRF12 extends HttpServlet{
 		for (int i=0;i<titulo.size();i++)
 		{
 			out.println("   	<th>"+titulo.get(i)+"</th>");
+			System.out.println("   	<th>"+titulo.get(i)+"</th>");
 		}
 		out.println("</tr>");
 
@@ -162,16 +164,18 @@ public class ServletRF12 extends HttpServlet{
 		}
 
 		String cod = titulo.get(0);
+		cod=cod.replace(' ', '-');
+		System.out.println(cod);
 		out.println(" <td><button type=\"button\" class=\"btn btn-success\" id=\""+cod+"\">Registar</button></td>");
 
 
 		out.println("    <script type=\"text/javascript\">");
-		out.println("          $(document).ready(function() {");
+		out.println("           $(document).ready(function() {");
 		out.println("               $(\"#"+cod+"\").click(function(event){");
 		out.println("                  var cant = document.getElementById(\"cantidad\").value;");
 		out.println("                  var fech = document.getElementById(\"fecha\").value;");
-		out.println("                  var idclient = document.getElementById(\"cliente\").value;");
-		out.println("                  $(\"#tablaRF12\").load('RF12.htm',{accion: 'registrar', parametro: '"+cod+"',cantidad: cant,fecha: fech, cliente:idclient }); ");
+		out.println("                  var idclient = document.getElementById(\"cliente\").value; console.log('entra');");
+		out.println("                   $(\"#tablaRF12\").load('RF12.htm',{accion: 'registrar12', parametro: '"+cod+"',cantidad: cant,fecha: fech, cliente:idclient }); ");
 		out.println("               });");
 		out.println("          });");
 		out.println("    </script>");
