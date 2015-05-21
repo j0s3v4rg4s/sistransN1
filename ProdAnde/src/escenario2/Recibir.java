@@ -2,6 +2,10 @@ package escenario2;
 
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -54,8 +58,7 @@ public class Recibir implements MessageListener{
 		try {
 			TextMessage text = (TextMessage) message;
 			String mens = text.getText();
-
-
+			System.out.println("el mensaje de pacho es: "+ mens);
 
 			if(mens.startsWith("pj-pe"))
 			{
@@ -71,11 +74,34 @@ public class Recibir implements MessageListener{
 			}
 			else if(mens.startsWith("pj-r"))
 			{
-				String[]res = mens.split(":");
+				String[]res = mens.split("::");
+				System.out.println(res[1]);
 				JSONObject jsonObj = new JSONObject(res[1]);
 				JSONArray array = jsonObj.getJSONArray("arreglo");
 				System.out.println("se rescibio el json:"+array.toString());
-				
+
+			}
+			else if (mens.startsWith("RF18"))
+			{
+				String[] mensajSplit = mens.split("-");
+				if (mensajSplit[0].equals("RF18"))
+				{
+					String[]fech=mensajSplit[1].split("/");
+					int y= Integer.parseInt(fech[2]);
+					int d=Integer.parseInt(fech[1]);
+					int m = Integer.parseInt(fech[0]);
+					DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
+					Date fecha = formatter.parse(m+"/"+d+"/"+y);
+					int cantidad = Integer.parseInt(mensajSplit[3]);
+					String rtsrf18 = principal.registrarPedidoProducto2(fecha, mensajSplit[2], cantidad, mensajSplit[4]);
+					Send envioRF18 = new Send();
+					envioRF18.enviar(rtsrf18);
+
+				}
+				else if (mensajSplit[0].equals("RF18R"))
+				{
+					principal.modRec(mens);
+				}
 			}
 
 

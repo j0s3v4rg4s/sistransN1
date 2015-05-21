@@ -1503,7 +1503,7 @@ public class proAndes {
 			JSONObject nn = new JSONObject();
 			nn.put("arreglo", g);
 			Send s = new Send();
-			s.enviar("jp-r:"+nn.toString());
+			s.enviar("jp-r::"+nn.toString());
 			s.close();
 			conexion2.getConexion().commit();
 			
@@ -1535,7 +1535,7 @@ public class proAndes {
 			JSONObject nn = new JSONObject();
 			nn.put("arreglo", a);
 			Send s = new Send();
-			s.enviar("jp-ret:"+nn.toString());
+			s.enviar("jp-ret::"+nn.toString());
 			s.close();
 			System.out.println("enviado");
 			conexion2.terminarTransaccion();
