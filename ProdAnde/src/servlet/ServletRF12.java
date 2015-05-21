@@ -172,7 +172,6 @@ public class ServletRF12 extends HttpServlet{
 
 		String cod = titulo.get(0);
 		cod=cod.replace(' ', '-');
-		System.out.println(cod);
 		out.println(" <td><button type=\"button\" class=\"btn btn-success\" id=\""+cod+"\">Registar</button></td>");
 
 

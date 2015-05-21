@@ -2,12 +2,12 @@ package escenario2;
 
 
 import java.sql.Connection;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Random;
 
 import javax.jms.JMSException;
@@ -186,7 +186,7 @@ public class proAndes {
 		Calendar c = Calendar.getInstance();
 		c.setTime(dt); 
 		c = CalendarUtil.addDays(c, 21);
-		return c.getTime(); 
+		return (Date) c.getTime(); 
 	}
 
 	public int buscarCantidadProductoEnBodega(String idProd)
@@ -552,9 +552,9 @@ public class proAndes {
 			reservarCantidadProductoEnBodega(cantidad, idProducto);
 			ans = addDays(ans, 2);
 			newAns = "RF18R-"+idSol+"-"+Producto.PRODUCIOENDO;  
-			int dia = ans.getDay();
-			int mes= ans.getMonth();
-			int anio = ans.getYear();
+			int dia = ans.getDate();
+			int mes= ans.getMonth()+1;
+			int anio = ans.getYear()+1900;
 			String mesi = darMes(mes);
 			String fechi = dia+"-"+mesi+"-"+anio;
 			crearSolicitud(idCliente, idProducto, cantidad, fechi, idSol);		
@@ -565,9 +565,9 @@ public class proAndes {
 			{
 				ans = addDays(ans, 5);
 				newAns = "RF18R-"+idSol+"-"+Producto.PRODUCIOENDO;
-				int dia = ans.getDay();
-				int mes= ans.getMonth();
-				int anio = ans.getYear();
+				int dia = ans.getDate();
+				int mes= ans.getMonth()+1;
+				int anio = ans.getYear()+1900;
 				String mesi = darMes(mes);
 				String fechi = dia+"-"+mesi+"-"+anio;
 				crearSolicitud(idCliente, idProducto, cantidad, fechi, idSol);
@@ -580,9 +580,9 @@ public class proAndes {
 				for (int i = 0;i<aPedir.size(); i++)
 				{
 					Bodega b = aPedir.get(i);
-					int dia = ans.getDay();
-					int mes= ans.getMonth();
-					int anio = ans.getYear();
+					int dia = ans.getDate();
+					int mes= ans.getMonth()+1;
+					int anio = ans.getYear()+1900;
 					String mesi = darMes(mes);
 					String fechi = dia+"-"+mesi+"-"+anio;
 					crearSolicitud(idCliente, idProducto, cantidad, fechi, idSol);
@@ -610,18 +610,19 @@ public class proAndes {
 		System.out.println("RegistrarPedidoProducto ("+ fecha+","+idProducto+","+cantidad+","+idCliente+")");
 		Date ans = fecha;
 		String idSol = "idSolicitud "+Math.round(Math.random()*10000000);
-		System.out.println(idSol);
+		System.out.println(ans);
 		String newAns = "RF18R-"+idSol+"-";
 
 		int cant = buscarCantidadProductoEnBodega(idProducto);
 
 		if (cant > cantidad)
 		{
+			System.out.println("Entra al primer if");
 			reservarCantidadProductoEnBodega(cantidad, idProducto);
 			ans = addDays(ans, 2);
-			int dia = ans.getDay();
-			int mes= ans.getMonth();
-			int anio = ans.getYear();
+			int dia = ans.getDate();
+			int mes= ans.getMonth()+1;
+			int anio = ans.getYear()+1900;
 			String mesi = darMes(mes);
 			String fechi = dia+"-"+mesi+"-"+anio;
 			crearSolicitud(idCliente, idProducto, cantidad, fechi, idSol);	
@@ -629,29 +630,39 @@ public class proAndes {
 		}
 		else 
 		{
+			System.out.println("Entra al segundo if");
+			
 			if (CantidadEnBodegaVSCantidad(idProducto, idCliente)== null)
 			{
+
+				
 				ans = addDays(ans, 5);
-				int dia = ans.getDay();
-				int mes= ans.getMonth();
-				int anio = ans.getYear();
+				int dia = ans.getDate();
+				int mes= ans.getMonth()+1;
+				int anio = ans.getYear()+1900;
 				String mesi = darMes(mes);
 				String fechi = dia+"-"+mesi+"-"+anio;
 				crearSolicitud(idCliente, idProducto, cantidad, fechi, idSol);
+				newAns = "RF18R-"+idSol+"-"+Producto.PRODUCIOENDO;  
 			}
 			else
 			{
+
 				ArrayList<Bodega> aPedir = CantidadEnBodegaVSCantidad(idProducto, idCliente);
-
-
-				for (int i = 0;i<aPedir.size(); i++)
-				{
-					Bodega b = aPedir.get(i);
-					actualizarEstado(idCliente, Producto.PENDIENTE);
-					try {
+				try {
+					int dia = ans.getDate();
+					int mes= ans.getMonth()+1;
+					int anio = ans.getYear()+1900;
+					String fechi = mes+"/"+dia+"/"+anio;
+					System.out.println(fechi);
+//				for (int i = 0;i<aPedir.size(); i++)
+//				{
+					
+//					Bodega b = aPedir.get(i);
+					System.out.println("RF18-"+fechi+"-"+idProducto+"-"+cantidad+"-"+idCliente);
 						Send env = new Send();
-						env.enviar("RF18-"+fecha+"-"+idProducto+"-"+cantidad+"-"+idCliente);
-						System.out.println("RF18-"+fecha+"-"+idProducto+"-"+cantidad+"-"+idCliente);
+						env.enviar("RF18-"+fechi+"-"+idProducto+"-"+cantidad+"-"+idCliente);
+//				}
 
 					} catch (NamingException e) {
 						// TODO Auto-generated catch block
@@ -660,7 +671,6 @@ public class proAndes {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				}
 
 
 				ans = addDays(ans, 15);
