@@ -214,6 +214,7 @@ public class proAndes {
 
 			conexion2.terminarTransaccion();
 		}
+		System.out.println(ans);
 		return ans;
 
 	}
@@ -534,13 +535,14 @@ public class proAndes {
 	}
 
 
+	@SuppressWarnings("deprecation")
 	public String registrarPedidoProducto2(Date fecha, String idProducto, int cantidad, String idCliente)
 	{
 		// JUANPABLO 
 		System.out.println("RegistrarPedidoProducto2 ("+ fecha+","+idProducto+","+cantidad+","+idCliente+")");
 
 		Date ans = fecha;
-		String idSol = "idSolicitud"+Math.floor(Math.random());
+		String idSol = "idSolicitud"+Math.round(Math.random()*10000000);
 		String newAns = "RF18R-"+idSol+"-";
 
 		int cant = buscarCantidadProductoEnBodega(idProducto);
@@ -550,7 +552,12 @@ public class proAndes {
 			reservarCantidadProductoEnBodega(cantidad, idProducto);
 			ans = addDays(ans, 2);
 			newAns = "RF18R-"+idSol+"-"+Producto.PRODUCIOENDO;  
-			crearSolicitud(idCliente, idProducto, cantidad, fecha, idSol);		
+			int dia = ans.getDay();
+			int mes= ans.getMonth();
+			int anio = ans.getYear();
+			String mesi = darMes(mes);
+			String fechi = dia+"-"+mesi+"-"+anio;
+			crearSolicitud(idCliente, idProducto, cantidad, fechi, idSol);		
 		}
 		else 
 		{
@@ -558,7 +565,12 @@ public class proAndes {
 			{
 				ans = addDays(ans, 5);
 				newAns = "RF18R-"+idSol+"-"+Producto.PRODUCIOENDO;
-				crearSolicitud(idCliente, idProducto, cantidad, fecha, idSol);
+				int dia = ans.getDay();
+				int mes= ans.getMonth();
+				int anio = ans.getYear();
+				String mesi = darMes(mes);
+				String fechi = dia+"-"+mesi+"-"+anio;
+				crearSolicitud(idCliente, idProducto, cantidad, fechi, idSol);
 			}
 			else
 			{
@@ -568,7 +580,12 @@ public class proAndes {
 				for (int i = 0;i<aPedir.size(); i++)
 				{
 					Bodega b = aPedir.get(i);
-					crearSolicitud(idCliente, idProducto, cantidad, fecha, idSol);
+					int dia = ans.getDay();
+					int mes= ans.getMonth();
+					int anio = ans.getYear();
+					String mesi = darMes(mes);
+					String fechi = dia+"-"+mesi+"-"+anio;
+					crearSolicitud(idCliente, idProducto, cantidad, fechi, idSol);
 					actualizarEstado(idCliente, Producto.PENDIENTE);
 				}
 
@@ -586,12 +603,14 @@ public class proAndes {
 	 * metodo que registra un pedido dado 
 	 */
 
+	@SuppressWarnings("deprecation")
 	public String registrarPedidoProducto(Date fecha, String idProducto, int cantidad, String idCliente)
 	{
 		// JUANPABLO 
 		System.out.println("RegistrarPedidoProducto ("+ fecha+","+idProducto+","+cantidad+","+idCliente+")");
 		Date ans = fecha;
-		String idSol = "idSolicitud"+Math.floor(Math.random());
+		String idSol = "idSolicitud "+Math.round(Math.random()*10000000);
+		System.out.println(idSol);
 		String newAns = "RF18R-"+idSol+"-";
 
 		int cant = buscarCantidadProductoEnBodega(idProducto);
@@ -600,7 +619,12 @@ public class proAndes {
 		{
 			reservarCantidadProductoEnBodega(cantidad, idProducto);
 			ans = addDays(ans, 2);
-			crearSolicitud(idCliente, idProducto, cantidad, fecha, idSol);	
+			int dia = ans.getDay();
+			int mes= ans.getMonth();
+			int anio = ans.getYear();
+			String mesi = darMes(mes);
+			String fechi = dia+"-"+mesi+"-"+anio;
+			crearSolicitud(idCliente, idProducto, cantidad, fechi, idSol);	
 			newAns = "RF18R-"+idSol+"-"+Producto.PRODUCIOENDO;  
 		}
 		else 
@@ -608,7 +632,12 @@ public class proAndes {
 			if (CantidadEnBodegaVSCantidad(idProducto, idCliente)== null)
 			{
 				ans = addDays(ans, 5);
-				crearSolicitud(idCliente, idProducto, cantidad, fecha, idSol);
+				int dia = ans.getDay();
+				int mes= ans.getMonth();
+				int anio = ans.getYear();
+				String mesi = darMes(mes);
+				String fechi = dia+"-"+mesi+"-"+anio;
+				crearSolicitud(idCliente, idProducto, cantidad, fechi, idSol);
 			}
 			else
 			{
@@ -640,13 +669,44 @@ public class proAndes {
 		return newAns;
 
 	}
-	private void crearSolicitud(String idCliente, String idProducto, int cantidad, Date fecha,String id) 
+	
+	public String darMes(int mes)
+	{
+		String ans = "";
+		if (mes== 1)
+			ans ="JAN";
+		if (mes== 2)
+			ans ="FEB";
+		if (mes== 3)
+			ans ="MAR";
+		if (mes== 4)
+			ans ="APR";
+		if (mes== 5)
+			ans ="MAY";
+		if (mes== 6)
+			ans ="JUN";
+		if (mes== 7)
+			ans ="JUL";
+		if (mes== 8)
+			ans ="AUG";
+		if (mes== 9)
+			ans ="SEP";
+		if (mes== 10)
+			ans ="OCT";
+		if (mes== 11)
+			ans ="NOV";
+		if (mes== 12)
+			ans ="DEC";
+		return ans;
+	}
+	private void crearSolicitud(String idCliente, String idProducto, int cantidad, String fecha,String id) 
 	{
 		{
 			// JUAN PABLO 
 			try {
 				conexion2.setIsolation(Connection.TRANSACTION_READ_COMMITTED);
-				String query = "INSERT INTO SOLICITUDES VALUES('"+ idCliente+"','"+idProducto+"',"+cantidad+",'"+fecha+"','"+id+"')";
+				String query = "INSERT INTO SOLICITUDES (ID_CLIENTE,ID_PRODUCTO,CANTIDAD,FECHA,ID) VALUES('"+ idCliente+"','"+idProducto+"',"+cantidad+",'"+fecha+"','"+id+"')";
+				System.out.println(query);
 				conexion2.preguntador(query);	
 				conexion2.getConexion().commit();
 				conexion2.terminarTransaccion();

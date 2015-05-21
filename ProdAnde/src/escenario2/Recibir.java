@@ -22,6 +22,8 @@ import javax.naming.NamingException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import servlet.ServletRF12;
+
 
 
 public class Recibir implements MessageListener{
@@ -32,6 +34,7 @@ public class Recibir implements MessageListener{
 	private Destination d;
 	private MessageConsumer mc;
 	private proAndes principal;
+	private ServletRF12 RFD12;
 
 	public Recibir(proAndes proAndes) throws JMSException, NamingException {
 		InitialContext init = new InitialContext();
@@ -143,6 +146,7 @@ public class Recibir implements MessageListener{
 				else if (mens.startsWith("RFC12R$"))
 				{
 					System.out.println(mens);
+					
 				}
 			}
 

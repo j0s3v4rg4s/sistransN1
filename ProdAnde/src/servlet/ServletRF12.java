@@ -104,6 +104,7 @@ public class ServletRF12 extends HttpServlet{
 			int m = Integer.parseInt(fe[2]);
 			DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
 			Date date = formatter.parse(m+"/"+d+"/"+y);
+			System.out.println(date+","+id+","+cant+ ","+cl);
 			String t = pro.registrarPedidoProducto(date, id, cant, cl);
 			darRta(out, cl, t, cant, id);
 		}
@@ -115,7 +116,9 @@ public class ServletRF12 extends HttpServlet{
 		out.println("<h6>Pedido solicitado por: "+ client + "</h6>");
 		out.println("<h6>Producto solicitado: "+ idProd+ "</h6>");
 		out.println("<h6>Cantidad: "+ cant + "</h6>");
-		out.println("<h6>idSol y estado: "+ fech + "</h6>");
+		out.println("<h6>Id de solicitud y estado: "+ fech.split("-")[1] + "</h6>");
+		out.println("<h6>Estado de la solicitud: "+ fech.split("-")[2] + "</h6>");
+		
 		out.println("</div>");
 	}
 	private void cargarInformacion(PrintWriter out) {
@@ -127,7 +130,7 @@ public class ServletRF12 extends HttpServlet{
 
 		inicioTabla(out);
 		imprimirFilaTitulo(out,titulo);
-		for (int i=1;i<3;i++)
+		for (int i=1;i<l.size();i++)
 		{
 			imprimirFila(out, (ArrayList<String>)l.get(i));
 			
