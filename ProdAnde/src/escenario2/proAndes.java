@@ -1747,6 +1747,14 @@ public class proAndes {
 	public ArrayList<ArrayList<String>> conultar13(String r1, String r2)
 	{
 		try {
+//			r.close();
+//			Send s = new Send();
+//			Resibir2 rr2 = new Resibir2();
+//			s.enviar("ped-mat");
+//			String msj = rr2.receive2();
+//			JSONObject obj = new JSONObject(msj);
+//			JSONArray array = obj.getJSONArray("arreglo");
+			
 			String query = "SELECT e.tuplas Cantidad, i.nombre FROM (SELECT count(*) tuplas, ID_INSUMO_G FROM ETAPA_PRODUCCION WHERE T_INICIO > '"+r1+"' and T_FINAL < '"+r2+"' GROUP BY ID_INSUMO_G) e inner join  (SELECT * FROM insumos) i on e.id_insumo_g = i.id";
 			ArrayList<ArrayList<String>> mat = conexion2.realizarBusqueda(query);
 			conexion2.terminarTransaccion();
