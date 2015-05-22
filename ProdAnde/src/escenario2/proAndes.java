@@ -52,6 +52,7 @@ public class proAndes {
 	public proAndes(){
 		conexion = new ConsultaDAO();
 		conexion2 = new ConsultaDAO2();
+		gsonMensaje = "";
 		try {
 			Recibir r = new Recibir(this);
 		} catch (JMSException | NamingException e) {
