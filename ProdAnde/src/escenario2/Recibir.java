@@ -201,6 +201,7 @@ public class Recibir extends Thread implements MessageListener{
 	@Override
 	public void run() {
 		System.out.println("@@@@@@@@@@@@@@@@@@@@@@qqempezo thead de escucha@@@@@@@@@@@@@@@@@@qqqqqq");
+		yield();
 	}
 
 

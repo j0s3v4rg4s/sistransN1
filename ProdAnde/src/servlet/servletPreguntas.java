@@ -29,7 +29,7 @@ public class servletPreguntas extends HttpServlet{
 	 */
 	public void init( ) throws ServletException
 	{
-
+		System.out.println("inicialisando************************************");
 	}
 
 	/**
