@@ -1677,6 +1677,7 @@ public class proAndes {
 			conexion2.preguntador(query);
 			System.out.println("llego aca");
 			System.out.println(etapas.size());
+			r.close();
 			for (int i=1;i<etapas.size();i++)
 			{
 				ArrayList<String> etapa = (ArrayList<String>) etapas.get(i);
@@ -1691,24 +1692,26 @@ public class proAndes {
 				int num1 = Integer.parseInt(eLMinimo.get(1).get(1));
 				System.out.println("llego aca");
 				Send s = new Send();
+				Resibir2 r2 = new Resibir2();
+				
 				s.enviar("jp-pe");
 				System.out.println("envio");
 				System.out.println("**********voy a esperar respuesta*************");
-				Thread.sleep(100);
 				Long inicio = System.currentTimeMillis();
-				while(gsonMensaje.equals("") && (System.currentTimeMillis() - inicio < 5000))
+				while(gsonMensaje.equals("") && (System.currentTimeMillis() - inicio < 10000))
 				{
-					gsonMensaje = r.darMensajes();
+					gsonMensaje = r2.receive();
 					//System.out.println(gsonMensaje+i);
 				}
 
-				gsonMensaje = r.darMensajes();
-				r.cambiarMensaje("");
+				//gsonMensaje = r.darMensajes();
+				//r.cambiarMensaje("");
 				if(gsonMensaje.equals(""))
 					throw new Exception("Tiempo agotado");
 				System.out.println("***********++**respuesta esperada:"+gsonMensaje);
 				int num2 = Integer.parseInt(gsonMensaje.split("-")[1]);
 				String idEstc = "";
+				System.out.println(num2);
 				if (num2==0 || num1<num2)
 				{
 					idEstc = eLMinimo.get(1).get(0);
@@ -1722,8 +1725,10 @@ public class proAndes {
 
 				}
 				gsonMensaje = "";
+				r2.close();
 				s.close();	
 			}
+			r = new Recibir(this);
 			conexion2.getConexion().commit();
 			conexion2.terminarTransaccion();
 		} catch (Exception e) {
