@@ -42,6 +42,7 @@ public class proAndes {
 	 */
 	public ConsultaDAO conexion;
 	private ConsultaDAO2 conexion2;
+	public String gsonMensaje;
 
 	//-----------------------------------------------------------------
 	// Constructor
@@ -1577,6 +1578,7 @@ public class proAndes {
 			conexion2.getConexion().commit();
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			try {
 				conexion2.getConexion().rollback();
 			} catch (SQLException e1) {
@@ -1632,10 +1634,108 @@ public class proAndes {
 
 	}
 
+	public void agregarEstacionEtapa(String idetapa,String idProd, String idestacion) {
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			String query ="INSERT INTO ESTACIONES (ETAPA_NUMERO,ETAPA_PRODUCTO,ESTACION_ID)VALUES ("+idetapa+",'"+idProd+"',"+idestacion+")";
+			conexion2.preguntador(query);
+			conexion2.getConexion().commit();
+			conexion2.terminarTransaccion();
+
+		} catch (Exception e) {
+			try {
+				conexion2.getConexion().rollback();
+				conexion2.terminarTransaccion();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+
+	}
 
 
+	public void apagarEstacion2(String id)
+	{
+		try {
+			conexion2.setIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			String query = "SELECT * FROM ESTACIONES WHERE ESTACION_ID="+id;
+			ArrayList etapas = conexion2.realizarBusqueda(query);
+			query = "UPDATE ESTACION_PRODUCCION set ESTADO='DESACTIVO' WHERE CODIGO="+id;
+			conexion2.preguntador(query);
+			query = "DELETE FROM ESTACIONES WHERE ESTACION_ID="+id;
+			conexion2.preguntador(query);
+			for (int i=1;i<etapas.size();i++)
+			{
+				ArrayList<String> etapa = (ArrayList<String>) etapas.get(i);
+				String etapaNum = etapa.get(0);
+				String etapaPro = etapa.get(1);
+
+				query = "SELECT cuenta2.estacion, total FROM (SELECT min(cuenta.numero_etapas) as total FROM(SELECT ESTACION_ID estacion,COUNT(ETAPA_PRODUCTO) numero_etapas FROM ESTACIONes GROUP BY ESTACION_ID) cuenta) s INNER join (SELECT ESTACION_ID estacion,COUNT(ETAPA_PRODUCTO) numero_etapas FROM ESTACIONes GROUP BY ESTACION_ID) cuenta2 on cuenta2.numero_etapas=s.total";
+				ArrayList<ArrayList<String>> eLMinimo = conexion2.realizarBusqueda(query);
+				if(eLMinimo.size()<2)
+					throw new Exception("solo queda una etapa");
+				
+				int num1 = Integer.parseInt(eLMinimo.get(1).get(1));
+				Send s = new Send();
+				s.enviar("jp-pe");
+				
+				System.out.println("**********voy a esperar respuesta*************");
+				Long inicio = System.currentTimeMillis();
+				while(gsonMensaje.equals("") && (System.currentTimeMillis() - inicio < 5000))
+				{
+					System.out.println("esperando"+gsonMensaje);
+				}
+				if(gsonMensaje.equals(""))
+					throw new Exception("Tiempo agotado");
+				System.out.println("***********++**respuesta esperada:"+gsonMensaje);
+				int num2 = Integer.parseInt(gsonMensaje.split("-")[1]);
+				String idEstc = "";
+				if (num1<num2)
+				{
+					idEstc = eLMinimo.get(1).get(0);
+					query="INSERT INTO ESTACIONES VALUES ("+etapaNum+",'"+etapaPro+"',"+idEstc+")";
+					conexion2.preguntador(query);
+				}
+				else
+				{
+					idEstc = gsonMensaje.split("-")[0];
+					s.enviar("jp-agr:"+idEstc+":"+etapaNum+"-"+etapaPro);
+					
+				}
+				gsonMensaje = "";
+				s.close();	
+			}
+			conexion2.getConexion().commit();
+			conexion2.terminarTransaccion();
+		} catch (Exception e) {
+			try {
+				gsonMensaje="";
+				conexion2.getConexion().rollback();
+				conexion2.terminarTransaccion();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			};
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public ArrayList<ArrayList<String>> conultar13(String r1, String r2)
+	{
+		try {
+			String query = "SELECT e.tuplas Cantidad, i.nombre FROM (SELECT count(*) tuplas, ID_INSUMO_G FROM ETAPA_PRODUCCION WHERE T_INICIO > '"+r1+"' and T_FINAL < '"+r2+"' GROUP BY ID_INSUMO_G) e inner join  (SELECT * FROM insumos) i on e.id_insumo_g = i.id";
+			ArrayList<ArrayList<String>> mat = conexion2.realizarBusqueda(query);
+			conexion2.terminarTransaccion();
+			return mat;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	/*
-	 * ******************************************************************
+	 *  ******************************** ************ ***************
 	 */
 
 }

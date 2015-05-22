@@ -1681,10 +1681,11 @@
                         <h3>CONSULTAR MATERIAL 2</h3>
                         <hr class="star-primary">
 
+                        <!--
                         <form class="form-horizontal">
                             <fieldset>
 
-                                <!-- Text input-->
+                               
                                 <div class="form-group">
                                   <label class="col-md-4 control-label" for="id_material">Id material</label>  
                                   <div class="col-md-5">
@@ -1693,7 +1694,7 @@
                                   </div>
                                 </div>
 
-                                <!-- Button -->
+                                
                                 <div class="form-group">
                                     <label class="col-md-4 control-label"></label>
                                     <div class="col-md-4">
@@ -1704,12 +1705,55 @@
 
                             </fieldset>
                         </form>
+                        -->
+
+
+                        <form class="form-horizontal">
+                            <fieldset>
+
+                                <!-- Form Name -->
+                                <legend>Form Name</legend>
+
+                                <!-- Text input-->
+                                <div class="form-group">
+                                  <label class="col-md-4 control-label" for="rng1">Fecha inicio</label>  
+                                  <div class="col-md-5">
+                                      <input id="rng1" name="rng1" placeholder="dd/mm/aa" class="form-control input-md" type="text">
+
+                                  </div>
+                                </div>
+
+                                <!-- Text input-->
+                                <div class="form-group">
+                                     <label class="col-md-4 control-label" for="rng2">Fecha final</label>  
+                                    <div class="col-md-5">
+                                      <input id="rng2" name="rng2" placeholder="dd/mm/aa" class="form-control input-md" type="text">
+
+                                    </div>
+                                </div>
+
+                                <!-- Button -->
+                                <div class="form-group">
+                                      <label class="col-md-4 control-label" for="enviarrango"></label>
+                                    <div class="col-md-4">
+                                        <button id="botonRango" name="enviarrango" class="btn btn-primary">enviar</button>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </form>
+
+
+
+
                          <script type="text/javascript">
                         $(document).ready(function() {
-                            $("#botonMaterial").click(function(event){
-                             var  materialBuscado = document.getElementById("id_material").value;
-                             console.log(materialBuscado)
-                             $("#idfc11").load('pregunta.htm',{accion:'resultadof11', param:materialBuscado}); 
+                            $("#botonRango").click(function(event){
+                             //var  materialBuscado = document.getElementById("id_material").value;
+                             var  rango1 = document.getElementById("rng1").value;
+                             var  rango2 = document.getElementById("rng2").value;
+                             console.log('entro a aca')
+                             $("#idfc11").load('pregunta.htm',{accion:'consulta13', param:rango1,param1:rango2}); 
                          });
                         });
                         </script>

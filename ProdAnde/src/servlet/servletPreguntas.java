@@ -73,19 +73,29 @@ public class servletPreguntas extends HttpServlet{
 
 		String accion = request.getParameter("accion");    
 		System.out.println(accion);
+		if(accion.equals("consulta13"))
+		{
+			String param = request.getParameter("param");
+			String param1 = request.getParameter("param1");
+			ArrayList<ArrayList<String>> info = pro.conultar13(param, param1);
+			inicioTabla(out);
+			imprimirFilaTitulo(out, info.get(0));
+			for (int i = 1; i < info.size(); i++) {
+				imprimirFilaInfo(out, info.get(i));
+			}
+			finTabla2(out);
+		}
+		
 		if(accion.equals("probadorCola"))
 		{
-			//pro.darListaEstaciones();
-			//pro.darlistaEtapa();
-			try {
-				Send s = new Send();
-				s.enviar("jp-pe");
-				s.close();
-				out.println("exito");
-			} catch (NamingException | JMSException e) {
-				out.println("error");
-				e.printStackTrace();
-			}
+//			try {
+//				Send s = new Send();
+//				s.enviar("jp-pe");
+//				out.println("mensaje hola");
+//				s.close();
+//			} catch (Exception e) {
+//				out.println("mal");
+//			}
 
 		}
 		if(accion.equals("resultadof10"))
@@ -192,7 +202,9 @@ public class servletPreguntas extends HttpServlet{
 			}
 			else
 			{
-				pro.apagarEstacion(pas[0]);
+				//JOSE
+				//pro.apagarEstacion(pas[0]);
+				pro.apagarEstacion2(pas[0]);
 			}
 			actualizarr17(out);
 		}

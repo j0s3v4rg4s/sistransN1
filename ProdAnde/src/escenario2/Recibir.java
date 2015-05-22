@@ -64,15 +64,16 @@ public class Recibir implements MessageListener{
 			String mens = text.getText();
 			System.out.println("el mensaje de pacho es: "+ mens);
 
-			if(mens.startsWith("pj-pe"))
+			if(mens.startsWith("pj-pet"))
+			{
+				System.out.println("entro a pj-pet");
+				principal.darlistaEtapa();
+			}
+			else if(mens.startsWith("pj-pe"))
 			{
 				principal.darListaEstaciones();
 			}
-			else if(mens.startsWith("pj-pet"))
-			{
-				principal.darlistaEtapa();
-			}
-			else if(mens.startsWith("pj-del"))
+			else if(mens.startsWith("pj-tdel"))
 			{
 				principal.eliminar();
 			}
@@ -83,7 +84,36 @@ public class Recibir implements MessageListener{
 				JSONObject jsonObj = new JSONObject(res[1]);
 				JSONArray array = jsonObj.getJSONArray("arreglo");
 				System.out.println("se rescibio el json:"+array.toString());
-
+				int minimo = -1;
+				int id = 0;
+				for (int i = 0;i<array.length();i++)
+				{
+					JSONObject obj = array.getJSONObject(i);
+					int comp = obj.getInt("num_etapas");
+					if(minimo==-1)
+					{
+						minimo = comp;
+						id = obj.getInt("estacion_id");
+					}
+					else if(comp<=minimo)
+					{
+						minimo = comp;
+						id = obj.getInt("estacion_id");
+					}
+						
+				}
+				System.out.println("!!!!!!!!antes de enviar"+principal.gsonMensaje);
+				principal.gsonMensaje = id+"-"+minimo;
+				System.out.println("!!!!!!!!despues de enviar"+principal.gsonMensaje);
+			}
+			else if(mens.startsWith("pj-agr"))
+			{
+				String[]mensaje = mens.split(":");
+				String idetapa = mensaje[1];
+				String idProd = mensaje[2];
+				String idestacion = mensaje[3];
+				principal.agregarEstacionEtapa(idetapa,idProd,idestacion);
+				 
 			}
 			else if (mens.startsWith("RF18"))
 			{
