@@ -69,7 +69,7 @@ public class Recibir implements MessageListener{
 				System.out.println("entro a pj-pet");
 				principal.darlistaEtapa();
 			}
-			else if(mens.startsWith("pj-pe"))
+			else if(mens.startsWith("pj-spe"))
 			{
 				principal.darListaEstaciones();
 			}

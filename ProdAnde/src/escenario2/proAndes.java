@@ -1573,7 +1573,7 @@ public class proAndes {
 			JSONObject nn = new JSONObject();
 			nn.put("arreglo", g);
 			Send s = new Send();
-			s.enviar("jp-r::"+nn.toString());
+			s.enviar("jp-x::"+nn.toString());
 			s.close();
 			conexion2.getConexion().commit();
 
