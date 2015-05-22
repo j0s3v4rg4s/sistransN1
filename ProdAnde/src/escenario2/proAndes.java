@@ -1667,6 +1667,7 @@ public class proAndes {
 	public void apagarEstacion2(String id)
 	{
 		try {
+			System.out.println(id);
 			conexion2.setIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			String query = "SELECT * FROM ESTACIONES WHERE ESTACION_ID="+id;
 			ArrayList etapas = conexion2.realizarBusqueda(query);
@@ -1674,6 +1675,8 @@ public class proAndes {
 			conexion2.preguntador(query);
 			query = "DELETE FROM ESTACIONES WHERE ESTACION_ID="+id;
 			conexion2.preguntador(query);
+			System.out.println("llego aca");
+			System.out.println(etapas.size());
 			for (int i=1;i<etapas.size();i++)
 			{
 				ArrayList<String> etapa = (ArrayList<String>) etapas.get(i);
@@ -1686,9 +1689,10 @@ public class proAndes {
 					throw new Exception("solo queda una etapa");
 
 				int num1 = Integer.parseInt(eLMinimo.get(1).get(1));
+				System.out.println("llego aca");
 				Send s = new Send();
 				s.enviar("jp-pe");
-
+				System.out.println("envio");
 				System.out.println("**********voy a esperar respuesta*************");
 				Thread.sleep(100);
 				Long inicio = System.currentTimeMillis();
@@ -1705,7 +1709,7 @@ public class proAndes {
 				System.out.println("***********++**respuesta esperada:"+gsonMensaje);
 				int num2 = Integer.parseInt(gsonMensaje.split("-")[1]);
 				String idEstc = "";
-				if (num1<num2)
+				if (num2==0 || num1<num2)
 				{
 					idEstc = eLMinimo.get(1).get(0);
 					query="INSERT INTO ESTACIONES VALUES ("+etapaNum+",'"+etapaPro+"',"+idEstc+")";
