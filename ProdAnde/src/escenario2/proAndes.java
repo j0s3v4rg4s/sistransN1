@@ -1685,13 +1685,13 @@ public class proAndes {
 				s.enviar("jp-pe");
 
 				System.out.println("**********voy a esperar respuesta*************");
-				Thread.sleep(500);
-//				Long inicio = System.currentTimeMillis();
-//				while(gsonMensaje.equals("") && (System.currentTimeMillis() - inicio < 5000))
-//				{
-//					gsonMensaje = r.darMensajes();
-//					//System.out.println(gsonMensaje+i);
-//				}
+				Thread.sleep(100);
+				Long inicio = System.currentTimeMillis();
+				while(gsonMensaje.equals("") && (System.currentTimeMillis() - inicio < 5000))
+				{
+					gsonMensaje = r.darMensajes();
+					//System.out.println(gsonMensaje+i);
+				}
 
 				gsonMensaje = r.darMensajes();
 				r.cambiarMensaje("");
