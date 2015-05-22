@@ -42,7 +42,9 @@ public class proAndes {
 	 */
 	public ConsultaDAO conexion;
 	private ConsultaDAO2 conexion2;
-	public String gsonMensaje;
+	private Recibir r;
+	private Thread th;
+	String gsonMensaje;
 
 	//-----------------------------------------------------------------
 	// Constructor
@@ -54,7 +56,8 @@ public class proAndes {
 		conexion2 = new ConsultaDAO2();
 		gsonMensaje = "";
 		try {
-			Recibir r = new Recibir(this);
+			r = new Recibir(this);
+			r.start();
 		} catch (JMSException | NamingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1682,11 +1685,15 @@ public class proAndes {
 				s.enviar("jp-pe");
 				
 				System.out.println("**********voy a esperar respuesta*************");
-				Long inicio = System.currentTimeMillis();
-				while(gsonMensaje.equals("") && (System.currentTimeMillis() - inicio < 5000))
-				{
-					System.out.println("esperando"+gsonMensaje);
-				}
+//				Long inicio = System.currentTimeMillis();
+//				while(gsonMensaje.equals("") && (System.currentTimeMillis() - inicio < 5000))
+//				{
+//					gsonMensaje = r.darMensajes();
+//					//System.out.println(gsonMensaje+i);
+//				}
+				Thread.sleep(800);
+				gsonMensaje = r.darMensajes();
+				r.cambiarMensaje("");
 				if(gsonMensaje.equals(""))
 					throw new Exception("Tiempo agotado");
 				System.out.println("***********++**respuesta esperada:"+gsonMensaje);

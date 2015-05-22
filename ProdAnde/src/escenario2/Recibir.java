@@ -26,7 +26,7 @@ import servlet.ServletRF12;
 
 
 
-public class Recibir implements MessageListener{
+public class Recibir extends Thread implements MessageListener{
 
 	private ConnectionFactory cf;
 	private Connection c;
@@ -35,8 +35,10 @@ public class Recibir implements MessageListener{
 	private MessageConsumer mc;
 	private proAndes principal;
 	private ServletRF12 RFD12;
+	private String mensaje;
 
 	public Recibir(proAndes proAndes) throws JMSException, NamingException {
+		mensaje = "";
 		InitialContext init = new InitialContext();
 		this.cf = (ConnectionFactory) init.lookup("RemoteConnectionFactory");
 		this.d = (Destination) init.lookup("queue/PlayQueue");
@@ -46,6 +48,11 @@ public class Recibir implements MessageListener{
 		mc = s.createConsumer(d);
 		this.mc.setMessageListener(this);
 		this.principal = proAndes;
+	}
+	
+	public String darMensajes()
+	{
+		return mensaje;
 	}
 
 	public String receive() throws JMSException {
@@ -103,8 +110,8 @@ public class Recibir implements MessageListener{
 						
 				}
 				System.out.println("!!!!!!!!antes de enviar"+principal.gsonMensaje);
-				principal.gsonMensaje = id+"-"+minimo;
-				System.out.println("!!!!!!!!despues de enviar"+principal.gsonMensaje);
+				mensaje = id+"-"+minimo;
+				System.out.println("!!!!!!!!despues de enviar"+mensaje);
 			}
 			else if(mens.startsWith("pj-agr"))
 			{
@@ -185,6 +192,15 @@ public class Recibir implements MessageListener{
 			e.printStackTrace();
 		}
 
+	}
+
+	public void cambiarMensaje(String string) {
+		mensaje = "";
+	}
+	
+	@Override
+	public void run() {
+		System.out.println("@@@@@@@@@@@@@@@@@@@@@@qqempezo thead de escucha@@@@@@@@@@@@@@@@@@qqqqqq");
 	}
 
 
