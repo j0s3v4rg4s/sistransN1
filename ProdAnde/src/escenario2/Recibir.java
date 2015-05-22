@@ -49,7 +49,7 @@ public class Recibir extends Thread implements MessageListener{
 		this.mc.setMessageListener(this);
 		this.principal = proAndes;
 	}
-	
+
 	public String darMensajes()
 	{
 		return mensaje;
@@ -107,10 +107,13 @@ public class Recibir extends Thread implements MessageListener{
 						minimo = comp;
 						id = obj.getInt("estacion_id");
 					}
-						
+
 				}
 				System.out.println("!!!!!!!!antes de enviar"+principal.gsonMensaje);
-				mensaje = id+"-"+minimo;
+				if (minimo!=-1)
+					mensaje = id+"-"+minimo;
+				else
+					mensaje = id+"-"+0;
 				System.out.println("!!!!!!!!despues de enviar"+mensaje);
 			}
 			else if(mens.startsWith("pj-agr"))
@@ -120,7 +123,7 @@ public class Recibir extends Thread implements MessageListener{
 				String idProd = mensaje[2];
 				String idestacion = mensaje[3];
 				principal.agregarEstacionEtapa(idetapa,idProd,idestacion);
-				 
+
 			}
 			else if (mens.startsWith("RF18"))
 			{
@@ -144,7 +147,7 @@ public class Recibir extends Thread implements MessageListener{
 					System.out.println(mens);
 				}
 			}
-			
+
 			else if (mens.startsWith("RFC12"))
 			{
 				String[] mensajSplit = mens.split("-");
@@ -183,7 +186,7 @@ public class Recibir extends Thread implements MessageListener{
 				else if (mens.startsWith("RFC12R$"))
 				{
 					System.out.println(mens);
-					
+
 				}
 			}
 
@@ -197,7 +200,7 @@ public class Recibir extends Thread implements MessageListener{
 	public void cambiarMensaje(String string) {
 		mensaje = "";
 	}
-	
+
 	@Override
 	public void run() {
 		System.out.println("@@@@@@@@@@@@@@@@@@@@@@qqempezo thead de escucha@@@@@@@@@@@@@@@@@@qqqqqq");
