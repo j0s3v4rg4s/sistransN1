@@ -55,6 +55,9 @@ public class ServletRF12 extends HttpServlet{
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -72,6 +75,9 @@ public class ServletRF12 extends HttpServlet{
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -79,7 +85,7 @@ public class ServletRF12 extends HttpServlet{
 
 	@SuppressWarnings("deprecation")
 	private void procesarSolicitud(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ParseException {
+			HttpServletResponse response) throws Exception  {
 		PrintWriter out = response.getWriter( );
 		String accion = request.getParameter("accion");    	
 		System.out.println("Accion "+accion);

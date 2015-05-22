@@ -34,11 +34,12 @@ public class Recibir extends Thread implements MessageListener{
 	private Destination d;
 	private MessageConsumer mc;
 	private proAndes principal;
-	private ServletRF12 RFD12;
+	private String RF18;
 	private String mensaje;
 
 	public Recibir(proAndes proAndes) throws JMSException, NamingException {
 		mensaje = "";
+		RF18 = "";
 		InitialContext init = new InitialContext();
 		this.cf = (ConnectionFactory) init.lookup("RemoteConnectionFactory");
 		this.d = (Destination) init.lookup("queue/PlayQueue");
@@ -53,6 +54,10 @@ public class Recibir extends Thread implements MessageListener{
 	public String darMensajes()
 	{
 		return mensaje;
+	}
+	public String darRf18()
+	{
+		return RF18;
 	}
 
 	public String receive() throws JMSException {
@@ -144,10 +149,13 @@ public class Recibir extends Thread implements MessageListener{
 				}
 				else if (mensajSplit[0].equals("RF18R"))
 				{
-					System.out.println(mens);
+					System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$   antes de enviar  "+ RF18);
+					RF18 = mens;
+					System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$   despues de enviar  "+ RF18);
+
 				}
 			}
-
+			
 			else if (mens.startsWith("RFC12"))
 			{
 				String[] mensajSplit = mens.split("-");
@@ -186,7 +194,7 @@ public class Recibir extends Thread implements MessageListener{
 				else if (mens.startsWith("RFC12R$"))
 				{
 					System.out.println(mens);
-
+					
 				}
 			}
 

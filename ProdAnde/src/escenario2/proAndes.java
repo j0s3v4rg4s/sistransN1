@@ -45,6 +45,8 @@ public class proAndes {
 	private Recibir r;
 	private Thread th;
 	String gsonMensaje;
+	String msjReq18;
+	
 
 	//-----------------------------------------------------------------
 	// Constructor
@@ -55,6 +57,7 @@ public class proAndes {
 		conexion = new ConsultaDAO();
 		conexion2 = new ConsultaDAO2();
 		gsonMensaje = "";
+		msjReq18 = "";
 		try {
 			r = new Recibir(this);
 			r.start();
@@ -606,10 +609,11 @@ public class proAndes {
 
 	/**
 	 * metodo que registra un pedido dado 
+	 * @throws Exception 
 	 */
 
 	@SuppressWarnings("deprecation")
-	public String registrarPedidoProducto(Date fecha, String idProducto, int cantidad, String idCliente)
+	public String registrarPedidoProducto(Date fecha, String idProducto, int cantidad, String idCliente) throws Exception
 	{
 		// JUANPABLO 
 		System.out.println("RegistrarPedidoProducto ("+ fecha+","+idProducto+","+cantidad+","+idCliente+")");
@@ -636,11 +640,11 @@ public class proAndes {
 		else 
 		{
 			System.out.println("Entra al segundo if");
-
+			
 			if (CantidadEnBodegaVSCantidad(idProducto, idCliente)== null)
 			{
 
-
+				
 				ans = addDays(ans, 5);
 				int dia = ans.getDate();
 				int mes= ans.getMonth()+1;
@@ -654,28 +658,30 @@ public class proAndes {
 			{
 
 				ArrayList<Bodega> aPedir = CantidadEnBodegaVSCantidad(idProducto, idCliente);
-				try {
+			
 					int dia = ans.getDate();
 					int mes= ans.getMonth()+1;
 					int anio = ans.getYear()+1900;
 					String fechi = mes+"/"+dia+"/"+anio;
 					System.out.println(fechi);
-					//				for (int i = 0;i<aPedir.size(); i++)
-					//				{
-
-					//					Bodega b = aPedir.get(i);
 					System.out.println("RF18-"+fechi+"-"+idProducto+"-"+cantidad+"-"+idCliente);
-					Send env = new Send();
-					env.enviar("RF18-"+fechi+"-"+idProducto+"-"+cantidad+"-"+idCliente);
-					//				}
+						Send env = new Send();
+						env.enviar("RF18-"+fechi+"-"+idProducto+"-"+cantidad+"-"+idCliente);
+						System.out.println("**********voy a esperar respuesta*************");
+						Thread.sleep(100);
+						Long inicio = System.currentTimeMillis();
+						while(msjReq18.equals("") && (System.currentTimeMillis() - inicio < 5000))
+						{
+							msjReq18 = r.darMensajes();
+							//System.out.println(gsonMensaje+i);
+						}
 
-				} catch (NamingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (JMSException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+						msjReq18 = r.darMensajes();
+						r.cambiarMensaje("");
+						if(!msjReq18.equals(""))
+							newAns = msjReq18;
+						System.out.println("***********++**respuesta esperada:"+gsonMensaje);
+					
 
 
 				ans = addDays(ans, 15);
@@ -685,7 +691,6 @@ public class proAndes {
 		return newAns;
 
 	}
-
 	public String darMes(int mes)
 	{
 		String ans = "";
